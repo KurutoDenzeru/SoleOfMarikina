@@ -1,6 +1,6 @@
 ---
 import "@/styles/global.css";
-import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer.astro";
 ---
 
 <html lang="en">
@@ -13,8 +13,9 @@ import { Button } from "@/components/ui/button";
 	</head>
 
 	<body>
-		<div class="grid place-items-center h-screen content-center">
-			<Button>Button</Button>
+		<div class="flex min-h-screen flex-col">
+			<main class="flex-1"></main>
+			<Footer />
 		</div>
 	</body>
 </html>
