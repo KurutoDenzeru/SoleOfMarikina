@@ -1,114 +1,243 @@
 ---
-import { ArrowLeft, MapPin, Menu, Search } from "lucide-react";
+import { MoveLeft, MapPin, Menu, Search } from "lucide-react";
 
-const navItems = ["Home", "Stores", "About", "Contact"];
+type PinTag = {
+  label: string;
+  top: string;
+  left: string;
+  pinSide: "left" | "right";
+};
 
-const mapTags = [
-  { label: "Brad's Trendies", top: "top-[15%]", left: "left-[38%]" },
-  { label: "Nico Angelo", top: "top-[45%]", left: "left-[42%]" },
-  { label: "Seacrest", top: "top-[60%]", left: "left-[22%]" },
+const mapTags: PinTag[] = [
+  { label: "Brad's Trendies", top: "28%", left: "50%", pinSide: "right" },
+  { label: "Nico Angelo", top: "48.5%", left: "49.5%", pinSide: "left" },
+  { label: "Seacrest", top: "62%", left: "29%", pinSide: "right" },
 ];
+
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "Stores", href: "/stores" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 ---
 
-<section class="bg-[#dddddd] px-4 py-6 md:px-8 md:py-8">
-  <div class="mx-auto w-full max-w-6xl">
-    <div class="mb-3 flex items-center justify-between text-xl font-medium text-[#a1a1a1] md:text-[2rem]">
-      <p>Menu Bar</p>
-      <p>Landing Page</p>
+<section class="relative w-full">
+  <button
+    id="menu-overlay"
+    type="button"
+    aria-label="Close menu"
+    aria-hidden="true"
+    class="pointer-events-none fixed inset-0 z-40 bg-transparent opacity-0 transition-opacity duration-300 ease-out"
+  ></button>
+
+  <aside
+    id="mobile-sidebar"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="mobile-sidebar-title"
+    class="fixed left-0 top-0 z-50 flex h-full w-[71%] max-w-85 -translate-x-full flex-col bg-black/90 px-6 py-6 text-white shadow-2xl transition-transform duration-300 ease-out"
+  >
+    <h2 id="mobile-sidebar-title" class="sr-only">Main navigation</h2>
+    <div class="mb-16 flex items-center justify-start">
+      <button
+        id="menu-close"
+        type="button"
+        aria-label="Close navigation menu"
+        class="inline-flex rounded-md p-1 text-white/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+      >
+        <MoveLeft className="size-8" />
+      </button>
     </div>
 
-    <div class="grid gap-4 md:grid-cols-[1.65fr_0.55fr]">
-      <article class="relative min-h-[560px] overflow-hidden bg-gradient-to-b from-[#f1cf97] via-[#e98b1b] to-[#8e1f00]">
-        <div class="absolute inset-0 text-[#f6d4a5]/40">
-          <svg viewBox="0 0 100 100" class="h-full w-full" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="0.35">
-            <path d="M2 8 L14 13 L28 9 L40 14 L58 11 L75 16 L96 12" />
-            <path d="M0 22 L19 25 L34 18 L49 26 L63 20 L82 27 L100 23" />
-            <path d="M4 37 L15 34 L30 40 L42 32 L59 39 L71 35 L90 43" />
-            <path d="M0 55 L14 52 L24 58 L41 51 L58 57 L75 54 L100 61" />
-            <path d="M5 74 L18 71 L32 77 L48 73 L63 79 L82 75 L96 82" />
-            <path d="M0 90 L15 87 L33 93 L49 89 L66 96 L82 92 L100 97" />
-            <path d="M17 0 L14 14 L21 28 L17 45 L23 62 L16 80 L22 100" />
-            <path d="M42 0 L35 16 L44 34 L37 53 L46 72 L40 88 L47 100" />
-            <path d="M68 0 L61 18 L70 32 L64 49 L72 66 L67 84 L74 100" />
-            <path d="M88 0 L82 12 L90 31 L85 47 L93 64 L87 81 L95 100" />
-          </svg>
-        </div>
-
-        <div class="absolute inset-y-0 left-0 w-[71%] bg-[#0d0703]/88"></div>
-
-        <div class="relative z-10 flex h-full flex-col px-6 py-7 md:px-9 md:py-8">
-          <div class="grid grid-cols-[1fr_auto_1fr] items-start">
-            <button aria-label="Back" class="inline-flex w-fit text-white transition hover:text-white/80">
-              <ArrowLeft className="size-8 md:size-9" />
-            </button>
-
-            <p class="text-center text-3xl font-black uppercase leading-[0.9] tracking-tight text-black md:text-[2.35rem]">
-              Sole of
-              <br />
-              Marikina
-            </p>
-
-            <button aria-label="Search" class="ml-auto inline-flex rounded-full p-2 text-black transition hover:bg-black/10">
-              <Search className="size-8 md:size-9" />
-            </button>
-          </div>
-
-          <nav class="mt-14 space-y-6 text-white md:mt-16 md:space-y-8">
-            {
-              navItems.map((item, index) => (
+    <nav aria-label="Main navigation" class="mt-1">
+      <ul class="space-y-7">
+        {
+          navLinks.map((link) => {
+            const linkPath = link.href.replace(/\/+$/, "") || "/";
+            const isActive = currentPath === linkPath;
+            return (
+              <li>
                 <a
-                  href="#"
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
                   class:list={[
-                    "block text-[2.1rem] leading-none tracking-tight transition hover:text-white/80 md:text-[2.5rem]",
-                    index === 0 ? "font-extrabold" : "font-light",
+                    "block px-2 py-0 text-[3rem] leading-none tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                    isActive
+                      ? "font-bold text-white"
+                      : "font-extralight text-stone-200",
                   ]}
                 >
-                  {item}
+                  {link.label}
                 </a>
-              ))
-            }
-          </nav>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </aside>
 
-          <div class="pointer-events-none absolute inset-0 hidden md:block">
-            {
-              mapTags.map((tag) => (
-                <div class:list={["absolute inline-flex items-center gap-2", tag.top, tag.left]}>
-                  <MapPin className="size-7 text-black" />
-                  <span class="rounded-full bg-black px-5 py-2 text-[1.85rem] font-semibold leading-none text-white/95">
-                    {tag.label}
-                  </span>
-                </div>
-              ))
-            }
-          </div>
-        </div>
-      </article>
-
-      <aside class="relative min-h-[320px] overflow-hidden bg-gradient-to-b from-[#f1cf97] via-[#e98b1b] to-[#8e1f00] md:min-h-[560px]">
-        <div class="absolute inset-0 text-[#f6d4a5]/55">
-          <svg viewBox="0 0 100 100" class="h-full w-full" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="0.35">
-            <path d="M1 10 L16 16 L28 12 L41 18 L58 14 L76 20 L98 16" />
-            <path d="M0 33 L18 29 L35 36 L48 30 L64 38 L82 34 L100 41" />
-            <path d="M2 58 L14 54 L29 63 L44 56 L61 65 L80 60 L97 68" />
-            <path d="M0 84 L13 80 L28 88 L45 82 L63 91 L82 85 L100 94" />
-            <path d="M15 0 L10 17 L17 34 L11 52 L19 68 L12 84 L18 100" />
-            <path d="M44 0 L39 18 L47 36 L41 54 L49 71 L42 89 L50 100" />
-            <path d="M74 0 L69 14 L76 31 L70 49 L78 66 L71 83 L79 100" />
-          </svg>
-        </div>
-
-        <div class="relative z-10 flex h-full flex-col items-end px-5 py-7 md:px-6 md:py-8">
-          <button aria-label="Open menu" class="rounded-full p-2 text-black transition hover:bg-black/10">
-            <Menu className="size-9 md:size-10" />
-          </button>
-
-          <div class="mt-auto hidden w-full justify-end pb-12 md:flex">
-            <span class="rounded-full bg-black px-5 py-2 text-[1.7rem] font-semibold leading-none text-white">
-              Soles
-            </span>
-          </div>
-        </div>
-      </aside>
+  <article
+    class="relative min-h-screen w-full overflow-hidden bg-[linear-gradient(180deg,#ead09a_0%,#efbe56_34%,#e78410_61%,#bc3c06_84%,#7a1d00_100%)]"
+  >
+    <div class="absolute inset-0 z-0 text-[#f6cb73]/75" aria-hidden="true">
+      <svg
+        viewBox="0 0 100 100"
+        class="h-full w-full"
+        preserveAspectRatio="none"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="0.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M10 8 L24 10 L21 20 L28 27 L20 37 L27 46 L19 55 L26 66 L20 78 L27 92 L24 100"
+        ></path>
+        <path d="M28 0 L36 18 L31 31 L39 43 L30 57 L36 69 L30 83 L38 100"
+        ></path>
+        <path d="M46 0 L42 13 L49 27 L44 39 L51 54 L45 66 L52 79 L47 92 L52 100"
+        ></path>
+        <path d="M71 0 L66 16 L73 31 L67 46 L74 60 L69 74 L76 88 L73 100"
+        ></path>
+        <path d="M6 20 L15 30 L33 24 L45 35 L63 29 L77 40 L87 31 L97 37"></path>
+        <path d="M14 40 L22 35 L33 44 L41 37 L56 47 L63 41 L79 50 L95 44"
+        ></path>
+        <path
+          d="M1 55 L18 50 L22 61 L34 55 L41 67 L53 58 L66 66 L75 55 L86 66 L98 60"
+        ></path>
+        <path d="M7 72 L22 66 L36 77 L53 70 L69 78 L83 69 L98 80"></path>
+        <path d="M8 86 L24 81 L37 92 L56 82 L73 90 L86 83 L98 86"></path>
+      </svg>
     </div>
-  </div>
+
+    <header
+      class="relative z-20 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8"
+    >
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-controls="mobile-sidebar"
+        aria-expanded="false"
+        class="inline-flex w-fit rounded-md p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70"
+      >
+        <Menu className="size-8" strokeWidth={2.6} />
+      </button>
+
+      <img
+        src="/Logo/brand.webp"
+        alt="Sole of Marikina"
+        class="h-14 w-auto max-w-55 object-contain sm:h-22 sm:max-w-65"
+        loading="eager"
+        decoding="async"
+      />
+
+      <button
+        aria-label="Search stores"
+        class="ml-auto inline-flex rounded-md p-1.5 text-black"
+      >
+        <Search className="size-8" strokeWidth={2.6} />
+      </button>
+    </header>
+
+    <div class="relative z-20 min-h-[calc(100svh-7rem)]">
+      {
+        mapTags.map((tag) => (
+          <div
+            class="absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5"
+            style={`top:${tag.top};left:${tag.left};`}
+          >
+            {tag.pinSide === "left" && (
+              <MapPin className="size-10 shrink-0 text-black" />
+            )}
+            <span class="rounded-full bg-black px-5 py-2 text-[15px] leading-none font-semibold tracking-tight whitespace-nowrap text-white sm:px-6 sm:text-[17px]">
+              {tag.label}
+            </span>
+            {tag.pinSide === "right" && (
+              <MapPin className="size-10 shrink-0 text-black" />
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </article>
 </section>
+
+<script is:inline>
+  (() => {
+    const openButton = document.getElementById("menu-toggle");
+    const closeButton = document.getElementById("menu-close");
+    const overlay = document.getElementById("menu-overlay");
+    const sidebar = document.getElementById("mobile-sidebar");
+    if (!openButton || !closeButton || !overlay || !sidebar) return;
+
+    let lastFocused = null;
+
+    const isOpen = () => openButton.getAttribute("aria-expanded") === "true";
+    const getFocusable = () =>
+      sidebar.querySelectorAll("a[href], button:not([disabled])");
+
+    const openMenu = () => {
+      lastFocused = document.activeElement;
+      openButton.setAttribute("aria-expanded", "true");
+      sidebar.classList.remove("-translate-x-full");
+      sidebar.classList.add("translate-x-0");
+      sidebar.setAttribute("aria-hidden", "false");
+      overlay.classList.remove("opacity-0", "pointer-events-none");
+      overlay.classList.add("opacity-100");
+      document.body.classList.add("overflow-hidden");
+
+      const firstFocusable = getFocusable()[0];
+      if (firstFocusable instanceof HTMLElement) firstFocusable.focus();
+    };
+
+    const closeMenu = () => {
+      openButton.setAttribute("aria-expanded", "false");
+      sidebar.classList.remove("translate-x-0");
+      sidebar.classList.add("-translate-x-full");
+      sidebar.setAttribute("aria-hidden", "true");
+      overlay.classList.remove("opacity-100");
+      overlay.classList.add("opacity-0", "pointer-events-none");
+      document.body.classList.remove("overflow-hidden");
+
+      if (lastFocused instanceof HTMLElement) lastFocused.focus();
+    };
+
+    openButton.addEventListener("click", openMenu);
+    closeButton.addEventListener("click", closeMenu);
+    overlay.addEventListener("click", closeMenu);
+
+    document.addEventListener("keydown", (event) => {
+      if (!isOpen()) return;
+      if (event.key === "Escape") closeMenu();
+    });
+
+    sidebar.addEventListener("keydown", (event) => {
+      if (!isOpen() || event.key !== "Tab") return;
+      const focusable = Array.from(getFocusable());
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!(first instanceof HTMLElement) || !(last instanceof HTMLElement))
+        return;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    sidebar.querySelectorAll("a[href]").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+  })();
+</script>
