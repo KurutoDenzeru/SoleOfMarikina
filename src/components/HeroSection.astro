@@ -38,6 +38,7 @@ const navLinks = [
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const defaultMapBackground = "/map/marikina.png";
 ---
 
 <section class="relative w-full">
@@ -98,39 +99,9 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
   </aside>
 
   <article
-    class="relative min-h-screen w-full overflow-hidden bg-[linear-gradient(180deg,#ead09a_0%,#efbe56_34%,#e78410_61%,#bc3c06_84%,#7a1d00_100%)]"
+    class="relative min-h-screen w-full overflow-hidden bg-[#d8ae73] bg-cover bg-top bg-no-repeat sm:bg-center"
+    style={`background-image:url('${defaultMapBackground}');`}
   >
-    <div class="absolute inset-0 z-0 text-[#f6cb73]/75" aria-hidden="true">
-      <svg
-        viewBox="0 0 100 100"
-        class="h-full w-full"
-        preserveAspectRatio="none"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="0.4"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path
-          d="M10 8 L24 10 L21 20 L28 27 L20 37 L27 46 L19 55 L26 66 L20 78 L27 92 L24 100"
-        ></path>
-        <path d="M28 0 L36 18 L31 31 L39 43 L30 57 L36 69 L30 83 L38 100"
-        ></path>
-        <path d="M46 0 L42 13 L49 27 L44 39 L51 54 L45 66 L52 79 L47 92 L52 100"
-        ></path>
-        <path d="M71 0 L66 16 L73 31 L67 46 L74 60 L69 74 L76 88 L73 100"
-        ></path>
-        <path d="M6 20 L15 30 L33 24 L45 35 L63 29 L77 40 L87 31 L97 37"></path>
-        <path d="M14 40 L22 35 L33 44 L41 37 L56 47 L63 41 L79 50 L95 44"
-        ></path>
-        <path
-          d="M1 55 L18 50 L22 61 L34 55 L41 67 L53 58 L66 66 L75 55 L86 66 L98 60"
-        ></path>
-        <path d="M7 72 L22 66 L36 77 L53 70 L69 78 L83 69 L98 80"></path>
-        <path d="M8 86 L24 81 L37 92 L56 82 L73 90 L86 83 L98 86"></path>
-      </svg>
-    </div>
-
     <MobileTopNavbar
       leftAction={{
         type: "button",
@@ -149,7 +120,7 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
       }}
       centerImageSrc="/Logo/brand.webp"
       centerImageAlt="Sole of Marikina"
-      centerImageClass="h-14 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]"
+      centerImageClass="h-16 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]"
     />
 
     <div class="relative z-20 min-h-[calc(100svh-7rem)]">

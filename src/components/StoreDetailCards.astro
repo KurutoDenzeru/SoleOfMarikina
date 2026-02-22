@@ -72,7 +72,7 @@ const {
       </div>
     </section>
   ) : (
-    <section class:list={["w-full px-6 pb-8 sm:px-8", className]}>
+    <section class:list={["w-full px-0 pb-8", className]}>
       <div class="mx-auto w-full space-y-5">
         {cards.map((card) => {
           const lines = card.title.split("\n");
@@ -82,7 +82,7 @@ const {
               class="group relative block w-full min-h-48 overflow-hidden rounded-3xl bg-black px-8 py-10 shadow-md transition-transform duration-300 ease-out hover:-translate-y-1"
             >
               <span class="relative flex min-h-36 items-center justify-center">
-                <span class="text-center text-4xl leading-[0.84] font-black uppercase tracking-tight text-white sm:text-5xl">
+                <span class="text-center text-2xl leading-[0.84] font-black uppercase tracking-tight text-white sm:text-5xl">
                   {lines.map((line) => (
                     <span class="block">{line}</span>
                   ))}
