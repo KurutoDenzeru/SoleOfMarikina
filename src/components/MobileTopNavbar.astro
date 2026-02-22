@@ -1,0 +1,135 @@
+---
+import { ChevronLeft, Menu, Search } from "lucide-react";
+
+type IconName = "menu" | "search" | "chevron-left";
+type ActionType = "button" | "link";
+
+type NavAction = {
+  type?: ActionType;
+  icon?: IconName;
+  ariaLabel: string;
+  id?: string;
+  href?: string;
+  className?: string;
+  strokeWidth?: number;
+  controls?: string;
+  expanded?: "true" | "false";
+};
+
+type Props = {
+  leftAction?: NavAction;
+  rightAction?: NavAction;
+  centerImageSrc?: string;
+  centerImageAlt?: string;
+  centerImageClass?: string;
+  containerClass?: string;
+};
+
+const {
+  leftAction = {
+    type: "button",
+    icon: "menu",
+    ariaLabel: "Open navigation menu",
+  },
+  rightAction = {
+    type: "button",
+    icon: "search",
+    ariaLabel: "Search",
+  },
+  centerImageSrc,
+  centerImageAlt = "Brand",
+  centerImageClass = "h-14 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]",
+  containerClass = "relative z-20 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8",
+} = Astro.props as Props;
+
+const iconMap = {
+  menu: Menu,
+  search: Search,
+  "chevron-left": ChevronLeft,
+};
+
+const leftType: ActionType = leftAction.type ?? "button";
+const rightType: ActionType = rightAction.type ?? "button";
+const LeftIcon = leftAction.icon ? iconMap[leftAction.icon] : null;
+const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
+const leftStroke = leftAction.strokeWidth ?? 2.6;
+const rightStroke = rightAction.strokeWidth ?? 2.6;
+---
+
+<header class={containerClass}>
+  <slot name="left">
+    {
+      leftType === "link" ? (
+        <a
+          href={leftAction.href ?? "#"}
+          aria-label={leftAction.ariaLabel}
+          class:list={[
+            "inline-flex w-fit rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
+            leftAction.className,
+          ]}
+        >
+          {LeftIcon && <LeftIcon className="size-8" strokeWidth={leftStroke} />}
+        </a>
+      ) : (
+        <button
+          id={leftAction.id}
+          type="button"
+          aria-label={leftAction.ariaLabel}
+          aria-controls={leftAction.controls}
+          aria-expanded={leftAction.expanded}
+          class:list={[
+            "inline-flex w-fit rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
+            leftAction.className,
+          ]}
+        >
+          {LeftIcon && <LeftIcon className="size-8" strokeWidth={leftStroke} />}
+        </button>
+      )
+    }
+  </slot>
+
+  <slot name="center">
+    {
+      centerImageSrc ? (
+        <img
+          src={centerImageSrc}
+          alt={centerImageAlt}
+          class={centerImageClass}
+          loading="eager"
+          decoding="async"
+        />
+      ) : (
+        <span class="text-base font-semibold">Brand</span>
+      )
+    }
+  </slot>
+
+  <slot name="right">
+    {
+      rightType === "link" ? (
+        <a
+          href={rightAction.href ?? "#"}
+          aria-label={rightAction.ariaLabel}
+          class:list={[
+            "ml-auto inline-flex rounded-md p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
+            rightAction.className,
+          ]}
+        >
+          {RightIcon && <RightIcon className="size-8" strokeWidth={rightStroke} />}
+        </a>
+      ) : (
+        <button
+          id={rightAction.id}
+          type="button"
+          aria-label={rightAction.ariaLabel}
+          class:list={[
+            "ml-auto inline-flex rounded-md p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
+            rightAction.className,
+          ]}
+        >
+          {RightIcon && <RightIcon className="size-8" strokeWidth={rightStroke} />}
+        </button>
+      )
+    }
+  </slot>
+</header>

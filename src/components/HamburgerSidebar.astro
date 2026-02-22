@@ -1,17 +1,58 @@
 ---
-import { MoveLeft, MapPin, Menu, Search } from "lucide-react";
+import { MoveLeft, MapPin } from "lucide-react";
+import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
+import StoreDetailCards from "@/components/StoreDetailCards.astro";
 
-type PinTag = {
+type StoreMapItem = {
+  id: string;
   label: string;
+  address: string;
   top: string;
   left: string;
   pinSide: "left" | "right";
+  cards: { title: string; href?: string }[];
 };
 
-const mapTags: PinTag[] = [
-  { label: "Brad's Trendies", top: "28%", left: "50%", pinSide: "right" },
-  { label: "Nico Angelo", top: "48.5%", left: "49.5%", pinSide: "left" },
-  { label: "Seacrest", top: "62%", left: "29%", pinSide: "right" },
+const stores: StoreMapItem[] = [
+  {
+    id: "brads-trendies",
+    label: "Brad's Trendies",
+    address: "14 Shoe Ave. Sta. Elena, Marikina",
+    top: "18%",
+    left: "52%",
+    pinSide: "right",
+    cards: [
+      { title: "WALK WITH\nTHEM", href: "/stores" },
+      { title: "SOULS BEHIND\nTHE SOLES", href: "/about" },
+      { title: "THEIR\nPRODUCTS", href: "/stores" },
+    ],
+  },
+  {
+    id: "nico-angelo",
+    label: "Nico Angelo",
+    address: "3 Narra St. Cristina Vil. Concepcion Uno",
+    top: "46%",
+    left: "49%",
+    pinSide: "left",
+    cards: [
+      { title: "WALK WITH\nTHEM", href: "/stores" },
+      { title: "SOULS BEHIND\nTHE SOLES", href: "/about" },
+      { title: "THEIR\nPRODUCTS", href: "/stores" },
+    ],
+  },
+  {
+    id: "seacrest",
+    label: "Seacrest",
+    address: "9 J.P. Rizal St. Calumpang, Marikina",
+    top: "60%",
+    left: "25%",
+    pinSide: "right",
+    cards: [
+      { title: "WALK WITH\nTHEM", href: "/stores" },
+      { title: "SOULS BEHIND\nTHE SOLES", href: "/about" },
+      { title: "THEIR\nPRODUCTS", href: "/stores" },
+    ],
+  },
 ];
 
 const navLinks = [
@@ -115,53 +156,71 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
       </svg>
     </div>
 
-    <header
-      class="relative z-20 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8"
-    >
-      <button
-        id="menu-toggle"
-        type="button"
-        aria-label="Open navigation menu"
-        aria-controls="mobile-sidebar"
-        aria-expanded="false"
-        class="inline-flex w-fit rounded-md p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70"
-      >
-        <Menu className="size-8" strokeWidth={2.6} />
-      </button>
-
-      <img
-        src="/Logo/brand.webp"
-        alt="Sole of Marikina"
-        class="h-14 w-auto max-w-55 object-contain sm:h-22 sm:max-w-65"
-        loading="eager"
-        decoding="async"
-      />
-
-      <button
-        aria-label="Search stores"
-        class="ml-auto inline-flex rounded-md p-1.5 text-black"
-      >
-        <Search className="size-8" strokeWidth={2.6} />
-      </button>
-    </header>
+    <MobileTopNavbar
+      leftAction={{
+        type: "button",
+        icon: "menu",
+        ariaLabel: "Open navigation menu",
+        id: "menu-toggle",
+        controls: "mobile-sidebar",
+        expanded: "false",
+        className: "rounded-md",
+      }}
+      rightAction={{
+        type: "button",
+        icon: "search",
+        ariaLabel: "Search stores",
+        className: "rounded-md",
+      }}
+      centerImageSrc="/Logo/brand.webp"
+      centerImageAlt="Sole of Marikina"
+      centerImageClass="h-14 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]"
+    />
 
     <div class="relative z-20 min-h-[calc(100svh-7rem)]">
+      <button
+        id="store-backdrop"
+        type="button"
+        aria-label="Close store details"
+        class="pointer-events-none absolute inset-0 z-25 bg-transparent"
+      ></button>
+
+      <div id="store-trigger-layer" class="absolute inset-0 z-20 transition-all duration-300 ease-out">
+        {
+          stores.map((store) => (
+            <div
+              class="absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-2"
+              style={`top:${store.top};left:${store.left};`}
+            >
+              {store.pinSide === "left" && (
+                <MapPin className="size-8 shrink-0 text-black" />
+              )}
+              <button
+                type="button"
+                data-store-trigger={store.id}
+                aria-controls={`store-panel-${store.id}`}
+                aria-expanded="false"
+                aria-pressed="false"
+                class="rounded-full bg-black px-5 py-1.5 text-md leading-none font-semibold tracking-tight whitespace-nowrap text-white transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70 sm:px-6 sm:text-[17px]"
+              >
+                {store.label}
+              </button>
+              {store.pinSide === "right" && (
+                <MapPin className="size-8 shrink-0 text-black" />
+              )}
+            </div>
+          ))
+        }
+      </div>
+
       {
-        mapTags.map((tag) => (
-          <div
-            class="absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5"
-            style={`top:${tag.top};left:${tag.left};`}
-          >
-            {tag.pinSide === "left" && (
-              <MapPin className="size-10 shrink-0 text-black" />
-            )}
-            <span class="rounded-full bg-black px-5 py-2 text-[15px] leading-none font-semibold tracking-tight whitespace-nowrap text-white sm:px-6 sm:text-[17px]">
-              {tag.label}
-            </span>
-            {tag.pinSide === "right" && (
-              <MapPin className="size-10 shrink-0 text-black" />
-            )}
-          </div>
+        stores.map((store) => (
+          <StoreDetailCards
+            storeId={store.id}
+            storeName={store.label}
+            address={store.address}
+            cards={store.cards}
+          />
         ))
       }
     </div>
@@ -174,13 +233,18 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
     const closeButton = document.getElementById("menu-close");
     const overlay = document.getElementById("menu-overlay");
     const sidebar = document.getElementById("mobile-sidebar");
+    const storeBackdrop = document.getElementById("store-backdrop");
+    const storeTriggerLayer = document.getElementById("store-trigger-layer");
     if (!openButton || !closeButton || !overlay || !sidebar) return;
 
     let lastFocused = null;
+    let activeStoreId = null;
 
     const isOpen = () => openButton.getAttribute("aria-expanded") === "true";
     const getFocusable = () =>
       sidebar.querySelectorAll("a[href], button:not([disabled])");
+    const storeTriggers = Array.from(document.querySelectorAll("[data-store-trigger]"));
+    const storePanels = Array.from(document.querySelectorAll("[data-store-panel]"));
 
     const openMenu = () => {
       lastFocused = document.activeElement;
@@ -213,8 +277,12 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
     overlay.addEventListener("click", closeMenu);
 
     document.addEventListener("keydown", (event) => {
-      if (!isOpen()) return;
-      if (event.key === "Escape") closeMenu();
+      if (event.key !== "Escape") return;
+      if (isOpen()) {
+        closeMenu();
+        return;
+      }
+      closeStorePanels();
     });
 
     sidebar.addEventListener("keydown", (event) => {
@@ -239,5 +307,120 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
     sidebar.querySelectorAll("a[href]").forEach((link) => {
       link.addEventListener("click", closeMenu);
     });
+
+    const closeStorePanels = () => {
+      activeStoreId = null;
+      storeTriggers.forEach((trigger) => {
+        trigger.setAttribute("aria-expanded", "false");
+        trigger.setAttribute("aria-pressed", "false");
+        trigger.classList.remove("scale-105", "ring-2", "ring-white/80");
+      });
+
+      storePanels.forEach((panel) => {
+        panel.setAttribute("aria-hidden", "true");
+        panel.classList.remove("opacity-100", "translate-y-0", "scale-100", "pointer-events-auto");
+        panel.classList.add("opacity-0", "translate-y-8", "scale-95", "pointer-events-none");
+      });
+
+      if (storeBackdrop) {
+        storeBackdrop.classList.add("pointer-events-none");
+      }
+
+      if (storeTriggerLayer) {
+        storeTriggerLayer.classList.remove("opacity-0", "pointer-events-none", "translate-y-1");
+        storeTriggerLayer.classList.add("opacity-100");
+      }
+    };
+
+    const openStorePanel = (storeId, triggerEl) => {
+      const targetPanel = storePanels.find((panel) => panel.getAttribute("data-store-panel") === storeId);
+      if (!targetPanel) return;
+
+      activeStoreId = storeId;
+      storeTriggers.forEach((trigger) => {
+        const isTarget = trigger.getAttribute("data-store-trigger") === storeId;
+        trigger.setAttribute("aria-expanded", isTarget ? "true" : "false");
+        trigger.setAttribute("aria-pressed", isTarget ? "true" : "false");
+        trigger.classList.toggle("scale-105", isTarget);
+        trigger.classList.toggle("ring-2", isTarget);
+        trigger.classList.toggle("ring-white/80", isTarget);
+      });
+
+      storePanels.forEach((panel) => {
+        const isTarget = panel === targetPanel;
+        panel.setAttribute("aria-hidden", isTarget ? "false" : "true");
+        panel.classList.toggle("opacity-100", isTarget);
+        panel.classList.toggle("translate-y-0", isTarget);
+        panel.classList.toggle("scale-100", isTarget);
+        panel.classList.toggle("pointer-events-auto", isTarget);
+        panel.classList.toggle("opacity-0", !isTarget);
+        panel.classList.toggle("translate-y-8", !isTarget);
+        panel.classList.toggle("scale-95", !isTarget);
+        panel.classList.toggle("pointer-events-none", !isTarget);
+      });
+
+      if (storeBackdrop) {
+        storeBackdrop.classList.remove("pointer-events-none");
+      }
+
+      if (storeTriggerLayer) {
+        storeTriggerLayer.classList.remove("opacity-100");
+        storeTriggerLayer.classList.add("opacity-0", "pointer-events-none", "translate-y-1");
+      }
+
+      const panelRect = targetPanel.getBoundingClientRect();
+      const triggerRect = triggerEl.getBoundingClientRect();
+      const startX = triggerRect.left + triggerRect.width / 2 - (panelRect.left + panelRect.width / 2);
+      const startY = triggerRect.top + triggerRect.height / 2 - (panelRect.top + 24);
+
+      targetPanel.animate(
+        [
+          {
+            opacity: 0,
+            transform: `translate(${startX * 0.28}px, ${startY * 0.28}px) scale(0.82)`,
+          },
+          {
+            opacity: 1,
+            transform: "translate(0, 0) scale(1)",
+          },
+        ],
+        {
+          duration: 460,
+          easing: "cubic-bezier(0.2, 0.75, 0.2, 1)",
+        }
+      );
+
+      targetPanel.querySelectorAll("[data-store-card]").forEach((card, index) => {
+        card.animate(
+          [
+            { opacity: 0, transform: "translateY(30px) scale(0.95)" },
+            { opacity: 1, transform: "translateY(0) scale(1)" },
+          ],
+          {
+            duration: 420,
+            delay: 90 + index * 70,
+            easing: "cubic-bezier(0.2, 0.75, 0.2, 1)",
+            fill: "both",
+          }
+        );
+      });
+    };
+
+    storeTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const storeId = trigger.getAttribute("data-store-trigger");
+        if (!storeId) return;
+
+        if (activeStoreId === storeId) {
+          closeStorePanels();
+          return;
+        }
+        openStorePanel(storeId, trigger);
+      });
+    });
+
+    if (storeBackdrop) {
+      storeBackdrop.addEventListener("click", closeStorePanels);
+    }
   })();
 </script>
