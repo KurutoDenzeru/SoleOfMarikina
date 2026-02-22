@@ -124,6 +124,19 @@ export const sections: StoreSectionSlug[] = [
 ];
 
 export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
+  if (storeSlug === "nico-angelo") {
+    return [
+      {
+        title: "SOULS BEHIND\nTHE SOLES",
+        href: `/stores/${storeSlug}/souls-behind-the-soles-story`,
+      },
+      {
+        title: "HIDE TO HEEL",
+        href: `/stores/${storeSlug}/hide-to-heels`,
+      },
+    ];
+  }
+
   return [
     {
       title: "SOULS BEHIND\nTHE SOLES",
