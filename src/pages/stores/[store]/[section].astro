@@ -1,35 +1,37 @@
 ---
 import "@/styles/global.css";
 import { Facebook, Instagram } from "lucide-react";
-import { getCollection, type CollectionEntry } from "astro:content";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import StoreDetailCards from "@/components/StoreDetailCards.astro";
-
-type StoreData = CollectionEntry<"stores">["data"];
-type StoreSectionData = CollectionEntry<"storeSections">["data"];
+import { stores, storeSections } from "@/lib/store-pages";
 
 export async function getStaticPaths() {
-  const stores = await getCollection("stores");
-  const sections = await getCollection("storeSections");
-  const storeMap = new Map(stores.map((entry) => [entry.data.slug, entry.data]));
+  const storeMap = new Map(stores.map((store) => [store.slug, store]));
 
-  return sections
-    .filter((entry) => storeMap.has(entry.data.storeSlug))
+  return storeSections
+    .filter(
+      (entry) =>
+        !(
+          entry.storeSlug === "nico-angelo" &&
+          entry.sectionSlug === "walk-with-them"
+        )
+    )
+    .filter((entry) => storeMap.has(entry.storeSlug))
     .map((entry) => ({
       params: {
-        store: entry.data.storeSlug,
-        section: entry.data.sectionSlug,
+        store: entry.storeSlug,
+        section: entry.sectionSlug,
       },
       props: {
-        store: storeMap.get(entry.data.storeSlug),
-        section: entry.data,
+        store: storeMap.get(entry.storeSlug),
+        section: entry,
       },
     }));
 }
 
 const { store, section } = Astro.props as {
-  store: StoreData;
-  section: StoreSectionData;
+  store: (typeof stores)[number];
+  section: (typeof storeSections)[number];
 };
 
 const isWalkPage = section.sectionSlug === "walk-with-them";

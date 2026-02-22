@@ -1,12 +1,11 @@
 ---
 import "@/styles/global.css";
-import { getCollection } from "astro:content";
+import { stores } from "@/lib/store-pages";
 
 export async function getStaticPaths() {
-  const stores = await getCollection("stores");
-  return stores.map((entry) => ({
-    params: { store: entry.data.slug },
-    props: { store: entry.data },
+  return stores.map((store) => ({
+    params: { store: store.slug },
+    props: { store },
   }));
 }
 

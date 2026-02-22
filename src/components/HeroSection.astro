@@ -1,8 +1,12 @@
 ---
-import { getCollection } from "astro:content";
 import { MoveLeft, MapPin } from "lucide-react";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import StoreDetailCards from "@/components/StoreDetailCards.astro";
+import {
+  landingCards,
+  storeOrder,
+  stores as storeData,
+} from "@/lib/store-pages";
 
 type StoreMapItem = {
   id: string;
@@ -14,25 +18,15 @@ type StoreMapItem = {
   cards: { title: string; href?: string }[];
 };
 
-const storeEntries = await getCollection("stores");
-const storeOrder = ["brads-trendies", "nico-angelo", "seacrest"];
-
-const stores: StoreMapItem[] = storeEntries
-  .map(({ data }) => ({
-    id: data.slug,
-    label: data.name,
-    address: data.address,
-    top: data.mapTop,
-    left: data.mapLeft,
-    pinSide: data.mapPinSide,
-    cards: [
-      { title: "WALK WITH\nTHEM", href: `/stores/${data.slug}/walk-with-them` },
-      {
-        title: "SOULS BEHIND\nTHE SOLES",
-        href: `/stores/${data.slug}/souls-behind-the-soles`,
-      },
-      { title: "THEIR\nPRODUCTS", href: `/stores/${data.slug}/their-products` },
-    ],
+const stores: StoreMapItem[] = storeData
+  .map((store) => ({
+    id: store.slug,
+    label: store.name,
+    address: store.address,
+    top: store.mapTop,
+    left: store.mapLeft,
+    pinSide: store.mapPinSide,
+    cards: landingCards(store.slug),
   }))
   .sort((a, b) => storeOrder.indexOf(a.id) - storeOrder.indexOf(b.id));
 

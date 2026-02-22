@@ -1,9 +1,7 @@
 ---
 import "@/styles/global.css";
 import Footer from "@/components/Footer.astro";
-import { getCollection } from "astro:content";
-
-const stores = await getCollection("stores");
+import { stores } from "@/lib/store-pages";
 ---
 
 <html lang="en">
@@ -31,10 +29,10 @@ const stores = await getCollection("stores");
             stores.map((store) => (
               <li>
                 <a
-                  href={`/stores/${store.data.slug}/walk-with-them`}
+                  href={`/stores/${store.slug}/walk-with-them`}
                   class="block rounded-xl border border-black/10 bg-white px-5 py-4 text-xl font-semibold transition hover:border-black/30"
                 >
-                  {store.data.name}
+                  {store.name}
                 </a>
               </li>
             ))
