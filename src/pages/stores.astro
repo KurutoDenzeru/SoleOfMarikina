@@ -1,6 +1,9 @@
 ---
 import "@/styles/global.css";
 import Footer from "@/components/Footer.astro";
+import { getCollection } from "astro:content";
+
+const stores = await getCollection("stores");
 ---
 
 <html lang="en">
@@ -20,8 +23,23 @@ import Footer from "@/components/Footer.astro";
         </nav>
         <h1 class="mt-6 text-4xl font-bold tracking-tight">Stores</h1>
         <p class="mt-4 max-w-prose text-lg text-black/75">
-          Placeholder page for Stores. Content will be added here next.
+          Explore each maker page and jump into Walk With Them, Souls Behind the Soles, and Their Products.
         </p>
+
+        <ul class="mt-8 space-y-4">
+          {
+            stores.map((store) => (
+              <li>
+                <a
+                  href={`/stores/${store.data.slug}/walk-with-them`}
+                  class="block rounded-xl border border-black/10 bg-white px-5 py-4 text-xl font-semibold transition hover:border-black/30"
+                >
+                  {store.data.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </main>
       <Footer />
     </div>

@@ -1,0 +1,164 @@
+---
+import "@/styles/global.css";
+import { Facebook, Instagram } from "lucide-react";
+import { getCollection, type CollectionEntry } from "astro:content";
+import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
+import StoreDetailCards from "@/components/StoreDetailCards.astro";
+
+type StoreData = CollectionEntry<"stores">["data"];
+type StoreSectionData = CollectionEntry<"storeSections">["data"];
+
+export async function getStaticPaths() {
+  const stores = await getCollection("stores");
+  const sections = await getCollection("storeSections");
+  const storeMap = new Map(stores.map((entry) => [entry.data.slug, entry.data]));
+
+  return sections
+    .filter((entry) => storeMap.has(entry.data.storeSlug))
+    .map((entry) => ({
+      params: {
+        store: entry.data.storeSlug,
+        section: entry.data.sectionSlug,
+      },
+      props: {
+        store: storeMap.get(entry.data.storeSlug),
+        section: entry.data,
+      },
+    }));
+}
+
+const { store, section } = Astro.props as {
+  store: StoreData;
+  section: StoreSectionData;
+};
+
+const isWalkPage = section.sectionSlug === "walk-with-them";
+const storyHref = `/stores/${store.slug}/souls-behind-the-soles`;
+const logoClass = [
+  "h-14 w-auto max-w-xs object-contain sm:h-16",
+  store.logoInvert ? "invert brightness-0" : "",
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{store.name} | {section.title}</title>
+  </head>
+  <body>
+    <section class="relative min-h-screen w-full overflow-hidden bg-[linear-gradient(180deg,#ead09a_0%,#efbe56_34%,#e78410_61%,#bc3c06_84%,#7a1d00_100%)]">
+      <div class="absolute inset-0 z-0 text-[#f6cb73]/75" aria-hidden="true">
+        <svg
+          viewBox="0 0 100 100"
+          class="h-full w-full"
+          preserveAspectRatio="none"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="0.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M10 8 L24 10 L21 20 L28 27 L20 37 L27 46 L19 55 L26 66 L20 78 L27 92 L24 100"></path>
+          <path d="M28 0 L36 18 L31 31 L39 43 L30 57 L36 69 L30 83 L38 100"></path>
+          <path d="M46 0 L42 13 L49 27 L44 39 L51 54 L45 66 L52 79 L47 92 L52 100"></path>
+          <path d="M71 0 L66 16 L73 31 L67 46 L74 60 L69 74 L76 88 L73 100"></path>
+          <path d="M6 20 L15 30 L33 24 L45 35 L63 29 L77 40 L87 31 L97 37"></path>
+          <path d="M14 40 L22 35 L33 44 L41 37 L56 47 L63 41 L79 50 L95 44"></path>
+          <path d="M1 55 L18 50 L22 61 L34 55 L41 67 L53 58 L66 66 L75 55 L86 66 L98 60"></path>
+          <path d="M7 72 L22 66 L36 77 L53 70 L69 78 L83 69 L98 80"></path>
+          <path d="M8 86 L24 81 L37 92 L56 82 L73 90 L86 83 L98 86"></path>
+        </svg>
+      </div>
+
+      <MobileTopNavbar
+        leftAction={{
+          type: "link",
+          icon: "arrow-left",
+          ariaLabel: "Back to homepage",
+          href: "/",
+          className: "rounded-md",
+        }}
+        rightAction={{
+          type: "button",
+          icon: "search",
+          ariaLabel: "Search store content",
+          className: "rounded-md",
+        }}
+        centerImageSrc={store.logo}
+        centerImageAlt={store.name}
+        centerImageClass={logoClass}
+      />
+
+      {
+        isWalkPage ? (
+          <main class="relative z-20 px-6 pb-20 sm:px-8">
+            <div class="mt-8 grid grid-cols-[auto_1fr_auto] items-center gap-4 text-black">
+              <p class="max-w-[10ch] text-4xl leading-none font-bold">{store.contactName}</p>
+              <div class="h-0.5 w-full bg-black/75"></div>
+              <p class="text-5xl leading-none font-bold">{store.city}</p>
+            </div>
+
+            <h1 class="mt-12 text-center text-7xl leading-none font-extrabold text-white">
+              {store.heroTitle}
+            </h1>
+
+            <p class="mx-auto mt-10 max-w-4xl text-center text-3xl leading-relaxed font-medium text-white">
+              {section.body}
+            </p>
+
+            <div class="mt-24 text-white">
+              <h2 class="text-6xl leading-none font-black uppercase">{section.title}</h2>
+
+              <div class="mt-8 grid gap-8 text-2xl sm:grid-cols-2">
+                <div>
+                  <p class="text-xl font-extrabold uppercase">Contact</p>
+                  <p class="mt-3 text-2xl font-medium">{store.phone}</p>
+                  <p class="mt-2 text-2xl font-medium">{store.email}</p>
+                  <div class="mt-5 flex items-center gap-4">
+                    <a
+                      href={store.facebook}
+                      aria-label="Facebook"
+                      class="inline-flex size-12 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/25"
+                    >
+                      <Facebook className="size-7" />
+                    </a>
+                    <a
+                      href={store.instagram}
+                      aria-label="Instagram"
+                      class="inline-flex size-12 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/25"
+                    >
+                      <Instagram className="size-7" />
+                    </a>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-xl font-extrabold uppercase">Location</p>
+                  <p class="mt-3 text-2xl font-medium">{store.location}</p>
+                </div>
+              </div>
+
+              <a
+                href={storyHref}
+                class="mx-auto mt-14 inline-flex min-w-56 items-center justify-center rounded-full bg-black/70 px-10 py-4 text-4xl font-semibold text-white transition hover:bg-black/80"
+              >
+                {store.ctaLabel}
+              </a>
+            </div>
+          </main>
+        ) : (
+          <main class="relative z-20 px-6 pb-16 pt-6 sm:px-8">
+            <p class="mx-auto mt-8 max-w-5xl text-center text-3xl leading-relaxed font-semibold text-black">
+              {section.body}
+            </p>
+            <StoreDetailCards mode="list" cards={section.cards} className="mt-8" />
+          </main>
+        )
+      }
+    </section>
+  </body>
+</html>

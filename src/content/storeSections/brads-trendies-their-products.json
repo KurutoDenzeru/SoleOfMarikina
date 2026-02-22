@@ -1,0 +1,10 @@
+{
+  "storeSlug": "brads-trendies",
+  "sectionSlug": "their-products",
+  "title": "THEIR PRODUCTS",
+  "body": "Brad's Trendies product lines focus on practical versatility, grounded comfort, and long-term wear. Every silhouette is selected and refined for movement, utility, and easy styling.",
+  "cards": [
+    { "title": "SOULS BEHIND\nTHE SOLES", "href": "/stores/brads-trendies/souls-behind-the-soles" },
+    { "title": "HIDE TO HEEL", "href": "/stores/brads-trendies/their-products" }
+  ]
+}

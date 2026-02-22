@@ -1,7 +1,7 @@
 ---
-import { ChevronLeft, Menu, Search } from "lucide-react";
+import { ArrowLeft, ChevronLeft, Menu, Search } from "lucide-react";
 
-type IconName = "menu" | "search" | "chevron-left";
+type IconName = "menu" | "search" | "chevron-left" | "arrow-left";
 type ActionType = "button" | "link";
 
 type NavAction = {
@@ -46,6 +46,7 @@ const iconMap = {
   menu: Menu,
   search: Search,
   "chevron-left": ChevronLeft,
+  "arrow-left": ArrowLeft,
 };
 
 const leftType: ActionType = leftAction.type ?? "button";

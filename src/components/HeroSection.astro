@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import { MoveLeft, MapPin } from "lucide-react";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import StoreDetailCards from "@/components/StoreDetailCards.astro";
@@ -13,47 +14,27 @@ type StoreMapItem = {
   cards: { title: string; href?: string }[];
 };
 
-const stores: StoreMapItem[] = [
-  {
-    id: "brads-trendies",
-    label: "Brad's Trendies",
-    address: "14 Shoe Ave. Sta. Elena, Marikina",
-    top: "18%",
-    left: "52%",
-    pinSide: "right",
+const storeEntries = await getCollection("stores");
+const storeOrder = ["brads-trendies", "nico-angelo", "seacrest"];
+
+const stores: StoreMapItem[] = storeEntries
+  .map(({ data }) => ({
+    id: data.slug,
+    label: data.name,
+    address: data.address,
+    top: data.mapTop,
+    left: data.mapLeft,
+    pinSide: data.mapPinSide,
     cards: [
-      { title: "WALK WITH\nTHEM", href: "/stores" },
-      { title: "SOULS BEHIND\nTHE SOLES", href: "/about" },
-      { title: "THEIR\nPRODUCTS", href: "/stores" },
+      { title: "WALK WITH\nTHEM", href: `/stores/${data.slug}/walk-with-them` },
+      {
+        title: "SOULS BEHIND\nTHE SOLES",
+        href: `/stores/${data.slug}/souls-behind-the-soles`,
+      },
+      { title: "THEIR\nPRODUCTS", href: `/stores/${data.slug}/their-products` },
     ],
-  },
-  {
-    id: "nico-angelo",
-    label: "Nico Angelo",
-    address: "3 Narra St. Cristina Vil. Concepcion Uno",
-    top: "46%",
-    left: "49%",
-    pinSide: "left",
-    cards: [
-      { title: "WALK WITH\nTHEM", href: "/stores" },
-      { title: "SOULS BEHIND\nTHE SOLES", href: "/about" },
-      { title: "THEIR\nPRODUCTS", href: "/stores" },
-    ],
-  },
-  {
-    id: "seacrest",
-    label: "Seacrest",
-    address: "9 J.P. Rizal St. Calumpang, Marikina",
-    top: "60%",
-    left: "25%",
-    pinSide: "right",
-    cards: [
-      { title: "WALK WITH\nTHEM", href: "/stores" },
-      { title: "SOULS BEHIND\nTHE SOLES", href: "/about" },
-      { title: "THEIR\nPRODUCTS", href: "/stores" },
-    ],
-  },
-];
+  }))
+  .sort((a, b) => storeOrder.indexOf(a.id) - storeOrder.indexOf(b.id));
 
 const navLinks = [
   { label: "Home", href: "/" },

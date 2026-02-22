@@ -1,0 +1,32 @@
+---
+import "@/styles/global.css";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const stores = await getCollection("stores");
+  return stores.map((entry) => ({
+    params: { store: entry.data.slug },
+    props: { store: entry.data },
+  }));
+}
+
+const { store } = Astro.props;
+const walkUrl = `/stores/${store.slug}/walk-with-them`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="refresh" content={`0; url=${walkUrl}`} />
+    <title>{store.name}</title>
+  </head>
+  <body class="bg-black text-white">
+    <main class="flex min-h-screen items-center justify-center p-6 text-center">
+      <p class="text-lg">
+        Redirecting to
+        <a href={walkUrl} class="ml-1 underline underline-offset-4">Walk With Them</a>.
+      </p>
+    </main>
+  </body>
+</html>
