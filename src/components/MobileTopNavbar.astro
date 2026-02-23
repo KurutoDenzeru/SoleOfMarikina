@@ -38,7 +38,7 @@ const {
   centerImageSrc,
   centerImageAlt = "Brand",
   centerImageClass = "h-14 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]",
-  containerClass = "relative z-20 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8",
+  containerClass = "grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8",
 } = Astro.props as Props;
 
 const iconMap = {
@@ -54,7 +54,7 @@ const LeftIcon = leftAction.icon ? iconMap[leftAction.icon] : null;
 const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
 ---
 
-<header class={containerClass}>
+<header class:list={["sticky top-0 z-50 w-full", containerClass]}>
   <slot name="left">
     {
       leftType === "link" ? (

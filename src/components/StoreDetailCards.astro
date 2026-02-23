@@ -36,10 +36,10 @@ const {
         className,
       ]}
     >
-      <div class="mx-auto w-full px-5 sm:px-6">
-        <div class="mb-3 flex items-start gap-2">
-          <MapPin className="mt-1 size-9 shrink-0 text-black" />
-          <div class="rounded-full bg-black px-6 py-2 text-white">
+      <div class="mx-auto w-full max-w-[430px] px-5 sm:px-6">
+        <div class="mb-3 flex items-center justify-center gap-2">
+          <MapPin className="size-9 shrink-0 text-black" />
+          <div class="w-full max-w-[340px] rounded-full bg-black px-6 py-2 text-white">
             <p class="text-lg leading-[0.9] font-semibold tracking-tight">
               {storeName}
             </p>
@@ -49,7 +49,7 @@ const {
           </div>
         </div>
 
-        <div class="space-y-5">
+        <div class="mx-auto w-full space-y-5">
           {cards.map((card) => {
             const lines = card.title.split("\n");
             return (
@@ -73,7 +73,7 @@ const {
     </section>
   ) : (
     <section class:list={["w-full px-0 pb-8", className]}>
-      <div class="mx-auto w-full space-y-5">
+      <div class="mx-auto w-full max-w-[430px] space-y-5">
         {cards.map((card) => {
           const lines = card.title.split("\n");
           return (
