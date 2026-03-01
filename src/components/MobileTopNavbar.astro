@@ -10,6 +10,7 @@ type NavAction = {
   ariaLabel: string;
   id?: string;
   href?: string;
+  dynamicBack?: boolean;
   className?: string;
   controls?: string;
   expanded?: "true" | "false";
@@ -60,6 +61,8 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
       leftType === "link" ? (
         <a
           href={leftAction.href ?? "#"}
+          data-dynamic-back={leftAction.dynamicBack ? "true" : undefined}
+          data-fallback-href={leftAction.href ?? "/"}
           aria-label={leftAction.ariaLabel}
           class:list={[
             "inline-flex w-fit rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
@@ -131,3 +134,33 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
     }
   </slot>
 </header>
+
+<script is:inline>
+  (() => {
+    if (window.__somDynamicBackInitialized) return;
+    window.__somDynamicBackInitialized = true;
+
+    const bindDynamicBack = () => {
+      document.querySelectorAll('[data-dynamic-back="true"]').forEach((el) => {
+        if (!(el instanceof HTMLAnchorElement)) return;
+        if (el.dataset.dynamicBackBound === "true") return;
+        el.dataset.dynamicBackBound = "true";
+
+        el.addEventListener("click", (event) => {
+          const fallback = el.dataset.fallbackHref || "/";
+          const hasHistory = window.history.length > 1 && document.referrer !== "";
+
+          event.preventDefault();
+          if (hasHistory) {
+            window.history.back();
+            return;
+          }
+          window.location.href = fallback;
+        });
+      });
+    };
+
+    bindDynamicBack();
+    document.addEventListener("astro:page-load", bindDynamicBack);
+  })();
+</script>

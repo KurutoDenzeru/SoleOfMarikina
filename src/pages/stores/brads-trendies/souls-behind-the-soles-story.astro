@@ -16,18 +16,66 @@ const owner = {
   image: "/pictures/Brad%20Trendies/Bermundo.jpg",
 };
 const staff = [
-  { name: "Balugo", role: "Cutter", image: "/pictures/Brad%20Trendies/Balugo.jpg" },
-  { name: "C. Rellesiva", role: "Shoemaker", image: "/pictures/Brad%20Trendies/C_Rellesiva.jpg" },
-  { name: "Liberato", role: "Pattern Maker", image: "/pictures/Brad%20Trendies/Liberato.jpg" },
-  { name: "Loreto", role: "Sewer", image: "/pictures/Brad%20Trendies/Loreto.jpg" },
-  { name: "Montilla", role: "Lasting", image: "/pictures/Brad%20Trendies/Montilla.jpg" },
-  { name: "Paragatos", role: "Assembler", image: "/pictures/Brad%20Trendies/Paragatos.jpg" },
-  { name: "Pradilla", role: "Finishing", image: "/pictures/Brad%20Trendies/Pradilla.jpg" },
-  { name: "R. Rellesiva", role: "Upper Making", image: "/pictures/Brad%20Trendies/R_Rellesiva.jpg" },
-  { name: "Ramirez", role: "Quality Check", image: "/pictures/Brad%20Trendies/Ramirez.jpg" },
-  { name: "Resurrecion", role: "Stitching", image: "/pictures/Brad%20Trendies/Resurrecion.jpg" },
-  { name: "Solitas", role: "Lining", image: "/pictures/Brad%20Trendies/Solitas.jpg" },
-  { name: "Villanueva", role: "Packaging", image: "/pictures/Brad%20Trendies/Villanueva.jpg" },
+  {
+    name: "Dandy Pradilla",
+    role: "Sapatero",
+    image: "/pictures/Brad%20Trendies/Pradilla.jpg",
+  },
+  {
+    name: "Pedro Balugo",
+    role: "Sapatero",
+    image: "/pictures/Brad%20Trendies/Balugo.jpg",
+  },
+  {
+    name: "Cris Rellesiva",
+    role: "Sapatero",
+    image: "/pictures/Brad%20Trendies/C_Rellesiva.jpg",
+  },
+  {
+    name: "Ramil Rellesiva",
+    role: "Sapatero",
+    image: "/pictures/Brad%20Trendies/R_Rellesiva.jpg",
+  },
+  {
+    name: "Rey Montilla",
+    role: "Footbed Maker",
+    image: "/pictures/Brad%20Trendies/Montilla.jpg",
+  },
+  {
+    name: "Hector Solitas",
+    role: "Footbed Maker",
+    image: "/pictures/Brad%20Trendies/Solitas.jpg",
+  },
+  {
+    name: "Rowena Liberato",
+    role: "Upper Maker",
+    image: "/pictures/Brad%20Trendies/Liberato.jpg",
+  },
+  {
+    name: "Kristel Ramirez",
+    role: "Upper Maker",
+    image: "/pictures/Brad%20Trendies/Ramirez.jpg",
+  },
+  {
+    name: "Geraldine Resurrecion",
+    role: "Upper Maker",
+    image: "/pictures/Brad%20Trendies/Resurrecion.jpg",
+  },
+  {
+    name: "Liwayway Villanueva",
+    role: "Quality Control",
+    image: "/pictures/Brad%20Trendies/Villanueva.jpg",
+  },
+  {
+    name: "Emily Loreto",
+    role: "Finishing",
+    image: "/pictures/Brad%20Trendies/Loreto.jpg",
+  },
+  {
+    name: "Daryl Paragatos",
+    role: "Packer",
+    image: "/pictures/Brad%20Trendies/Paragatos.jpg",
+  },
 ];
 ---
 
@@ -40,7 +88,8 @@ const staff = [
       id="brads-page-gradient"
       class="fixed inset-0 z-0 pointer-events-none bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(84,26,4,0.16)_34%,rgba(22,6,1,0.64)_62%,rgba(0,0,0,0.96)_100%)] opacity-45 transition-opacity duration-150"
       aria-hidden="true"
-    ></div>
+    >
+    </div>
 
     <MobileTopNavbar
       leftAction={{
@@ -48,6 +97,7 @@ const staff = [
         icon: "move-left",
         ariaLabel: "Back to see our story",
         href: "/stores/brads-trendies/souls-behind-the-soles",
+        dynamicBack: true,
         className: "rounded-md text-white",
       }}
       rightAction={{
@@ -62,12 +112,17 @@ const staff = [
       containerClass="brads-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white transition-[background-color,backdrop-filter] duration-150 sm:px-8 sm:pt-6 sm:pb-3"
     />
 
-    <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10">
+    <main
+      class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10"
+    >
       <section
         class="relative -mx-6 -mt-2 h-[50svh] overflow-hidden sm:-mx-8 sm:h-[56svh]"
         aria-label="Story video placeholder"
       >
-        <div id="brads-video-shell" class="sticky top-0 h-full w-full origin-center transition-[opacity,transform] duration-150 will-change-transform">
+        <div
+          id="brads-video-shell"
+          class="sticky top-0 h-full w-full origin-center transition-[opacity,transform] duration-150 will-change-transform"
+        >
           <img
             src="/map/brads.png"
             alt="Video placeholder background"
@@ -86,12 +141,19 @@ const staff = [
         </div>
       </section>
 
-      <h1 class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-6xl md:text-7xl">
+      <h1
+        class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-6xl md:text-7xl"
+      >
         {store.heroTitle}
       </h1>
 
-      <p class="mx-auto mt-6 text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg">
-        This is the story of a young entrepreneur who refused to let "Gawang Marikina" stay in the past. It's a journey of ambition, minimalist design, and the hustle required to turn a local workshop into a household name-one handcrafted pair at a time.
+      <p
+        class="mx-auto mt-6 text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg"
+      >
+        This is the story of a young entrepreneur who refused to let "Gawang
+        Marikina" stay in the past. It's a journey of ambition, minimalist
+        design, and the hustle required to turn a local workshop into a
+        household name-one handcrafted pair at a time.
       </p>
 
       <section class="mt-8">
@@ -105,7 +167,9 @@ const staff = [
               class="aspect-[3/4] w-full rounded-[1.2rem] object-cover object-center"
             />
             <p class="mt-4 text-xl leading-none font-extrabold">{owner.name}</p>
-            <p class="text-md leading-none font-medium text-white/90">{owner.role}</p>
+            <p class="text-md leading-none font-medium text-white/90">
+              {owner.role}
+            </p>
           </article>
 
           <div class="grid grid-cols-2 gap-4 sm:gap-5">
@@ -119,7 +183,9 @@ const staff = [
                     decoding="async"
                     class="aspect-[3/4] w-full rounded-[1.8rem] object-cover object-center"
                   />
-                  <p class="mt-2 text-lg leading-none font-extrabold sm:text-2xl">{member.name}</p>
+                  <p class="mt-2 text-lg leading-none font-extrabold sm:text-2xl">
+                    {member.name}
+                  </p>
                   <p class="text-base leading-none font-medium text-white/90 sm:text-xl">
                     {member.role}
                   </p>
@@ -161,7 +227,8 @@ const staff = [
         if (stickyNav instanceof HTMLElement) {
           const navDarkness = gradientProgress * 0.55;
           stickyNav.style.background = `linear-gradient(180deg, rgba(0,0,0,${navDarkness}) 0%, rgba(0,0,0,0) 100%)`;
-          stickyNav.style.backdropFilter = gradientProgress > 0.2 ? "blur(2px)" : "none";
+          stickyNav.style.backdropFilter =
+            gradientProgress > 0.2 ? "blur(2px)" : "none";
         }
       };
 
