@@ -1,24 +1,14 @@
 ---
-import "@/styles/global.css";
 import Footer from "@/components/Footer.astro";
 import HeroSection from "@/components/HeroSection.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro + TailwindCSS</title>
-	</head>
-
-	<body>
-		<div class="flex min-h-screen flex-col">
-			<main class="flex-1">
-				<HeroSection />
-			</main>
-			<Footer />
-		</div>
-	</body>
-</html>
+<BaseLayout title="Sole of Marikina">
+  <div class="flex min-h-screen flex-col">
+    <main class="flex-1">
+      <HeroSection />
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>

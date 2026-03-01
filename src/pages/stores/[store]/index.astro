@@ -1,6 +1,6 @@
 ---
-import "@/styles/global.css";
 import { stores } from "@/lib/store-pages";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   return stores.map((store) => ({
@@ -13,19 +13,14 @@ const { store } = Astro.props;
 const walkUrl = `/stores/${store.slug}/walk-with-them`;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+<BaseLayout title={store.name} bodyClass="bg-black text-white">
+  <Fragment slot="head">
     <meta http-equiv="refresh" content={`0; url=${walkUrl}`} />
-    <title>{store.name}</title>
-  </head>
-  <body class="bg-black text-white">
-    <main class="flex min-h-screen items-center justify-center p-6 text-center">
-      <p class="text-lg">
-        Redirecting to
-        <a href={walkUrl} class="ml-1 underline underline-offset-4">Walk With Them</a>.
-      </p>
-    </main>
-  </body>
-</html>
+  </Fragment>
+  <main class="flex min-h-screen items-center justify-center p-6 text-center">
+    <p class="text-lg">
+      Redirecting to
+      <a href={walkUrl} class="ml-1 underline underline-offset-4">Walk With Them</a>.
+    </p>
+  </main>
+</BaseLayout>

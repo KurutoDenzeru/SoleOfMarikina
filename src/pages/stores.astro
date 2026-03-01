@@ -1,45 +1,35 @@
 ---
-import "@/styles/global.css";
 import Footer from "@/components/Footer.astro";
 import { stores } from "@/lib/store-pages";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Stores | Sole of Marikina</title>
-  </head>
+<BaseLayout title="Stores | Sole of Marikina">
+  <div class="flex min-h-screen flex-col bg-[#f4f4f4] text-black">
+    <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-16 sm:px-8">
+      <nav aria-label="Breadcrumb">
+        <a href="/" class="text-base font-medium underline underline-offset-4">Home</a>
+      </nav>
+      <h1 class="mt-6 text-4xl font-bold tracking-tight">Stores</h1>
+      <p class="mt-4 max-w-prose text-lg text-black/75">
+        Explore each maker page and jump into Walk With Them, Souls Behind the Soles, and Their Products.
+      </p>
 
-  <body>
-    <div class="flex min-h-screen flex-col bg-[#f4f4f4] text-black">
-      <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-16 sm:px-8">
-        <nav aria-label="Breadcrumb">
-          <a href="/" class="text-base font-medium underline underline-offset-4">Home</a>
-        </nav>
-        <h1 class="mt-6 text-4xl font-bold tracking-tight">Stores</h1>
-        <p class="mt-4 max-w-prose text-lg text-black/75">
-          Explore each maker page and jump into Walk With Them, Souls Behind the Soles, and Their Products.
-        </p>
-
-        <ul class="mt-8 space-y-4">
-          {
-            stores.map((store) => (
-              <li>
-                <a
-                  href={`/stores/${store.slug}/walk-with-them`}
-                  class="block rounded-xl border border-black/10 bg-white px-5 py-4 text-xl font-semibold transition hover:border-black/30"
-                >
-                  {store.name}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </main>
-      <Footer />
-    </div>
-  </body>
-</html>
+      <ul class="mt-8 space-y-4">
+        {
+          stores.map((store) => (
+            <li>
+              <a
+                href={`/stores/${store.slug}/walk-with-them`}
+                class="block rounded-xl border border-black/10 bg-white px-5 py-4 text-xl font-semibold transition hover:border-black/30"
+              >
+                {store.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>

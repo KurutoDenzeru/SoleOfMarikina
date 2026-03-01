@@ -1,0 +1,72 @@
+---
+import "@/styles/global.css";
+import { ClientRouter } from "astro:transitions";
+
+type Props = {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  bodyClass?: string;
+  noindex?: boolean;
+};
+
+const {
+  title = "Sole of Marikina",
+  description,
+  canonical,
+  bodyClass = "",
+  noindex = false,
+} = Astro.props as Props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <slot name="head" />
+    <ClientRouter />
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 280ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  ::view-transition-old(root) {
+    animation-name: som-morph-fade-out;
+  }
+
+  ::view-transition-new(root) {
+    animation-name: som-morph-fade-in;
+  }
+
+  @keyframes som-morph-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes som-morph-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
