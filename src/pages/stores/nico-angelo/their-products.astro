@@ -4,8 +4,31 @@ import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 
 const nicoMapBackground = "/map/nico%20angelo.png";
 const products = [
-  { name: "Name", price: "Price" },
-  { name: "Name", price: "Price" },
+  {
+    name: "Slippers",
+    price: "₱ 900",
+    image: "/pictures/Nico%20Angelo/Slippers.jpg",
+  },
+  {
+    name: "Elevated",
+    price: "₱ 1,000",
+    image: "/pictures/Nico%20Angelo/Elevated.jpg",
+  },
+  {
+    name: "Topsider",
+    price: "₱ 1,000",
+    image: "/pictures/Nico%20Angelo/Topsider.jpg",
+  },
+  {
+    name: "BGH",
+    price: "₱ 1,700",
+    image: "/pictures/Nico%20Angelo/BGH.jpg",
+  },
+  {
+    name: "Wingtip",
+    price: "₱ 2,500",
+    image: "/pictures/Nico%20Angelo/Wingtip.jpg",
+  },
 ];
 ---
 
@@ -49,7 +72,7 @@ const products = [
 
       <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:max-w-none sm:px-8 sm:pb-10">
         <h1
-          class="mx-auto mt-10 max-w-[14ch] text-center text-5xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-6xl md:text-7xl"
+          class="mx-auto mt-10 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-6xl md:text-7xl"
         >
           THEIR PRODUCTS
         </h1>
@@ -57,10 +80,13 @@ const products = [
         <div class="mt-8 space-y-6 sm:mt-10">
           {
             products.map((product) => (
-              <article class="relative h-48 overflow-hidden rounded-[2rem] bg-black/90 shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:h-56">
-                <div class="absolute right-5 bottom-5 text-right text-white leading-none">
+              <article
+                class="relative h-64 overflow-hidden rounded-[2rem] bg-black shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:h-72"
+                style={`background-image:url('${product.image}'); background-size:cover; background-position:center;`}
+              >
+                <div class="absolute top-5 left-5 text-left text-white leading-none">
                   <p class="text-2xl font-extrabold sm:text-4xl">{product.name}</p>
-                  <p class="text-2xl font-extrabold sm:text-4xl">{product.price}</p>
+                  <p class="mt-0.5 text-xl font-extrabold sm:text-3xl">{product.price}</p>
                 </div>
               </article>
             ))
