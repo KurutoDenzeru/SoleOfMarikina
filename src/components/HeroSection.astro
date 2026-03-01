@@ -47,7 +47,7 @@ const defaultMapBackground = "/map/marikina.png";
     type="button"
     aria-label="Close menu"
     aria-hidden="true"
-    class="pointer-events-none fixed inset-0 z-40 bg-transparent opacity-0 transition-opacity duration-300 ease-out"
+    class="pointer-events-none fixed inset-0 z-40 bg-transparent backdrop-blur-sm opacity-0 transition-opacity duration-300 ease-out"
   ></button>
 
   <aside
@@ -99,7 +99,7 @@ const defaultMapBackground = "/map/marikina.png";
   </aside>
 
   <article
-    class="relative min-h-screen w-full overflow-hidden bg-[#d8ae73] bg-cover bg-top bg-no-repeat sm:bg-center"
+    class="relative min-h-screen w-full overflow-x-clip bg-[#d8ae73] bg-cover bg-top bg-no-repeat sm:bg-center"
     style={`background-image:url('${defaultMapBackground}');`}
   >
     <MobileTopNavbar
@@ -245,7 +245,7 @@ const defaultMapBackground = "/map/marikina.png";
         sidebar.classList.add("translate-x-0");
         sidebar.setAttribute("aria-hidden", "false");
         overlay.classList.remove("opacity-0", "pointer-events-none");
-        overlay.classList.add("opacity-100");
+        overlay.classList.add("opacity-100", "bg-black/30");
         document.body.classList.add("overflow-hidden");
 
         const firstFocusable = getFocusable()[0];
@@ -257,7 +257,7 @@ const defaultMapBackground = "/map/marikina.png";
         sidebar.classList.remove("translate-x-0");
         sidebar.classList.add("-translate-x-full");
         sidebar.setAttribute("aria-hidden", "true");
-        overlay.classList.remove("opacity-100");
+        overlay.classList.remove("opacity-100", "bg-black/30");
         overlay.classList.add("opacity-0", "pointer-events-none");
         document.body.classList.remove("overflow-hidden");
 
