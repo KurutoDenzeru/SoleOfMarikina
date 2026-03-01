@@ -175,198 +175,255 @@ const defaultMapBackground = "/map/marikina.png";
 
 <script is:inline>
   (() => {
-    const openButton = document.getElementById("menu-toggle");
-    const closeButton = document.getElementById("menu-close");
-    const overlay = document.getElementById("menu-overlay");
-    const sidebar = document.getElementById("mobile-sidebar");
-    const storeBackdrop = document.getElementById("store-backdrop");
-    const storeTriggerLayer = document.getElementById("store-trigger-layer");
-    if (!openButton || !closeButton || !overlay || !sidebar) return;
+    if (window.__somHeroBindingsInitialized) return;
+    window.__somHeroBindingsInitialized = true;
 
-    let lastFocused = null;
-    let activeStoreId = null;
+    let cleanup = () => {};
 
-    const isOpen = () => openButton.getAttribute("aria-expanded") === "true";
-    const getFocusable = () =>
-      sidebar.querySelectorAll("a[href], button:not([disabled])");
-    const storeTriggers = Array.from(document.querySelectorAll("[data-store-trigger]"));
-    const storePanels = Array.from(document.querySelectorAll("[data-store-panel]"));
+    const init = () => {
+      cleanup();
 
-    const openMenu = () => {
-      lastFocused = document.activeElement;
-      openButton.setAttribute("aria-expanded", "true");
-      sidebar.classList.remove("-translate-x-full");
-      sidebar.classList.add("translate-x-0");
-      sidebar.setAttribute("aria-hidden", "false");
-      overlay.classList.remove("opacity-0", "pointer-events-none");
-      overlay.classList.add("opacity-100");
-      document.body.classList.add("overflow-hidden");
+      const openButton = document.getElementById("menu-toggle");
+      const closeButton = document.getElementById("menu-close");
+      const overlay = document.getElementById("menu-overlay");
+      const sidebar = document.getElementById("mobile-sidebar");
+      const storeBackdrop = document.getElementById("store-backdrop");
+      const storeTriggerLayer = document.getElementById("store-trigger-layer");
+      if (!openButton || !closeButton || !overlay || !sidebar) return;
 
-      const firstFocusable = getFocusable()[0];
-      if (firstFocusable instanceof HTMLElement) firstFocusable.focus();
-    };
+      let lastFocused = null;
+      let activeStoreId = null;
 
-    const closeMenu = () => {
-      openButton.setAttribute("aria-expanded", "false");
-      sidebar.classList.remove("translate-x-0");
-      sidebar.classList.add("-translate-x-full");
-      sidebar.setAttribute("aria-hidden", "true");
-      overlay.classList.remove("opacity-100");
-      overlay.classList.add("opacity-0", "pointer-events-none");
-      document.body.classList.remove("overflow-hidden");
+      const isOpen = () => openButton.getAttribute("aria-expanded") === "true";
+      const getFocusable = () =>
+        sidebar.querySelectorAll("a[href], button:not([disabled])");
+      const storeTriggers = Array.from(document.querySelectorAll("[data-store-trigger]"));
+      const storePanels = Array.from(document.querySelectorAll("[data-store-panel]"));
 
-      if (lastFocused instanceof HTMLElement) lastFocused.focus();
-    };
+      const closeStorePanels = () => {
+        activeStoreId = null;
+        storeTriggers.forEach((trigger) => {
+          trigger.setAttribute("aria-expanded", "false");
+          trigger.setAttribute("aria-pressed", "false");
+          trigger.classList.remove("scale-105", "ring-2", "ring-white/80");
+        });
 
-    openButton.addEventListener("click", openMenu);
-    closeButton.addEventListener("click", closeMenu);
-    overlay.addEventListener("click", closeMenu);
+        storePanels.forEach((panel) => {
+          panel.setAttribute("aria-hidden", "true");
+          panel.classList.remove(
+            "opacity-100",
+            "translate-y-0",
+            "scale-100",
+            "pointer-events-auto"
+          );
+          panel.classList.add(
+            "opacity-0",
+            "translate-y-8",
+            "scale-95",
+            "pointer-events-none"
+          );
+        });
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape") return;
-      if (isOpen()) {
-        closeMenu();
-        return;
-      }
-      closeStorePanels();
-    });
-
-    sidebar.addEventListener("keydown", (event) => {
-      if (!isOpen() || event.key !== "Tab") return;
-      const focusable = Array.from(getFocusable());
-      if (!focusable.length) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (!(first instanceof HTMLElement) || !(last instanceof HTMLElement))
-        return;
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    });
-
-    sidebar.querySelectorAll("a[href]").forEach((link) => {
-      link.addEventListener("click", closeMenu);
-    });
-
-    const closeStorePanels = () => {
-      activeStoreId = null;
-      storeTriggers.forEach((trigger) => {
-        trigger.setAttribute("aria-expanded", "false");
-        trigger.setAttribute("aria-pressed", "false");
-        trigger.classList.remove("scale-105", "ring-2", "ring-white/80");
-      });
-
-      storePanels.forEach((panel) => {
-        panel.setAttribute("aria-hidden", "true");
-        panel.classList.remove("opacity-100", "translate-y-0", "scale-100", "pointer-events-auto");
-        panel.classList.add("opacity-0", "translate-y-8", "scale-95", "pointer-events-none");
-      });
-
-      if (storeBackdrop) {
-        storeBackdrop.classList.add("pointer-events-none");
-      }
-
-      if (storeTriggerLayer) {
-        storeTriggerLayer.classList.remove("opacity-0", "pointer-events-none", "translate-y-1");
-        storeTriggerLayer.classList.add("opacity-100");
-      }
-    };
-
-    const openStorePanel = (storeId, triggerEl) => {
-      const targetPanel = storePanels.find((panel) => panel.getAttribute("data-store-panel") === storeId);
-      if (!targetPanel) return;
-
-      activeStoreId = storeId;
-      storeTriggers.forEach((trigger) => {
-        const isTarget = trigger.getAttribute("data-store-trigger") === storeId;
-        trigger.setAttribute("aria-expanded", isTarget ? "true" : "false");
-        trigger.setAttribute("aria-pressed", isTarget ? "true" : "false");
-        trigger.classList.toggle("scale-105", isTarget);
-        trigger.classList.toggle("ring-2", isTarget);
-        trigger.classList.toggle("ring-white/80", isTarget);
-      });
-
-      storePanels.forEach((panel) => {
-        const isTarget = panel === targetPanel;
-        panel.setAttribute("aria-hidden", isTarget ? "false" : "true");
-        panel.classList.toggle("opacity-100", isTarget);
-        panel.classList.toggle("translate-y-0", isTarget);
-        panel.classList.toggle("scale-100", isTarget);
-        panel.classList.toggle("pointer-events-auto", isTarget);
-        panel.classList.toggle("opacity-0", !isTarget);
-        panel.classList.toggle("translate-y-8", !isTarget);
-        panel.classList.toggle("scale-95", !isTarget);
-        panel.classList.toggle("pointer-events-none", !isTarget);
-      });
-
-      if (storeBackdrop) {
-        storeBackdrop.classList.remove("pointer-events-none");
-      }
-
-      if (storeTriggerLayer) {
-        storeTriggerLayer.classList.remove("opacity-100");
-        storeTriggerLayer.classList.add("opacity-0", "pointer-events-none", "translate-y-1");
-      }
-
-      const panelRect = targetPanel.getBoundingClientRect();
-      const triggerRect = triggerEl.getBoundingClientRect();
-      const startX = triggerRect.left + triggerRect.width / 2 - (panelRect.left + panelRect.width / 2);
-      const startY = triggerRect.top + triggerRect.height / 2 - (panelRect.top + 24);
-
-      targetPanel.animate(
-        [
-          {
-            opacity: 0,
-            transform: `translate(${startX * 0.28}px, ${startY * 0.28}px) scale(0.82)`,
-          },
-          {
-            opacity: 1,
-            transform: "translate(0, 0) scale(1)",
-          },
-        ],
-        {
-          duration: 460,
-          easing: "cubic-bezier(0.2, 0.75, 0.2, 1)",
+        if (storeBackdrop) {
+          storeBackdrop.classList.add("pointer-events-none");
         }
-      );
 
-      targetPanel.querySelectorAll("[data-store-card]").forEach((card, index) => {
-        card.animate(
+        if (storeTriggerLayer) {
+          storeTriggerLayer.classList.remove(
+            "opacity-0",
+            "pointer-events-none",
+            "translate-y-1"
+          );
+          storeTriggerLayer.classList.add("opacity-100");
+        }
+      };
+
+      const openMenu = () => {
+        lastFocused = document.activeElement;
+        openButton.setAttribute("aria-expanded", "true");
+        sidebar.classList.remove("-translate-x-full");
+        sidebar.classList.add("translate-x-0");
+        sidebar.setAttribute("aria-hidden", "false");
+        overlay.classList.remove("opacity-0", "pointer-events-none");
+        overlay.classList.add("opacity-100");
+        document.body.classList.add("overflow-hidden");
+
+        const firstFocusable = getFocusable()[0];
+        if (firstFocusable instanceof HTMLElement) firstFocusable.focus();
+      };
+
+      const closeMenu = () => {
+        openButton.setAttribute("aria-expanded", "false");
+        sidebar.classList.remove("translate-x-0");
+        sidebar.classList.add("-translate-x-full");
+        sidebar.setAttribute("aria-hidden", "true");
+        overlay.classList.remove("opacity-100");
+        overlay.classList.add("opacity-0", "pointer-events-none");
+        document.body.classList.remove("overflow-hidden");
+
+        if (lastFocused instanceof HTMLElement) lastFocused.focus();
+      };
+
+      const openStorePanel = (storeId, triggerEl) => {
+        const targetPanel = storePanels.find(
+          (panel) => panel.getAttribute("data-store-panel") === storeId
+        );
+        if (!targetPanel) return;
+
+        activeStoreId = storeId;
+        storeTriggers.forEach((trigger) => {
+          const isTarget = trigger.getAttribute("data-store-trigger") === storeId;
+          trigger.setAttribute("aria-expanded", isTarget ? "true" : "false");
+          trigger.setAttribute("aria-pressed", isTarget ? "true" : "false");
+          trigger.classList.toggle("scale-105", isTarget);
+          trigger.classList.toggle("ring-2", isTarget);
+          trigger.classList.toggle("ring-white/80", isTarget);
+        });
+
+        storePanels.forEach((panel) => {
+          const isTarget = panel === targetPanel;
+          panel.setAttribute("aria-hidden", isTarget ? "false" : "true");
+          panel.classList.toggle("opacity-100", isTarget);
+          panel.classList.toggle("translate-y-0", isTarget);
+          panel.classList.toggle("scale-100", isTarget);
+          panel.classList.toggle("pointer-events-auto", isTarget);
+          panel.classList.toggle("opacity-0", !isTarget);
+          panel.classList.toggle("translate-y-8", !isTarget);
+          panel.classList.toggle("scale-95", !isTarget);
+          panel.classList.toggle("pointer-events-none", !isTarget);
+        });
+
+        if (storeBackdrop) {
+          storeBackdrop.classList.remove("pointer-events-none");
+        }
+
+        if (storeTriggerLayer) {
+          storeTriggerLayer.classList.remove("opacity-100");
+          storeTriggerLayer.classList.add(
+            "opacity-0",
+            "pointer-events-none",
+            "translate-y-1"
+          );
+        }
+
+        const panelRect = targetPanel.getBoundingClientRect();
+        const triggerRect = triggerEl.getBoundingClientRect();
+        const startX =
+          triggerRect.left +
+          triggerRect.width / 2 -
+          (panelRect.left + panelRect.width / 2);
+        const startY =
+          triggerRect.top + triggerRect.height / 2 - (panelRect.top + 24);
+
+        targetPanel.animate(
           [
-            { opacity: 0, transform: "translateY(30px) scale(0.95)" },
-            { opacity: 1, transform: "translateY(0) scale(1)" },
+            {
+              opacity: 0,
+              transform: `translate(${startX * 0.28}px, ${startY * 0.28}px) scale(0.82)`,
+            },
+            {
+              opacity: 1,
+              transform: "translate(0, 0) scale(1)",
+            },
           ],
           {
-            duration: 420,
-            delay: 90 + index * 70,
+            duration: 460,
             easing: "cubic-bezier(0.2, 0.75, 0.2, 1)",
-            fill: "both",
           }
         );
-      });
-    };
 
-    storeTriggers.forEach((trigger) => {
-      trigger.addEventListener("click", () => {
-        const storeId = trigger.getAttribute("data-store-trigger");
-        if (!storeId) return;
+        targetPanel.querySelectorAll("[data-store-card]").forEach((card, index) => {
+          card.animate(
+            [
+              { opacity: 0, transform: "translateY(30px) scale(0.95)" },
+              { opacity: 1, transform: "translateY(0) scale(1)" },
+            ],
+            {
+              duration: 420,
+              delay: 90 + index * 70,
+              easing: "cubic-bezier(0.2, 0.75, 0.2, 1)",
+              fill: "both",
+            }
+          );
+        });
+      };
 
-        if (activeStoreId === storeId) {
-          closeStorePanels();
+      const onDocumentKeydown = (event) => {
+        if (event.key !== "Escape") return;
+        if (isOpen()) {
+          closeMenu();
           return;
         }
-        openStorePanel(storeId, trigger);
-      });
-    });
+        closeStorePanels();
+      };
 
-    if (storeBackdrop) {
-      storeBackdrop.addEventListener("click", closeStorePanels);
-    }
+      const onSidebarKeydown = (event) => {
+        if (!isOpen() || event.key !== "Tab") return;
+        const focusable = Array.from(getFocusable());
+        if (!focusable.length) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!(first instanceof HTMLElement) || !(last instanceof HTMLElement)) return;
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      };
+
+      const triggerHandlers = storeTriggers.map((trigger) => {
+        const onTriggerClick = () => {
+          const storeId = trigger.getAttribute("data-store-trigger");
+          if (!storeId) return;
+
+          if (activeStoreId === storeId) {
+            closeStorePanels();
+            return;
+          }
+          openStorePanel(storeId, trigger);
+        };
+
+        trigger.addEventListener("click", onTriggerClick);
+        return { trigger, onTriggerClick };
+      });
+
+      const sidebarLinks = Array.from(sidebar.querySelectorAll("a[href]"));
+      sidebarLinks.forEach((link) => link.addEventListener("click", closeMenu));
+
+      openButton.addEventListener("click", openMenu);
+      closeButton.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", closeMenu);
+      document.addEventListener("keydown", onDocumentKeydown);
+      sidebar.addEventListener("keydown", onSidebarKeydown);
+      if (storeBackdrop) {
+        storeBackdrop.addEventListener("click", closeStorePanels);
+      }
+
+      closeMenu();
+      closeStorePanels();
+
+      cleanup = () => {
+        document.body.classList.remove("overflow-hidden");
+        openButton.removeEventListener("click", openMenu);
+        closeButton.removeEventListener("click", closeMenu);
+        overlay.removeEventListener("click", closeMenu);
+        document.removeEventListener("keydown", onDocumentKeydown);
+        sidebar.removeEventListener("keydown", onSidebarKeydown);
+        sidebarLinks.forEach((link) => link.removeEventListener("click", closeMenu));
+        if (storeBackdrop) {
+          storeBackdrop.removeEventListener("click", closeStorePanels);
+        }
+        triggerHandlers.forEach(({ trigger, onTriggerClick }) => {
+          trigger.removeEventListener("click", onTriggerClick);
+        });
+      };
+    };
+
+    init();
+    document.addEventListener("astro:page-load", init);
   })();
 </script>

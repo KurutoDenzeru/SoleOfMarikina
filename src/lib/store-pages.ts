@@ -51,14 +51,14 @@ export const stores: StoreData[] = [
     address: "14 Shoe Ave. Sta. Elena, Marikina",
     heroTitle: "Brad's Trendies",
     intro:
-      "Brad's Trendies is a neighborhood footwear house built on craft, comfort, and consistency. Every pair is curated with daily movement in mind, balancing practical durability with a clean classic profile.",
+      "Brad's Trendies is a homegrown Filipino footwear brand based in Marikina City, the shoe capital of the Philippines. Established in 2022 by Alicia Kate Bermundo, the brand carries on a multigenerational family legacy of traditional shoemakers by blending expert local craftsmanship with modern, minimalist aesthetic.",
     storyIntro:
-      "Get closer to the people and process behind Brad's Trendies. From material selection to final finishing, each release is shaped by hands-on care and a deep respect for everyday wear.",
-    contactName: "Brad Trendles",
+      "A documentary exploring the revival of Marikina's shoemaking tradition through the eyes of a new generation. Witness the fusion of genuine leather, family legacy, and the modern Filipino spirit.",
+    contactName: "Alicia Kate Bermundo",
     city: "Marikina",
-    phone: "09170000000",
+    phone: "0969 619 8222",
     email: "bradstrendies@gmail.com",
-    location: "14 Shoe Ave. Sta. Elena, Marikina",
+    location: "5 Marcelo St. Nangka",
     facebook: "#",
     instagram: "#",
     ctaLabel: "See our story",
@@ -124,7 +124,7 @@ export const sections: StoreSectionSlug[] = [
 ];
 
 export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
-  if (storeSlug === "nico-angelo") {
+  if (storeSlug === "nico-angelo" || storeSlug === "brads-trendies") {
     return [
       {
         title: "SOULS BEHIND\nTHE SOLES",
@@ -150,11 +150,16 @@ export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
 }
 
 export function landingCards(storeSlug: StoreSlug): StoreCard[] {
+  const soulsHref =
+    storeSlug === "nico-angelo" || storeSlug === "brads-trendies"
+      ? `/stores/${storeSlug}/souls-behind-the-soles-story`
+      : `/stores/${storeSlug}/souls-behind-the-soles`;
+
   return [
     { title: "WALK WITH\nTHEM", href: `/stores/${storeSlug}/walk-with-them` },
     {
       title: "SOULS BEHIND\nTHE SOLES",
-      href: `/stores/${storeSlug}/souls-behind-the-soles`,
+      href: soulsHref,
     },
     { title: "THEIR\nPRODUCTS", href: `/stores/${storeSlug}/their-products` },
   ];

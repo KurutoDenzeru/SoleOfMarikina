@@ -1,0 +1,172 @@
+---
+import { Play } from "lucide-react";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
+import { getStoreBySlug } from "@/lib/store-pages";
+
+const store = getStoreBySlug("brads-trendies");
+if (!store) {
+  throw new Error("Brad's Trendies store data is missing.");
+}
+
+const bradsMapBackground = "/map/brads.png";
+const owner = {
+  name: "Alicia Kate Bermundo",
+  role: "Owner",
+  image: "/pictures/Brad%20Trendies/Bermundo.jpg",
+};
+const staff = [
+  { name: "Balugo", role: "Cutter", image: "/pictures/Brad%20Trendies/Balugo.jpg" },
+  { name: "C. Rellesiva", role: "Shoemaker", image: "/pictures/Brad%20Trendies/C_Rellesiva.jpg" },
+  { name: "Liberato", role: "Pattern Maker", image: "/pictures/Brad%20Trendies/Liberato.jpg" },
+  { name: "Loreto", role: "Sewer", image: "/pictures/Brad%20Trendies/Loreto.jpg" },
+  { name: "Montilla", role: "Lasting", image: "/pictures/Brad%20Trendies/Montilla.jpg" },
+  { name: "Paragatos", role: "Assembler", image: "/pictures/Brad%20Trendies/Paragatos.jpg" },
+  { name: "Pradilla", role: "Finishing", image: "/pictures/Brad%20Trendies/Pradilla.jpg" },
+  { name: "R. Rellesiva", role: "Upper Making", image: "/pictures/Brad%20Trendies/R_Rellesiva.jpg" },
+  { name: "Ramirez", role: "Quality Check", image: "/pictures/Brad%20Trendies/Ramirez.jpg" },
+  { name: "Resurrecion", role: "Stitching", image: "/pictures/Brad%20Trendies/Resurrecion.jpg" },
+  { name: "Solitas", role: "Lining", image: "/pictures/Brad%20Trendies/Solitas.jpg" },
+  { name: "Villanueva", role: "Packaging", image: "/pictures/Brad%20Trendies/Villanueva.jpg" },
+];
+---
+
+<BaseLayout title="Brad's Trendies | Souls Behind the Soles Story">
+  <section
+    class="relative min-h-screen w-full overflow-x-hidden bg-[#160500] bg-cover bg-top bg-no-repeat sm:bg-center"
+    style={`background-image:url('${bradsMapBackground}');`}
+  >
+    <div
+      id="brads-page-gradient"
+      class="fixed inset-0 z-0 pointer-events-none bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(84,26,4,0.16)_34%,rgba(22,6,1,0.64)_62%,rgba(0,0,0,0.96)_100%)] opacity-45 transition-opacity duration-150"
+      aria-hidden="true"
+    ></div>
+
+    <MobileTopNavbar
+      leftAction={{
+        type: "link",
+        icon: "move-left",
+        ariaLabel: "Back to see our story",
+        href: "/stores/brads-trendies/souls-behind-the-soles",
+        className: "rounded-md text-white",
+      }}
+      rightAction={{
+        type: "button",
+        icon: "search",
+        ariaLabel: "Search store content",
+        className: "rounded-md text-white",
+      }}
+      centerImageSrc="/Logo/Brads Trendies.webp"
+      centerImageAlt="Brad's Trendies"
+      centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-12"
+      containerClass="brads-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white transition-[background-color,backdrop-filter] duration-150 sm:px-8 sm:pt-6 sm:pb-3"
+    />
+
+    <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10">
+      <section
+        class="relative -mx-6 -mt-2 h-[50svh] overflow-hidden sm:-mx-8 sm:h-[56svh]"
+        aria-label="Story video placeholder"
+      >
+        <div id="brads-video-shell" class="sticky top-0 h-full w-full origin-center transition-[opacity,transform] duration-150 will-change-transform">
+          <img
+            src="/map/brads.png"
+            alt="Video placeholder background"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover object-center"
+          />
+          <button
+            id="brads-video-play"
+            type="button"
+            aria-label="Play story video (placeholder)"
+            class="absolute inset-0 m-auto inline-flex size-18 items-center justify-center rounded-full bg-[#2b0e04]/92 text-white transition-opacity duration-150"
+          >
+            <Play className="ml-1 size-8 fill-current" />
+          </button>
+        </div>
+      </section>
+
+      <h1 class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-6xl md:text-7xl">
+        {store.heroTitle}
+      </h1>
+
+      <p class="mx-auto mt-6 text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg">
+        This is the story of a young entrepreneur who refused to let "Gawang Marikina" stay in the past. It's a journey of ambition, minimalist design, and the hustle required to turn a local workshop into a household name-one handcrafted pair at a time.
+      </p>
+
+      <section class="mt-8">
+        <div class="mt-6 space-y-8">
+          <article class="mx-auto w-[72%] max-w-[320px] text-center text-white">
+            <img
+              src={owner.image}
+              alt={`${owner.name} - ${owner.role}`}
+              loading="lazy"
+              decoding="async"
+              class="aspect-[3/4] w-full rounded-[1.2rem] object-cover object-center"
+            />
+            <p class="mt-4 text-xl leading-none font-extrabold">{owner.name}</p>
+            <p class="text-md leading-none font-medium text-white/90">{owner.role}</p>
+          </article>
+
+          <div class="grid grid-cols-2 gap-4 sm:gap-5">
+            {
+              staff.map((member) => (
+                <article class="text-center text-white">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    loading="lazy"
+                    decoding="async"
+                    class="aspect-[3/4] w-full rounded-[1.8rem] object-cover object-center"
+                  />
+                  <p class="mt-2 text-lg leading-none font-extrabold sm:text-2xl">{member.name}</p>
+                  <p class="text-base leading-none font-medium text-white/90 sm:text-xl">
+                    {member.role}
+                  </p>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <div class="text-center">
+        <a
+          href="/stores/brads-trendies/their-products"
+          class="mx-auto mt-11 inline-flex min-w-[17.5rem] items-center justify-center rounded-full bg-[#4a1c09]/80 px-8 py-3 text-base font-medium whitespace-nowrap text-white transition-all duration-250 ease-out hover:-translate-y-0.5 hover:bg-[#3e1707]/85 hover:shadow-[0_8px_20px_rgba(0,0,0,0.35)] active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-[#4a1c09] touch-manipulation sm:mt-10 sm:py-4 sm:text-4xl sm:font-semibold"
+        >
+          See Step by Step Process
+        </a>
+      </div>
+    </main>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const videoShell = document.getElementById("brads-video-shell");
+      const playButton = document.getElementById("brads-video-play");
+      const pageGradient = document.getElementById("brads-page-gradient");
+      const stickyNav = document.querySelector(".brads-sticky-nav");
+      if (!videoShell || !playButton || !pageGradient) return;
+
+      const handleScroll = () => {
+        const videoProgress = Math.min(window.scrollY / 240, 1);
+        const gradientProgress = Math.min(window.scrollY / 430, 1);
+
+        videoShell.style.opacity = String(1 - videoProgress * 0.95);
+        videoShell.style.transform = `scale(${1 - videoProgress * 0.06})`;
+        playButton.style.opacity = String(1 - videoProgress * 1.2);
+        pageGradient.style.opacity = String(0.4 + gradientProgress * 0.6);
+
+        if (stickyNav instanceof HTMLElement) {
+          const navDarkness = gradientProgress * 0.55;
+          stickyNav.style.background = `linear-gradient(180deg, rgba(0,0,0,${navDarkness}) 0%, rgba(0,0,0,0) 100%)`;
+          stickyNav.style.backdropFilter = gradientProgress > 0.2 ? "blur(2px)" : "none";
+        }
+      };
+
+      handleScroll();
+      window.addEventListener("scroll", handleScroll, { passive: true });
+    })();
+  </script>
+</BaseLayout>
