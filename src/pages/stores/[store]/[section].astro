@@ -13,7 +13,8 @@ export async function getStaticPaths() {
       (entry) =>
         !(
           (entry.storeSlug === "nico-angelo" ||
-            entry.storeSlug === "brads-trendies") &&
+            entry.storeSlug === "brads-trendies" ||
+            entry.storeSlug === "seacrest") &&
           (entry.sectionSlug === "walk-with-them" || entry.sectionSlug === "their-products")
         )
     )
@@ -36,8 +37,8 @@ const { store, section } = Astro.props as {
 };
 
 const isWalkPage = section.sectionSlug === "walk-with-them";
-const isBradsStoryOptionsPage =
-  store.slug === "brads-trendies" &&
+const isLightStoryOptionsPage =
+  (store.slug === "brads-trendies" || store.slug === "seacrest") &&
   section.sectionSlug === "souls-behind-the-soles";
 const storyHref = `/stores/${store.slug}/souls-behind-the-soles`;
 const storeMapBackgrounds: Record<(typeof stores)[number]["slug"], string> = {
@@ -48,7 +49,7 @@ const storeMapBackgrounds: Record<(typeof stores)[number]["slug"], string> = {
 const storeBackgroundImage = storeMapBackgrounds[store.slug] ?? "/map/marikina.png";
 const logoClass = [
   "h-16 w-auto max-w-xs object-contain sm:h-16",
-  store.logoInvert || isBradsStoryOptionsPage ? "invert" : "",
+  store.logoInvert || isLightStoryOptionsPage ? "invert" : "",
 ]
   .filter(Boolean)
   .join(" ");

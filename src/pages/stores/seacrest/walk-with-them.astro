@@ -3,28 +3,28 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import { getStoreBySlug } from "@/lib/store-pages";
 
-const store = getStoreBySlug("brads-trendies");
+const store = getStoreBySlug("seacrest");
 if (!store) {
-  throw new Error("Brad's Trendies store data is missing.");
+  throw new Error("Seacrest store data is missing.");
 }
 ---
 
-<BaseLayout title="Brad's Trendies | Walk With Them">
+<BaseLayout title="Seacrest | Walk With Them">
   <section
     class="relative min-h-screen w-full overflow-hidden bg-[#0f0b0a]"
   >
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <iframe
         class="absolute top-1/2 left-1/2 h-[100vh] w-[177.78vh] min-h-full min-w-full -translate-x-1/2 -translate-y-1/2"
-        src="https://www.youtube.com/embed/6rA42gkuMiI?autoplay=1&mute=1&loop=1&playlist=6rA42gkuMiI&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1"
-        title="Brad's Trendies background video"
+        src="https://www.youtube.com/embed/aoXXWxSr9sw?autoplay=1&mute=1&loop=1&playlist=aoXXWxSr9sw&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1"
+        title="Seacrest background video"
         allow="autoplay; encrypted-media"
         allowfullscreen
       ></iframe>
     </div>
 
     <div
-      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.72)_42%,rgba(0,0,0,0.92)_100%)]"
+      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.73)_42%,rgba(0,0,0,0.93)_100%)]"
       aria-hidden="true"
     ></div>
 
@@ -43,8 +43,8 @@ if (!store) {
         ariaLabel: "Search store content",
         className: "rounded-md text-white",
       }}
-      centerImageSrc="/Logo/Brads Trendies.webp"
-      centerImageAlt="Brad's Trendies"
+      centerImageSrc="/Logo/Seacrest.webp"
+      centerImageAlt="Seacrest"
       centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-12"
       containerClass="sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white sm:px-8 sm:pt-6 sm:pb-3"
     />
@@ -87,8 +87,8 @@ if (!store) {
                 <a href={store.facebook} aria-label="Facebook">
                   <img src="/Logo/Facebook.png" alt="Facebook" class="size-6 sm:size-7 object-contain" />
                 </a>
-                <a href="#" aria-label="TikTok">
-                  <img src="/Logo/Tiktok.png" alt="TikTok" class="size-6 sm:size-7 object-contain" />
+                <a href={store.instagram} aria-label="Instagram">
+                  <img src="/Logo/Instagram.png" alt="Instagram" class="size-6 sm:size-7 object-contain" />
                 </a>
                 <a href="#" aria-label="Shopee">
                   <img src="/Logo/Shopee.png" alt="Shopee" class="size-6 sm:size-7 object-contain" />
@@ -105,7 +105,7 @@ if (!store) {
 
           <div class="pt-6 text-center">
             <a
-              href="/stores/brads-trendies/souls-behind-the-soles"
+              href="/stores/seacrest/souls-behind-the-soles"
               class="mx-auto inline-flex items-center justify-center rounded-full bg-[#1f1611]/80 px-8 py-2 text-base font-medium text-white transition-all duration-250 ease-out hover:-translate-y-0.5 hover:bg-[#17100c]/85 hover:shadow-[0_8px_20px_rgba(0,0,0,0.35)] active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1f1611] touch-manipulation sm:mt-10 sm:py-4 sm:text-4xl sm:font-semibold"
             >
               See our story

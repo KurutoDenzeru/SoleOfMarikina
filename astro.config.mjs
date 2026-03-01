@@ -7,6 +7,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+	site: process.env.SITE_URL ?? "https://soleofmarikina.vercel.app",
 	vite: {
 		plugins: [
 			tailwindcss(), 

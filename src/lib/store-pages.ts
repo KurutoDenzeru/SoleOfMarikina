@@ -94,17 +94,17 @@ export const stores: StoreData[] = [
     mapTop: "60%",
     mapLeft: "25%",
     mapPinSide: "right",
-    address: "9 J.P. Rizal St. Calumpang, Marikina",
+    address: "10 Helena St. Sta Teresita Malanday",
     heroTitle: "Seacrest",
     intro:
-      "Seacrest brings streamlined silhouettes and sturdy leather builds together for people who want dependable shoes with a sharp finish. The studio focuses on quality first, with details that age beautifully over time.",
+      "Established in 1997, Seacrest is a Marikina-based shoe brand owned by Larry Evaristo that is best known for its durable, high-quality footwear crafted using specialized \"one-piece leather technology.\" The business operates as a family-run factory, blending traditional handmade techniques with a resilient spirit that has helped it remain a staple in the Philippine shoe industry for over two decades.",
     storyIntro:
-      "Inside Seacrest, the work is intentional and tactile. From cutting to stitching to edge finishing, each stage is handled with discipline so every pair leaves the bench ready for long-term wear.",
-    contactName: "Seacrest Team",
+      "Redefine your stride with Seacrest, a Marikina staple established in 1997 by Larry Evaristo that defines the gold standard of Filipino shoemaking. Every pair is crafted with tireless dedication and our signature \"one-piece leather technology,\" ensuring a perfect blend of modern luxury and unrivaled durability.",
+    contactName: "Larry Evaristo",
     city: "Marikina",
-    phone: "09171111111",
-    email: "seacrest@gmail.com",
-    location: "9 J.P. Rizal St. Calumpang, Marikina",
+    phone: "0993 728 4969",
+    email: "topsiderSeacrest@gmail.com",
+    location: "10 Helena St. Sta Teresita Malanday",
     facebook: "#",
     instagram: "#",
     ctaLabel: "See our story",
@@ -124,7 +124,11 @@ export const sections: StoreSectionSlug[] = [
 ];
 
 export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
-  if (storeSlug === "nico-angelo" || storeSlug === "brads-trendies") {
+  if (
+    storeSlug === "nico-angelo" ||
+    storeSlug === "brads-trendies" ||
+    storeSlug === "seacrest"
+  ) {
     return [
       {
         title: "SOULS BEHIND\nTHE SOLES",
@@ -151,7 +155,9 @@ export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
 
 export function landingCards(storeSlug: StoreSlug): StoreCard[] {
   const soulsHref =
-    storeSlug === "nico-angelo" || storeSlug === "brads-trendies"
+    storeSlug === "nico-angelo" ||
+    storeSlug === "brads-trendies" ||
+    storeSlug === "seacrest"
       ? `/stores/${storeSlug}/souls-behind-the-soles-story`
       : `/stores/${storeSlug}/souls-behind-the-soles`;
 

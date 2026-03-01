@@ -6,29 +6,149 @@ type Props = {
   title?: string;
   description?: string;
   canonical?: string;
+  keywords?: string[];
+  authors?: string[];
+  creators?: string[];
+  publisher?: string;
+  ogType?: "website" | "article";
+  ogImage?: string;
+  twitterCard?: "summary" | "summary_large_image";
   bodyClass?: string;
   noindex?: boolean;
 };
 
 const {
   title = "Sole of Marikina",
-  description,
+  description = "Sole of Marikina highlights local shoemakers, their stories, and their products in Marikina City, Philippines.",
   canonical,
+  keywords = [
+    "Sole of Marikina",
+    "Marikina shoes",
+    "Filipino shoemakers",
+    "Marikina City",
+    "local footwear Philippines",
+  ],
+  authors = ["Sole of Marikina Team"],
+  creators = ["Sole of Marikina"],
+  publisher = "Sole of Marikina",
+  ogType = "website",
+  ogImage = "/OpenGraph.webp",
+  twitterCard = "summary_large_image",
   bodyClass = "",
   noindex = false,
 } = Astro.props as Props;
+
+const metadataBase = Astro.site ?? new URL(Astro.url.origin);
+const siteRootUrl = new URL("/", metadataBase).toString();
+const currentPath = Astro.url.pathname || "/";
+
+const toAbsoluteUrl = (value: string) => {
+  try {
+    return new URL(value, metadataBase).toString();
+  } catch {
+    return new URL("/", metadataBase).toString();
+  }
+};
+
+const canonicalUrl = toAbsoluteUrl(canonical ?? currentPath);
+const ogImageUrl = toAbsoluteUrl(ogImage);
+const robotsContent = noindex
+  ? "noindex, nofollow"
+  : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+
+const alternateLocales = [
+  { hreflang: "en-PH", href: canonicalUrl },
+  { hreflang: "en-US", href: canonicalUrl },
+  { hreflang: "x-default", href: canonicalUrl },
+];
+
+const schemaGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteRootUrl}#organization`,
+      name: "Sole of Marikina",
+      url: siteRootUrl,
+      logo: toAbsoluteUrl("/Logo/brand.webp"),
+      image: ogImageUrl,
+      email: "mailto:yapakkolektib@gmail.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "05 Samson Road",
+        addressLocality: "Caloocan City",
+        addressRegion: "Metro Manila",
+        addressCountry: "PH",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteRootUrl}#website`,
+      url: siteRootUrl,
+      name: "Sole of Marikina",
+      description,
+      publisher: { "@id": `${siteRootUrl}#organization` },
+      inLanguage: "en-PH",
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      isPartOf: { "@id": `${siteRootUrl}#website` },
+      about: { "@id": `${siteRootUrl}#organization` },
+      inLanguage: "en-PH",
+    },
+  ],
+};
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="metadata-base" content={metadataBase.toString()} />
+    <link rel="canonical" href={canonicalUrl} />
+    {
+      alternateLocales.map((locale) => (
+        <link rel="alternate" hreflang={locale.hreflang} href={locale.href} />
+      ))
+    }
+
+    <link rel="icon" type="image/webp" href="/Logo/brand.webp" />
+    <link rel="icon" type="image/webp" sizes="48x48" href="/Logo/favicon.webp" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/Logo/brand.webp" />
+
     <meta name="generator" content={Astro.generator} />
+
     <title>{title}</title>
-    {description && <meta name="description" content={description} />}
-    {canonical && <link rel="canonical" href={canonical} />}
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords.join(", ")} />
+    <meta name="author" content={authors.join(", ")} />
+    <meta name="creator" content={creators.join(", ")} />
+    <meta name="publisher" content={publisher} />
+    <meta name="robots" content={robotsContent} />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Sole of Marikina" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content="Sole of Marikina" />
+    <meta property="og:locale" content="en_PH" />
+
+    <meta name="twitter:card" content={twitterCard} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content="Sole of Marikina" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
+
     <slot name="head" />
     <ClientRouter />
   </head>

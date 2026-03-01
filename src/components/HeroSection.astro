@@ -1,5 +1,5 @@
 ---
-import { MoveLeft, MapPin } from "lucide-react";
+import { MoveLeft } from "lucide-react";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import StoreDetailCards from "@/components/StoreDetailCards.astro";
 import {
@@ -56,7 +56,7 @@ const defaultMapBackground = "/map/marikina.png";
     aria-modal="true"
     aria-hidden="true"
     aria-labelledby="mobile-sidebar-title"
-    class="fixed left-0 top-0 z-50 flex h-full w-[71%] max-w-85 -translate-x-full flex-col bg-black/90 px-6 py-6 text-white shadow-2xl transition-transform duration-300 ease-out"
+    class="fixed left-0 top-0 z-50 flex h-full w-[71%] max-w-85 -translate-x-full flex-col bg-black/90 px-6 py-6 text-white transition-transform duration-300 ease-out"
   >
     <h2 id="mobile-sidebar-title" class="sr-only">Main navigation</h2>
     <div class="mb-16 flex items-center justify-start">
@@ -121,6 +121,7 @@ const defaultMapBackground = "/map/marikina.png";
       centerImageSrc="/Logo/brand.webp"
       centerImageAlt="Sole of Marikina"
       centerImageClass="h-16 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]"
+      containerClass="hero-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center bg-transparent px-6 pt-5 pb-3 text-black transition-[background-color,backdrop-filter] duration-200 sm:px-8 sm:pt-6 sm:pb-3"
     />
 
     <div class="relative z-20 min-h-[calc(100svh-7rem)]">
@@ -139,7 +140,14 @@ const defaultMapBackground = "/map/marikina.png";
               style={`top:${store.top};left:${store.left};`}
             >
               {store.pinSide === "left" && (
-                <MapPin className="size-8 shrink-0 text-black" />
+                <img
+                  src="/Logo/Pin.png"
+                  alt=""
+                  aria-hidden="true"
+                  class="h-8 w-8 shrink-0 object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
               )}
               <button
                 type="button"
@@ -147,12 +155,19 @@ const defaultMapBackground = "/map/marikina.png";
                 aria-controls={`store-panel-${store.id}`}
                 aria-expanded="false"
                 aria-pressed="false"
-                class="cursor-pointer rounded-full bg-black px-5 py-1.5 text-md leading-none font-semibold tracking-tight whitespace-nowrap text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(0,0,0,0.35)] active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70 touch-manipulation sm:px-6 sm:text-[17px]"
+                class="cursor-pointer rounded-full bg-black px-5 py-1.5 text-md leading-none font-semibold tracking-tight whitespace-nowrap text-white transition-all duration-300 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70 touch-manipulation sm:px-6 sm:text-[17px]"
               >
                 {store.label}
               </button>
               {store.pinSide === "right" && (
-                <MapPin className="size-8 shrink-0 text-black" />
+                <img
+                  src="/Logo/Pin.png"
+                  alt=""
+                  aria-hidden="true"
+                  class="h-8 w-8 shrink-0 object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
               )}
             </div>
           ))
@@ -187,6 +202,7 @@ const defaultMapBackground = "/map/marikina.png";
       const closeButton = document.getElementById("menu-close");
       const overlay = document.getElementById("menu-overlay");
       const sidebar = document.getElementById("mobile-sidebar");
+      const heroStickyNav = document.querySelector(".hero-sticky-nav");
       const storeBackdrop = document.getElementById("store-backdrop");
       const storeTriggerLayer = document.getElementById("store-trigger-layer");
       if (!openButton || !closeButton || !overlay || !sidebar) return;
@@ -375,6 +391,14 @@ const defaultMapBackground = "/map/marikina.png";
         }
       };
 
+      const onWindowScroll = () => {
+        if (!(heroStickyNav instanceof HTMLElement)) return;
+        const hasScrolled = window.scrollY > 12;
+
+        heroStickyNav.classList.toggle("bg-black/20", hasScrolled);
+        heroStickyNav.classList.toggle("backdrop-blur-sm", hasScrolled);
+      };
+
       const triggerHandlers = storeTriggers.map((trigger) => {
         const onTriggerClick = () => {
           const storeId = trigger.getAttribute("data-store-trigger");
@@ -399,12 +423,14 @@ const defaultMapBackground = "/map/marikina.png";
       overlay.addEventListener("click", closeMenu);
       document.addEventListener("keydown", onDocumentKeydown);
       sidebar.addEventListener("keydown", onSidebarKeydown);
+      window.addEventListener("scroll", onWindowScroll, { passive: true });
       if (storeBackdrop) {
         storeBackdrop.addEventListener("click", closeStorePanels);
       }
 
       closeMenu();
       closeStorePanels();
+      onWindowScroll();
 
       cleanup = () => {
         document.body.classList.remove("overflow-hidden");
@@ -413,6 +439,7 @@ const defaultMapBackground = "/map/marikina.png";
         overlay.removeEventListener("click", closeMenu);
         document.removeEventListener("keydown", onDocumentKeydown);
         sidebar.removeEventListener("keydown", onSidebarKeydown);
+        window.removeEventListener("scroll", onWindowScroll);
         sidebarLinks.forEach((link) => link.removeEventListener("click", closeMenu));
         if (storeBackdrop) {
           storeBackdrop.removeEventListener("click", closeStorePanels);
