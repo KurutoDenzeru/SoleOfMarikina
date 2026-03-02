@@ -1,5 +1,4 @@
 ---
-import { Play } from "lucide-react";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 
@@ -21,7 +20,7 @@ const bradsMapBackground = "/map/brads.png";
         type: "link",
         icon: "move-left",
         ariaLabel: "Back to Souls Behind the Soles",
-        href: "/stores/brads-trendies/souls-behind-the-soles",
+        href: "/stores/brads-trendies/sbts",
         dynamicBack: true,
         className: "rounded-md text-white",
       }}
@@ -33,33 +32,29 @@ const bradsMapBackground = "/map/brads.png";
       }}
       centerImageSrc="/Logo/Brads Trendies.webp"
       centerImageAlt="Brad's Trendies"
-      centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-12"
+      centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-16"
       containerClass="sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white sm:px-8 sm:pt-6 sm:pb-3"
     />
 
-    <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10">
-      <section class="relative -mx-6 -mt-2 h-[50svh] overflow-hidden sm:-mx-8 sm:h-[56svh]" aria-label="Hide to Heels video placeholder">
-        <img
-          src="/map/brads.png"
-          alt="Hide to Heels video placeholder"
-          loading="lazy"
-          decoding="async"
-          class="h-full w-full object-cover object-center"
-        />
-        <button
-          type="button"
-          aria-label="Play Hide to Heels video (placeholder)"
-          class="absolute inset-0 m-auto inline-flex size-18 items-center justify-center rounded-full bg-[#2b0e04]/96 text-white"
-        >
-          <Play className="ml-1 size-8 fill-current" />
-        </button>
+    <main class="relative z-20 mx-auto flex min-h-[calc(100svh-6.75rem)] w-full max-w-[430px] flex-col items-center justify-center px-6 pb-12 sm:px-8 sm:pb-10 md:max-w-3xl lg:max-w-5xl">
+      <section
+        class="relative w-full max-w-[360px] aspect-video overflow-hidden rounded-[1.25rem] sm:max-w-[420px] md:max-w-[720px]"
+        aria-label="Hide to Heels video"
+      >
+        <iframe
+          class="h-full w-full"
+          src="https://www.youtube.com/embed/gNH-slE-q5c?rel=0"
+          title="Brad's Trendies Hide to Heels"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+        ></iframe>
       </section>
 
-      <h1 class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-6xl md:text-7xl">
+      <h1 class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-10 sm:max-w-md sm:text-4xl md:text-5xl">
         HIDE TO HEELS
       </h1>
 
-      <p class="mx-auto mt-6 text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg">
+      <p class="mx-auto mt-6 max-w-[34ch] text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg">
         The Brad's Trendies process transforms raw, premium cowhide into iconic footwear by meticulously hand-cutting, stitching, and molding genuine Marikina craftsmanship into a modern, minimalist silhouette ready for the digital age.
       </p>
     </main>

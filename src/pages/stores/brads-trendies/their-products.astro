@@ -27,7 +27,7 @@ const products = [
           type: "link",
           icon: "move-left",
           ariaLabel: "Back to Souls Behind the Soles Story",
-          href: "/stores/brads-trendies/souls-behind-the-soles-story",
+          href: "/stores/brads-trendies/sbts",
           dynamicBack: true,
           className: "rounded-md text-white",
         }}
@@ -39,20 +39,20 @@ const products = [
       }}
       centerImageSrc="/Logo/Brads Trendies.webp"
       centerImageAlt="Brad's Trendies"
-      centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-12"
+      centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-16"
       containerClass="sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white sm:px-8 sm:pt-6 sm:pb-3"
     />
 
-    <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10">
-      <h1 class="mx-auto mt-10 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-6xl md:text-7xl">
+    <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10 md:max-w-3xl lg:max-w-5xl">
+      <h1 class="mx-auto mt-10 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-4xl md:text-5xl">
         THEIR PRODUCTS
       </h1>
 
-      <div class="mt-8 space-y-6 sm:mt-10">
+      <div class="mt-8 grid gap-6 sm:mt-10 md:grid-cols-2">
         {
           products.map((product) => (
             <article
-              class="group relative h-64 overflow-hidden rounded-[2rem] bg-black shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:h-72"
+              class="group relative h-64 overflow-hidden rounded-[2rem] bg-black shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:h-72 lg:h-80"
             >
               <img
                 src={product.image}
@@ -63,8 +63,8 @@ const products = [
               />
               <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.46)_0%,rgba(0,0,0,0.12)_42%,rgba(0,0,0,0.06)_100%)]" aria-hidden="true"></div>
               <div class="absolute top-5 left-5 text-left text-white leading-none">
-                <p class="text-2xl font-extrabold sm:text-4xl">{product.name}</p>
-                <p class="mt-0.5 text-xl font-extrabold sm:text-3xl">{product.price}</p>
+                <p class="text-2xl font-extrabold sm:text-3xl lg:text-4xl">{product.name}</p>
+                <p class="mt-0.5 text-xl font-extrabold sm:text-2xl lg:text-3xl">{product.price}</p>
               </div>
             </article>
           ))

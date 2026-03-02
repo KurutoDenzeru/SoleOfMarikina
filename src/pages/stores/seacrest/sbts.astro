@@ -1,0 +1,182 @@
+---
+import { Play } from "lucide-react";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
+import { getStoreBySlug } from "@/lib/store-pages";
+
+const store = getStoreBySlug("seacrest");
+if (!store) {
+  throw new Error("Seacrest store data is missing.");
+}
+
+const seacrestMapBackground = "/map/seacrest.png";
+const owner = {
+  name: "Larry Evaristo",
+  role: "Owner",
+  image: "/pictures/Seacrest/Sir%20Larry.jpg",
+};
+const staff = [
+  { name: "Wilfredo Crarre", role: "Quality Check", image: "/pictures/Seacrest/Wilfredo.jpg" },
+  { name: "Renaldo De Jesus", role: "Lasting", image: "/pictures/Seacrest/Renaldo.jpg" },
+  { name: "Dennis Flores", role: "Pattern Maker", image: "/pictures/Seacrest/Dennis.jpg" },
+  { name: "Rosalie Abainicia", role: "Upper Maker", image: "/pictures/Seacrest/Rosalie.jpg" },
+  { name: "Susana Morales", role: "Pattern Maker", image: "/pictures/Seacrest/Susana.jpg" },
+  { name: "Teresita Dela Buena Afescul", role: "Upper Maker", image: "/pictures/Seacrest/Teresita.jpg" },
+  { name: "Edmund Dulce", role: "Cutter", image: "/pictures/Seacrest/Edmund.jpg" },
+  { name: "Roberto Sotelo", role: "Sewer", image: "/pictures/Seacrest/Roberto.jpg" },
+  { name: "Rolando Laguisau", role: "Foreman", image: "/pictures/Seacrest/Rolando.jpg" },
+  { name: "Cyrel Balange", role: "Shoemaker", image: "/pictures/Seacrest/Cyrel.jpg" },
+];
+---
+
+<BaseLayout title="Seacrest | Souls Behind the Soles Story">
+  <section
+    class="relative min-h-screen w-full overflow-x-hidden bg-[#160500] bg-cover bg-top bg-no-repeat sm:bg-center"
+    style={`background-image:url('${seacrestMapBackground}');`}
+  >
+    <div
+      id="seacrest-page-gradient"
+      class="fixed inset-0 z-0 pointer-events-none bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(84,26,4,0.16)_34%,rgba(22,6,1,0.64)_62%,rgba(0,0,0,0.96)_100%)] opacity-45 transition-opacity duration-150"
+      aria-hidden="true"
+    ></div>
+
+    <MobileTopNavbar
+      leftAction={{
+        type: "link",
+        icon: "move-left",
+        ariaLabel: "Back to see our story",
+        href: "/stores/seacrest/sts",
+        dynamicBack: true,
+        className: "rounded-md text-white",
+      }}
+      rightAction={{
+        type: "button",
+        icon: "search",
+        ariaLabel: "Search store content",
+        className: "rounded-md text-white",
+      }}
+      centerImageSrc="/Logo/Seacrest.webp"
+      centerImageAlt="Seacrest"
+      centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-16"
+      containerClass="seacrest-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white transition-[background-color,backdrop-filter] duration-150 sm:px-8 sm:pt-6 sm:pb-3"
+    />
+
+    <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10 md:max-w-3xl lg:max-w-7xl">
+      <div class="lg:grid lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-start lg:gap-10">
+        <section
+          class="relative mt-3 w-full aspect-video overflow-hidden rounded-[1.25rem] sm:mt-4 md:mx-auto md:max-w-[900px] lg:mt-10 lg:mx-0 lg:max-w-none lg:sticky lg:top-1/2 lg:-translate-y-1/2"
+          aria-label="Story video placeholder"
+        >
+          <div id="seacrest-video-shell" class="sticky top-0 h-full w-full origin-center transition-[opacity,transform] duration-150 will-change-transform">
+            <img
+              src="/map/seacrest.png"
+              alt="Video placeholder background"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover object-center"
+            />
+            <button
+              id="seacrest-video-play"
+              type="button"
+              aria-label="Play story video (placeholder)"
+              class="absolute inset-0 m-auto inline-flex size-18 items-center justify-center rounded-full bg-[#2b0e04]/92 text-white transition-opacity duration-150"
+            >
+              <Play className="ml-1 size-8 fill-current" />
+            </button>
+          </div>
+        </section>
+
+        <div class="lg:pt-10">
+          <h1 class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-4xl md:text-5xl lg:mt-0 lg:text-left">
+            {store.heroTitle}
+          </h1>
+
+          <p class="mx-auto mt-6 text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg lg:mx-0 lg:max-w-none lg:text-left">
+            Larry Evaristo’s journey began as a tireless working student, balancing late-night shifts at his uncle’s shop with a perfectionist’s drive for academic excellence. Fueled by his father’s unwavering motivation, he eventually channeled that meticulous nature into his own craft, mastering the art of shoemaking. Today, he is the successful owner of Seacrest, a testament to his resilience and passion within the heart of Marikina.
+          </p>
+
+          <section class="mt-8">
+            <div class="mt-6 space-y-8">
+              <article class="mx-auto w-[72%] max-w-[320px] text-center text-white lg:mx-0 lg:w-full lg:max-w-[280px]">
+                <img
+                  src={owner.image}
+                  alt={`${owner.name} - ${owner.role}`}
+                  loading="lazy"
+                  decoding="async"
+                  class="aspect-[3/4] w-full rounded-[1.2rem] object-cover object-center"
+                />
+                <p class="mt-4 text-xl leading-none font-extrabold">{owner.name}</p>
+                <p class="text-md leading-none font-medium text-white/90">{owner.role}</p>
+              </article>
+
+              <div class="grid grid-cols-2 gap-4 sm:gap-5">
+                {
+                  staff.map((member) => (
+                    <article class="text-center text-white">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        loading="lazy"
+                        decoding="async"
+                        class="aspect-[3/4] w-full rounded-[1.8rem] object-cover object-center"
+                      />
+                      <p class="mt-2 text-lg leading-none font-extrabold sm:text-2xl">{member.name}</p>
+                      <p class="text-base leading-none font-medium text-white/90 sm:text-xl">
+                        {member.role}
+                      </p>
+                    </article>
+                  ))
+                }
+              </div>
+            </div>
+          </section>
+
+          <div class="text-center lg:text-left">
+            <a
+              href="/stores/seacrest/their-products"
+              class="mx-auto mt-11 inline-flex min-w-[17.5rem] items-center justify-center rounded-full bg-black/[0.38] px-8 py-3 text-base font-medium whitespace-nowrap text-white transition-all duration-250 ease-out hover:-translate-y-0.5 hover:bg-black/[0.52] hover:shadow-[0_8px_20px_rgba(0,0,0,0.35)] active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:mt-10 sm:py-3 sm:text-xl sm:font-semibold md:py-4 md:text-2xl lg:mx-0"
+            >
+              See Step by Step Process
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const videoShell = document.getElementById("seacrest-video-shell");
+      const playButton = document.getElementById("seacrest-video-play");
+      const pageGradient = document.getElementById("seacrest-page-gradient");
+      const stickyNav = document.querySelector(".seacrest-sticky-nav");
+      if (!videoShell || !playButton || !pageGradient) return;
+
+      const handleScroll = () => {
+        const videoProgress = Math.min(window.scrollY / 240, 1);
+        const gradientProgress = Math.min(window.scrollY / 430, 1);
+
+        const isTabletOrDesktop = window.matchMedia("(min-width: 768px)").matches;
+        if (isTabletOrDesktop) {
+          videoShell.style.opacity = "1";
+          videoShell.style.transform = "none";
+          playButton.style.opacity = "1";
+        } else {
+          videoShell.style.opacity = String(1 - videoProgress * 0.95);
+          videoShell.style.transform = `scale(${1 - videoProgress * 0.06})`;
+          playButton.style.opacity = String(1 - videoProgress * 1.2);
+        }
+        pageGradient.style.opacity = String(0.4 + gradientProgress * 0.6);
+
+        if (stickyNav instanceof HTMLElement) {
+          const navDarkness = gradientProgress * 0.55;
+          stickyNav.style.background = `linear-gradient(180deg, rgba(0,0,0,${navDarkness}) 0%, rgba(0,0,0,0) 100%)`;
+          stickyNav.style.backdropFilter = gradientProgress > 0.2 ? "blur(2px)" : "none";
+        }
+      };
+
+      handleScroll();
+      window.addEventListener("scroll", handleScroll, { passive: true });
+    })();
+  </script>
+</BaseLayout>

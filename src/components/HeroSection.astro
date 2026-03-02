@@ -38,7 +38,7 @@ const navLinks = [
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
-const defaultMapBackground = "/map/marikina.png";
+const defaultMapBackground = "/map/marikina_2k.png";
 ---
 
 <section class="relative w-full">
@@ -47,7 +47,7 @@ const defaultMapBackground = "/map/marikina.png";
     type="button"
     aria-label="Close menu"
     aria-hidden="true"
-    class="pointer-events-none fixed inset-0 z-40 bg-transparent backdrop-blur-sm opacity-0 transition-opacity duration-300 ease-out"
+    class="pointer-events-none fixed inset-0 z-[55] bg-transparent backdrop-blur-sm opacity-0 transition-opacity duration-300 ease-out"
   ></button>
 
   <aside
@@ -56,7 +56,7 @@ const defaultMapBackground = "/map/marikina.png";
     aria-modal="true"
     aria-hidden="true"
     aria-labelledby="mobile-sidebar-title"
-    class="fixed left-0 top-0 z-50 flex h-full w-[71%] max-w-85 -translate-x-full flex-col bg-black/90 px-6 py-6 text-white transition-transform duration-300 ease-out"
+    class="fixed left-0 top-0 z-[60] flex h-full w-[71%] max-w-85 -translate-x-full flex-col bg-black/90 px-6 py-6 text-white transition-transform duration-300 ease-out"
   >
     <h2 id="mobile-sidebar-title" class="sr-only">Main navigation</h2>
     <div class="mb-16 flex items-center justify-start">
@@ -98,10 +98,14 @@ const defaultMapBackground = "/map/marikina.png";
     </nav>
   </aside>
 
-  <article
-    class="relative min-h-screen w-full overflow-x-clip bg-[#d8ae73] bg-cover bg-top bg-no-repeat sm:bg-center"
-    style={`background-image:url('${defaultMapBackground}');`}
-  >
+  <article class="relative min-h-screen w-full overflow-hidden bg-[#d8ae73]">
+    <div
+      id="map-image-layer"
+      class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 ease-out will-change-transform"
+      style={`background-image:url('${defaultMapBackground}');`}
+      aria-hidden="true"
+    ></div>
+
     <MobileTopNavbar
       leftAction={{
         type: "button",
@@ -110,7 +114,7 @@ const defaultMapBackground = "/map/marikina.png";
         id: "menu-toggle",
         controls: "mobile-sidebar",
         expanded: "false",
-        className: "rounded-md",
+        className: "rounded-md cursor-pointer",
       }}
       rightAction={{
         type: "button",
@@ -141,7 +145,7 @@ const defaultMapBackground = "/map/marikina.png";
             >
               {store.pinSide === "left" && (
                 <img
-                  src="/Logo/Pin.png"
+                  src="/icons/Pin.png"
                   alt=""
                   aria-hidden="true"
                   class="h-8 w-8 shrink-0 object-contain"
@@ -161,7 +165,7 @@ const defaultMapBackground = "/map/marikina.png";
               </button>
               {store.pinSide === "right" && (
                 <img
-                  src="/Logo/Pin.png"
+                  src="/icons/Pin.png"
                   alt=""
                   aria-hidden="true"
                   class="h-8 w-8 shrink-0 object-contain"
@@ -203,6 +207,7 @@ const defaultMapBackground = "/map/marikina.png";
       const overlay = document.getElementById("menu-overlay");
       const sidebar = document.getElementById("mobile-sidebar");
       const heroStickyNav = document.querySelector(".hero-sticky-nav");
+      const mapImageLayer = document.getElementById("map-image-layer");
       const storeBackdrop = document.getElementById("store-backdrop");
       const storeTriggerLayer = document.getElementById("store-trigger-layer");
       if (!openButton || !closeButton || !overlay || !sidebar) return;
@@ -251,6 +256,11 @@ const defaultMapBackground = "/map/marikina.png";
             "translate-y-1"
           );
           storeTriggerLayer.classList.add("opacity-100");
+        }
+
+        if (mapImageLayer instanceof HTMLElement) {
+          mapImageLayer.style.transformOrigin = "50% 50%";
+          mapImageLayer.style.transform = "scale(1)";
         }
       };
 
@@ -320,6 +330,14 @@ const defaultMapBackground = "/map/marikina.png";
             "pointer-events-none",
             "translate-y-1"
           );
+        }
+
+        if (mapImageLayer instanceof HTMLElement) {
+          const parent = triggerEl.parentElement;
+          const focusTop = parent?.style.top || "50%";
+          const focusLeft = parent?.style.left || "50%";
+          mapImageLayer.style.transformOrigin = `${focusLeft} ${focusTop}`;
+          mapImageLayer.style.transform = "scale(1.6)";
         }
 
         const panelRect = targetPanel.getBoundingClientRect();

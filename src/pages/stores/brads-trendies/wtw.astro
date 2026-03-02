@@ -1,0 +1,118 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
+import { getStoreBySlug } from "@/lib/store-pages";
+
+const store = getStoreBySlug("brads-trendies");
+if (!store) {
+  throw new Error("Brad's Trendies store data is missing.");
+}
+---
+
+<BaseLayout title="Brad's Trendies | Walk With Them">
+  <section
+    class="relative min-h-screen w-full overflow-hidden bg-[#0f0b0a]"
+  >
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <iframe
+        class="absolute top-1/2 left-1/2 h-[100vh] w-[177.78vh] min-h-full min-w-full -translate-x-1/2 -translate-y-1/2"
+        src="https://www.youtube.com/embed/6rA42gkuMiI?autoplay=1&mute=1&loop=1&playlist=6rA42gkuMiI&controls=0&disablekb=1&fs=0&iv_load_policy=3&cc_load_policy=0&modestbranding=1&rel=0&playsinline=1"
+        title="Brad's Trendies background video"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <div
+      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.72)_42%,rgba(0,0,0,0.92)_100%)]"
+      aria-hidden="true"
+    ></div>
+
+    <MobileTopNavbar
+      leftAction={{
+        type: "link",
+        icon: "move-left",
+        ariaLabel: "Back to homepage",
+        href: "/",
+        dynamicBack: true,
+        className: "rounded-md text-white",
+      }}
+      rightAction={{
+        type: "button",
+        icon: "search",
+        ariaLabel: "Search store content",
+        className: "rounded-md text-white",
+      }}
+      centerImageSrc="/Logo/Brads Trendies.webp"
+      centerImageAlt="Brad's Trendies"
+      centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-16"
+      containerClass="sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white sm:px-8 sm:pt-6 sm:pb-3"
+    />
+
+    <main class="relative z-20 mx-auto flex min-h-[calc(100svh-6.75rem)] w-full max-w-[430px] flex-col px-6 pb-10 sm:px-8 sm:pb-10 md:max-w-3xl lg:max-w-5xl">
+      <div class="mt-5 grid grid-cols-[auto_1fr_auto] items-center text-white sm:mt-6">
+        <p class="max-w-[9ch] shrink-0 text-md leading-[0.9] font-bold tracking-[-0.02em] sm:max-w-[8ch] sm:text-2xl md:text-3xl">
+          {store.contactName}
+        </p>
+        <div class="mx-3 h-px bg-white/75"></div>
+        <p class="shrink-0 text-md leading-none font-bold tracking-[-0.02em] sm:text-3xl md:text-4xl">
+          {store.city}
+        </p>
+      </div>
+
+      <div class="flex flex-1 flex-col justify-center">
+        <h1 class="mx-auto mt-9 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-4xl md:max-w-2xl md:text-5xl lg:text-6xl">
+          {store.heroTitle}
+        </h1>
+
+        <p class="mx-auto mt-8 text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:max-w-2xl md:text-lg lg:max-w-3xl">
+          {store.intro}
+        </p>
+
+        <div class="mx-auto mt-12 w-full max-w-[360px] text-white sm:mt-14 sm:max-w-[430px] md:mt-16 md:max-w-[760px]">
+          <h2 class="text-3xl leading-[0.9] font-black uppercase sm:text-4xl md:text-5xl">
+            Walk With Them
+          </h2>
+
+          <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 text-base sm:grid-cols-2 sm:gap-6 sm:text-base md:text-lg">
+            <div>
+              <p class="text-sm font-extrabold uppercase sm:text-lg md:text-xl">Contact</p>
+              <p class="mt-3 text-sm leading-tight font-medium sm:text-base md:text-lg text-[#F5F5F5]">
+                {store.phone}
+              </p>
+              <p class="mt-2 text-sm leading-tight font-medium sm:text-base md:text-lg text-[#F5F5F5]">
+                {store.email}
+              </p>
+              <div class="mt-4 flex items-center gap-4">
+                <a href={store.facebook} aria-label="Facebook">
+                  <img src="/icons/Facebook.png" alt="Facebook" class="size-6 sm:size-7 object-contain" />
+                </a>
+                <a href="https://www.tiktok.com/@bradstrendiesofficial" aria-label="TikTok">
+                  <img src="/icons/Tiktok.png" alt="TikTok" class="size-6 sm:size-7 object-contain" />
+                </a>
+                <a href="https://shopee.ph/bnkclogs?entryPoint=ShopBySearch&searchKeyword=bnk+clogs" aria-label="Shopee">
+                  <img src="/icons/Shopee.png" alt="Shopee" class="size-6 sm:size-7 object-contain" />
+                </a>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-extrabold uppercase sm:text-lg md:text-xl">Location</p>
+              <p class="mt-3 text-sm leading-tight font-medium sm:text-base md:text-lg text-[#F5F5F5]">
+                {store.location}
+              </p>
+            </div>
+          </div>
+
+          <div class="pt-6 text-center">
+            <a
+              href="/stores/brads-trendies/sts"
+              class="mx-auto inline-flex items-center justify-center rounded-full bg-black/[0.36] px-8 py-2 text-base font-medium text-white transition-all duration-250 ease-out hover:-translate-y-0.5 hover:bg-black/[0.5] hover:shadow-[0_8px_20px_rgba(0,0,0,0.35)] active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:mt-10 sm:py-3 sm:text-xl sm:font-semibold md:py-4 md:text-2xl"
+            >
+              See our story
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+</BaseLayout>

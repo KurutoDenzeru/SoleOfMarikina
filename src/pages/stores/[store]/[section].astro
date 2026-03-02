@@ -15,7 +15,7 @@ export async function getStaticPaths() {
           (entry.storeSlug === "nico-angelo" ||
             entry.storeSlug === "brads-trendies" ||
             entry.storeSlug === "seacrest") &&
-          (entry.sectionSlug === "walk-with-them" || entry.sectionSlug === "their-products")
+          (entry.sectionSlug === "wtw" || entry.sectionSlug === "their-products")
         )
     )
     .filter((entry) => storeMap.has(entry.storeSlug))
@@ -36,17 +36,17 @@ const { store, section } = Astro.props as {
   section: (typeof storeSections)[number];
 };
 
-const isWalkPage = section.sectionSlug === "walk-with-them";
+const isWalkPage = section.sectionSlug === "wtw";
 const isLightStoryOptionsPage =
   (store.slug === "brads-trendies" || store.slug === "seacrest") &&
-  section.sectionSlug === "souls-behind-the-soles";
-const storyHref = `/stores/${store.slug}/souls-behind-the-soles`;
+  section.sectionSlug === "sts";
+const storyHref = `/stores/${store.slug}/sts`;
 const storeMapBackgrounds: Record<(typeof stores)[number]["slug"], string> = {
   "nico-angelo": "/map/nico%20angelo.png",
   "seacrest": "/map/seacrest.png",
   "brads-trendies": "/map/brads.png",
 };
-const storeBackgroundImage = storeMapBackgrounds[store.slug] ?? "/map/marikina.png";
+const storeBackgroundImage = storeMapBackgrounds[store.slug] ?? "/map/marikina_2k.png";
 const logoClass = [
   "h-16 w-auto max-w-xs object-contain sm:h-16",
   store.logoInvert || isLightStoryOptionsPage ? "invert" : "",
@@ -83,29 +83,29 @@ const logoClass = [
 
     {
       isWalkPage ? (
-        <main class="relative z-20 px-6 pb-20 sm:px-8">
+        <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-20 sm:px-8 md:max-w-3xl lg:max-w-5xl">
           <div class="mt-8 grid grid-cols-[auto_1fr_auto] items-center gap-4 text-black">
-            <p class="max-w-[10ch] text-4xl leading-none font-bold">{store.contactName}</p>
+            <p class="max-w-[10ch] text-xl leading-none font-bold sm:text-2xl md:text-3xl">{store.contactName}</p>
             <div class="h-0.5 w-full bg-black/75"></div>
-            <p class="text-5xl leading-none font-bold">{store.city}</p>
+            <p class="text-2xl leading-none font-bold sm:text-3xl md:text-4xl">{store.city}</p>
           </div>
 
-          <h1 class="mt-12 text-center text-7xl leading-none font-extrabold text-white">
+          <h1 class="mt-12 text-center text-4xl leading-none font-extrabold text-white sm:text-5xl md:text-6xl">
             {store.heroTitle}
           </h1>
 
-          <p class="mx-auto mt-10 max-w-4xl text-center text-3xl leading-relaxed font-medium text-white">
+          <p class="mx-auto mt-10 max-w-3xl text-center text-sm leading-relaxed font-medium text-white sm:text-base md:text-lg">
             {section.body}
           </p>
 
-          <div class="mt-24 text-white">
-            <h2 class="text-6xl leading-none font-black uppercase">{section.title}</h2>
+          <div class="mx-auto mt-16 w-full max-w-[760px] text-white md:mt-20">
+            <h2 class="text-3xl leading-none font-black uppercase sm:text-4xl md:text-5xl">{section.title}</h2>
 
-            <div class="mt-8 grid gap-8 text-2xl sm:grid-cols-2">
+            <div class="mt-8 grid gap-6 text-base sm:grid-cols-2 md:text-lg">
               <div>
-                <p class="text-xl font-extrabold uppercase">Contact</p>
-                <p class="mt-3 text-2xl font-medium">{store.phone}</p>
-                <p class="mt-2 text-2xl font-medium">{store.email}</p>
+                <p class="text-sm font-extrabold uppercase sm:text-lg md:text-xl">Contact</p>
+                <p class="mt-3 text-sm font-medium sm:text-base md:text-lg">{store.phone}</p>
+                <p class="mt-2 text-sm font-medium sm:text-base md:text-lg">{store.email}</p>
                 <div class="mt-5 flex items-center gap-4">
                   <a
                     href={store.facebook}
@@ -124,22 +124,22 @@ const logoClass = [
                 </div>
               </div>
               <div>
-                <p class="text-xl font-extrabold uppercase">Location</p>
-                <p class="mt-3 text-2xl font-medium">{store.location}</p>
+                <p class="text-sm font-extrabold uppercase sm:text-lg md:text-xl">Location</p>
+                <p class="mt-3 text-sm font-medium sm:text-base md:text-lg">{store.location}</p>
               </div>
             </div>
 
             <a
               href={storyHref}
-              class="mx-auto mt-14 inline-flex min-w-56 items-center justify-center rounded-full bg-black/70 px-10 py-4 text-4xl font-semibold text-white transition hover:bg-black/80"
+              class="mx-auto mt-12 inline-flex min-w-56 items-center justify-center rounded-full bg-black/70 px-10 py-3 text-base font-semibold text-white transition hover:bg-black/80 sm:text-xl md:py-4 md:text-2xl"
             >
               {store.ctaLabel}
             </a>
           </div>
         </main>
       ) : (
-        <main class="relative z-20 px-6 pb-16 pt-6 sm:px-8">
-          <p class="mx-auto mt-8 max-w-5xl text-center text-sm leading-relaxed font-semibold text-black">
+        <main class="relative z-20 mx-auto flex min-h-[calc(100svh-7rem)] w-full max-w-[430px] flex-col justify-center px-6 pb-16 pt-6 sm:px-8 md:max-w-3xl lg:max-w-5xl">
+          <p class="mx-auto mt-8 max-w-3xl text-center text-sm leading-relaxed font-semibold text-black sm:text-base md:text-lg">
             {section.body}
           </p>
           <StoreDetailCards mode="list" cards={section.cards} className="mt-8" />

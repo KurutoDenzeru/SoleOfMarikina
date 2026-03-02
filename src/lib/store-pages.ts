@@ -1,7 +1,7 @@
 export type StoreSlug = "nico-angelo" | "brads-trendies" | "seacrest";
 export type StoreSectionSlug =
-  | "walk-with-them"
-  | "souls-behind-the-soles"
+  | "wtw"
+  | "sts"
   | "their-products";
 
 export type StoreData = {
@@ -45,8 +45,8 @@ export const stores: StoreData[] = [
     name: "Brad's Trendies",
     logo: "/Logo/Brads Trendies.webp",
     logoInvert: false,
-    mapTop: "18%",
-    mapLeft: "52%",
+    mapTop: "17%",
+    mapLeft: "54%",
     mapPinSide: "right",
     address: "14 Shoe Ave. Sta. Elena, Marikina",
     heroTitle: "Brad's Trendies",
@@ -59,7 +59,7 @@ export const stores: StoreData[] = [
     phone: "0969 619 8222",
     email: "bradstrendies@gmail.com",
     location: "5 Marcelo St. Nangka",
-    facebook: "#",
+    facebook: "https://www.facebook.com/bradstrendies",
     instagram: "#",
     ctaLabel: "See our story",
   },
@@ -82,7 +82,7 @@ export const stores: StoreData[] = [
     phone: "09175003348",
     email: "angelo.shoes@yahoo.com",
     location: "Nara St. Cristina Vil Concepcion Uno",
-    facebook: "#",
+    facebook: "https://www.facebook.com/profile.php?id=61580780770102",
     instagram: "#",
     ctaLabel: "See our story",
   },
@@ -105,8 +105,8 @@ export const stores: StoreData[] = [
     phone: "0993 728 4969",
     email: "topsiderSeacrest@gmail.com",
     location: "10 Helena St. Sta Teresita Malanday",
-    facebook: "#",
-    instagram: "#",
+    facebook: "https://www.facebook.com/seacrestmarikina",
+    instagram: "https://www.instagram.com/seacrestmarikina/?hl=en",
     ctaLabel: "See our story",
   },
 ];
@@ -118,8 +118,8 @@ export const storeOrder: StoreSlug[] = [
 ];
 
 export const sections: StoreSectionSlug[] = [
-  "walk-with-them",
-  "souls-behind-the-soles",
+  "wtw",
+  "sts",
   "their-products",
 ];
 
@@ -132,11 +132,11 @@ export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
     return [
       {
         title: "SOULS BEHIND\nTHE SOLES",
-        href: `/stores/${storeSlug}/souls-behind-the-soles-story`,
+        href: `/stores/${storeSlug}/sbts`,
       },
       {
         title: "HIDE TO HEEL",
-        href: `/stores/${storeSlug}/hide-to-heels`,
+        href: `/stores/${storeSlug}/hth`,
       },
     ];
   }
@@ -144,7 +144,7 @@ export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
   return [
     {
       title: "SOULS BEHIND\nTHE SOLES",
-      href: `/stores/${storeSlug}/souls-behind-the-soles`,
+      href: `/stores/${storeSlug}/sbts`,
     },
     {
       title: "HIDE TO HEEL",
@@ -158,11 +158,11 @@ export function landingCards(storeSlug: StoreSlug): StoreCard[] {
     storeSlug === "nico-angelo" ||
     storeSlug === "brads-trendies" ||
     storeSlug === "seacrest"
-      ? `/stores/${storeSlug}/souls-behind-the-soles-story`
-      : `/stores/${storeSlug}/souls-behind-the-soles`;
+      ? `/stores/${storeSlug}/sbts`
+      : `/stores/${storeSlug}/sbts`;
 
   return [
-    { title: "WALK WITH\nTHEM", href: `/stores/${storeSlug}/walk-with-them` },
+    { title: "WALK WITH\nTHEM", href: `/stores/${storeSlug}/wtw` },
     {
       title: "SOULS BEHIND\nTHE SOLES",
       href: soulsHref,
@@ -174,15 +174,15 @@ export function landingCards(storeSlug: StoreSlug): StoreCard[] {
 export const storeSections: StoreSectionData[] = stores.flatMap((store) => [
   {
     storeSlug: store.slug,
-    sectionSlug: "walk-with-them",
+    sectionSlug: "wtw",
     title: "WALK WITH THEM",
     body: store.intro,
     cards: [],
   },
   {
     storeSlug: store.slug,
-    sectionSlug: "souls-behind-the-soles",
-    title: "SOULS BEHIND THE SOLES",
+    sectionSlug: "sts",
+    title: "SEE OUR STORY",
     body: store.storyIntro,
     cards: sectionCards(store.slug),
   },
