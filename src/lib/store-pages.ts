@@ -31,6 +31,12 @@ export type StoreCard = {
   href: string;
 };
 
+export type StoreProduct = {
+  name: string;
+  price: string;
+  image: string;
+};
+
 export type StoreSectionData = {
   storeSlug: StoreSlug;
   sectionSlug: StoreSectionSlug;
@@ -117,6 +123,90 @@ export const storeOrder: StoreSlug[] = [
   "seacrest",
 ];
 
+export const storeProducts: Record<StoreSlug, StoreProduct[]> = {
+  "brads-trendies": [
+    {
+      name: "GG Leather",
+      price: "₱ 600",
+      image: "/pictures/Brad%20Trendies/GG%20Leather.jpg",
+    },
+    {
+      name: "Slip On",
+      price: "₱ 800",
+      image: "/pictures/Brad%20Trendies/Slip%20On.jpg",
+    },
+    {
+      name: "AA Clogs Leather",
+      price: "₱ 1,500",
+      image: "/pictures/Brad%20Trendies/AA%20Clogs%20Leather.jpg",
+    },
+    {
+      name: "A4 Clogs",
+      price: "₱ 1,500",
+      image: "/pictures/Brad%20Trendies/A4%20Clogs.jpg",
+    },
+    {
+      name: "S1",
+      price: "₱ 2,000",
+      image: "/pictures/Brad%20Trendies/S1.jpg",
+    },
+  ],
+  "nico-angelo": [
+    {
+      name: "Slippers",
+      price: "₱ 900",
+      image: "/pictures/Nico%20Angelo/Slippers.jpg",
+    },
+    {
+      name: "Elevated",
+      price: "₱ 1,000",
+      image: "/pictures/Nico%20Angelo/Elevated.jpg",
+    },
+    {
+      name: "Topsider",
+      price: "₱ 1,000",
+      image: "/pictures/Nico%20Angelo/Topsider.jpg",
+    },
+    {
+      name: "BGH",
+      price: "₱ 1,700",
+      image: "/pictures/Nico%20Angelo/BGH.jpg",
+    },
+    {
+      name: "Wingtip",
+      price: "₱ 2,500",
+      image: "/pictures/Nico%20Angelo/Wingtip.jpg",
+    },
+  ],
+  seacrest: [
+    {
+      name: "Topsider",
+      price: "₱ 2,190",
+      image: "/pictures/Seacrest/Topsider.jpg",
+    },
+    {
+      name: "Slip On",
+      price: "₱ 800-900",
+      image: "/pictures/Seacrest/Slip-on.jpg",
+    },
+    {
+      name: "Loafers",
+      price: "₱ 1,700",
+      image: "/pictures/Seacrest/Loafers.jpg",
+    },
+    {
+      name: "Riderboots",
+      price: "₱ 3,200",
+      image: "/pictures/Seacrest/Riderboots.jpg",
+    },
+    {
+      name: "Captoe",
+      price: "₱ 4,000",
+      image: "/pictures/Seacrest/Captoe.jpg",
+    },
+  ],
+};
+
 export const sections: StoreSectionSlug[] = [
   "wtw",
   "sts",
@@ -202,6 +292,10 @@ export const storeSections: StoreSectionData[] = stores.flatMap((store) => [
 
 export function getStoreBySlug(slug: string): StoreData | undefined {
   return stores.find((store) => store.slug === slug);
+}
+
+export function getStoreProducts(slug: StoreSlug): StoreProduct[] {
+  return storeProducts[slug];
 }
 
 export function getStoreSection(

@@ -1,6 +1,7 @@
 ---
 import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
+import { storeOrder, storeProducts, stores } from "@/lib/store-pages";
 
 type Props = {
   title?: string;
@@ -102,6 +103,24 @@ const schemaGraph = {
     },
   ],
 };
+
+const searchStoreOrder = new Map(storeOrder.map((slug, index) => [slug, index]));
+const globalSearchItems = [...stores]
+  .sort(
+    (a, b) =>
+      (searchStoreOrder.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
+      (searchStoreOrder.get(b.slug) ?? Number.MAX_SAFE_INTEGER),
+  )
+  .flatMap((store) =>
+    storeProducts[store.slug].map((product) => ({
+      storeName: store.name,
+      storeSlug: store.slug,
+      productName: product.name,
+      price: product.price,
+      href: `/stores/${store.slug}/their-products`,
+      searchText: `${store.name} ${product.name} ${product.price}`.toLowerCase(),
+    })),
+  );
 ---
 
 <html lang="en">
@@ -159,6 +178,58 @@ const schemaGraph = {
   </head>
   <body class={bodyClass}>
     <slot />
+
+    <div
+      id="global-search-overlay"
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-0 z-[90] bg-black/45 opacity-0 transition-opacity duration-200"
+    >
+      <button
+        id="global-search-backdrop"
+        type="button"
+        aria-label="Close search"
+        class="absolute inset-0 h-full w-full cursor-default"
+      ></button>
+
+      <div
+        id="global-search-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="global-search-title"
+        class="relative mx-auto mt-20 w-[calc(100%-2rem)] max-w-xl rounded-2xl border border-black/10 bg-card text-card-foreground p-4 shadow-2xl sm:mt-24 sm:p-5"
+      >
+        <div class="flex items-center justify-between gap-4">
+          <p id="global-search-title" class="text-lg font-bold text-[#1f150e] sm:text-xl">
+            Search Their Products
+          </p>
+          <button
+            id="global-search-close"
+            type="button"
+            class="inline-flex h-9 items-center justify-center rounded-md border border-black/15 px-3 text-sm font-semibold transition hover:bg-black hover:text-white"
+          >
+            Close
+          </button>
+        </div>
+
+        <div class="mt-4">
+          <input
+            id="global-search-input"
+            data-slot="input"
+            type="search"
+            placeholder="Search Seacrest, Nico Angelo, Brad's Trendies, Topsider..."
+            class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground border-input h-10 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+          />
+          <p id="global-search-count" class="mt-3 text-sm font-medium text-black/65">
+            {globalSearchItems.length} products indexed
+          </p>
+        </div>
+
+        <div class="mt-4 rounded-xl border border-black/10 bg-[#f8f5f0] p-3">
+          <p class="text-xs font-semibold tracking-[0.14em] uppercase text-[#7f5a36]">Quick results</p>
+          <ul id="global-search-results" class="mt-2 space-y-1.5"></ul>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 
@@ -195,3 +266,132 @@ const schemaGraph = {
     }
   }
 </style>
+
+<script
+  is:inline
+  data-search-items={JSON.stringify(globalSearchItems)}
+>
+  (() => {
+    if (window.__somGlobalSearchInitialized) return;
+    window.__somGlobalSearchInitialized = true;
+
+    const parseItems = () => {
+      const script = document.currentScript;
+      if (!(script instanceof HTMLScriptElement)) return [];
+      try {
+        const raw = script.dataset.searchItems || "[]";
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    };
+
+    const searchItems = parseItems();
+    let cleanup = () => {};
+
+    const init = () => {
+      cleanup();
+
+      const overlay = document.getElementById("global-search-overlay");
+      const closeBackdrop = document.getElementById("global-search-backdrop");
+      const closeButton = document.getElementById("global-search-close");
+      const input = document.getElementById("global-search-input");
+      const results = document.getElementById("global-search-results");
+      const count = document.getElementById("global-search-count");
+      const triggers = Array.from(
+        document.querySelectorAll('button[aria-label*="Search"],button[aria-label*="search"]'),
+      ).filter((button) => button.id !== "global-search-close");
+
+      if (!overlay || !closeBackdrop || !closeButton || !input || !results || !count || !triggers.length) {
+        return;
+      }
+
+      const normalize = (value) => value.toLowerCase().trim();
+
+      const openSearch = () => {
+        overlay.classList.remove("pointer-events-none", "opacity-0");
+        overlay.classList.add("opacity-100");
+        overlay.setAttribute("aria-hidden", "false");
+        document.body.classList.add("overflow-hidden");
+        requestAnimationFrame(() => input.focus());
+      };
+
+      const closeSearch = () => {
+        overlay.classList.remove("opacity-100");
+        overlay.classList.add("pointer-events-none", "opacity-0");
+        overlay.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("overflow-hidden");
+      };
+
+      const renderResults = (query) => {
+        const matches = searchItems.filter((item) => !query || item.searchText.includes(query));
+        count.textContent = `${matches.length} product${matches.length === 1 ? "" : "s"} found`;
+        results.innerHTML = "";
+
+        if (!matches.length) {
+          const item = document.createElement("li");
+          item.className = "text-sm font-medium text-black/60";
+          item.textContent = "No quick matches";
+          results.appendChild(item);
+          return;
+        }
+
+        matches.slice(0, 8).forEach((match) => {
+          const item = document.createElement("li");
+          const link = document.createElement("a");
+          link.href = `/stores?q=${encodeURIComponent(query || match.productName)}`;
+          link.className =
+            "block rounded-md border border-black/10 bg-white px-3 py-2 text-sm font-semibold text-[#1f150e] transition hover:border-black/35 hover:bg-[#f0e8de]";
+          link.textContent = `${match.productName} · ${match.storeName}`;
+          item.appendChild(link);
+          results.appendChild(item);
+        });
+      };
+
+      const onTriggerClick = (event) => {
+        const button = event.currentTarget;
+        if (!(button instanceof HTMLButtonElement)) return;
+        if (button.id === "global-search-close") return;
+        event.preventDefault();
+        openSearch();
+      };
+
+      const onInput = () => renderResults(normalize(input.value));
+      const onClose = () => closeSearch();
+      const onOverlayClick = (event) => {
+        if (event.target === closeBackdrop) closeSearch();
+      };
+      const onDocumentKeydown = (event) => {
+        if (event.key === "Escape" && overlay.getAttribute("aria-hidden") === "false") {
+          closeSearch();
+        }
+        if (event.key === "Enter" && overlay.getAttribute("aria-hidden") === "false") {
+          const query = normalize(input.value);
+          if (query) {
+            window.location.href = `/stores?q=${encodeURIComponent(query)}`;
+          }
+        }
+      };
+
+      renderResults("");
+      triggers.forEach((trigger) => trigger.addEventListener("click", onTriggerClick));
+      closeButton.addEventListener("click", onClose);
+      closeBackdrop.addEventListener("click", onOverlayClick);
+      input.addEventListener("input", onInput);
+      document.addEventListener("keydown", onDocumentKeydown);
+
+      cleanup = () => {
+        triggers.forEach((trigger) => trigger.removeEventListener("click", onTriggerClick));
+        closeButton.removeEventListener("click", onClose);
+        closeBackdrop.removeEventListener("click", onOverlayClick);
+        input.removeEventListener("input", onInput);
+        document.removeEventListener("keydown", onDocumentKeydown);
+        document.body.classList.remove("overflow-hidden");
+      };
+    };
+
+    init();
+    document.addEventListener("astro:page-load", init);
+  })();
+</script>
