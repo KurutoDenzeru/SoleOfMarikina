@@ -21,6 +21,7 @@ type Props = {
   rightAction?: NavAction;
   centerImageSrc?: string;
   centerImageAlt?: string;
+  centerImageHref?: string;
   centerImageClass?: string;
   containerClass?: string;
 };
@@ -38,6 +39,7 @@ const {
   },
   centerImageSrc,
   centerImageAlt = "Brand",
+  centerImageHref = "/",
   centerImageClass = "h-14 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]",
   containerClass = "grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8",
 } = Astro.props as Props;
@@ -92,13 +94,19 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
   <slot name="center">
     {
       centerImageSrc ? (
-        <img
-          src={centerImageSrc}
-          alt={centerImageAlt}
-          class={centerImageClass}
-          loading="eager"
-          decoding="async"
-        />
+        <a
+          href={centerImageHref}
+          aria-label="Go to homepage"
+          class="justify-self-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70"
+        >
+          <img
+            src={centerImageSrc}
+            alt={centerImageAlt}
+            class={centerImageClass}
+            loading="eager"
+            decoding="async"
+          />
+        </a>
       ) : (
         <span class="text-base font-semibold">Brand</span>
       )

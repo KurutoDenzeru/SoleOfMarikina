@@ -98,13 +98,27 @@ const defaultMapBackground = "/map/marikina_2k.png";
     </nav>
   </aside>
 
-  <article class="relative min-h-screen w-full overflow-hidden bg-[#d8ae73]">
+  <article
+    id="hero-stage"
+    class="relative min-h-screen w-full overflow-hidden bg-[#d8ae73]"
+  >
     <div
       id="map-image-layer"
       class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 ease-out will-change-transform"
       style={`background-image:url('${defaultMapBackground}');`}
       aria-hidden="true"
-    ></div>
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute inset-0 z-[5] hidden md:block bg-[radial-gradient(58%_48%_at_50%_35%,rgba(255,218,161,0.18)_0%,rgba(255,218,161,0)_70%)]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute inset-0 z-[5] hidden md:block bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.13)_100%)]"
+      aria-hidden="true"
+    >
+    </div>
 
     <MobileTopNavbar
       leftAction={{
@@ -129,6 +143,24 @@ const defaultMapBackground = "/map/marikina_2k.png";
     />
 
     <div class="relative z-20 min-h-[calc(100svh-7rem)]">
+      <div
+        id="desktop-guide"
+        class="pointer-events-none absolute inset-x-0 top-6 z-30 hidden justify-center transition-opacity duration-200 md:flex"
+      >
+        <div
+          class="rounded-xl border border-white/25 bg-black/16 px-5 py-2.5 text-center text-white backdrop-blur-md lg:px-6 lg:py-3"
+        >
+          <p
+            class="text-[11px] font-semibold tracking-[0.22em] uppercase text-white/75 lg:text-xs"
+          >
+            Discover Marikina Shoemakers
+          </p>
+          <p class="mt-1 text-sm font-medium text-white/95 lg:text-base">
+            Select Brad's Trendies, Nico Angelo, or Seacrest to open all 3 story
+            paths
+          </p>
+        </div>
+      </div>
       <button
         id="store-backdrop"
         type="button"
@@ -136,11 +168,14 @@ const defaultMapBackground = "/map/marikina_2k.png";
         class="pointer-events-none absolute inset-0 z-25 bg-transparent"
       ></button>
 
-      <div id="store-trigger-layer" class="absolute inset-0 z-20 transition-all duration-300 ease-out">
+      <div
+        id="store-trigger-layer"
+        class="absolute inset-0 z-20 transition-all duration-300 ease-out"
+      >
         {
           stores.map((store) => (
             <div
-              class="absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-2"
+              class="absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 md:gap-3"
               style={`top:${store.top};left:${store.left};`}
             >
               {store.pinSide === "left" && (
@@ -148,7 +183,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
                   src="/icons/Pin.png"
                   alt=""
                   aria-hidden="true"
-                  class="h-8 w-8 shrink-0 object-contain"
+                  class="h-8 w-8 shrink-0 object-contain md:h-9 md:w-9 md:drop-shadow-[0_4px_10px_rgba(0,0,0,0.28)] lg:h-10 lg:w-10"
                   loading="lazy"
                   decoding="async"
                 />
@@ -159,7 +194,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
                 aria-controls={`store-panel-${store.id}`}
                 aria-expanded="false"
                 aria-pressed="false"
-                class="cursor-pointer rounded-full bg-black px-5 py-1.5 text-md leading-none font-semibold tracking-tight whitespace-nowrap text-white transition-all duration-300 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70 touch-manipulation sm:px-6 sm:text-[17px]"
+                class="cursor-pointer rounded-full bg-black px-5 py-1.5 text-md leading-none font-semibold tracking-tight whitespace-nowrap text-white transition-all duration-300 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70 touch-manipulation sm:px-6 sm:text-[17px] md:border md:border-white/20 md:bg-black/88 md:px-7 md:py-2 md:text-lg md:shadow-[0_6px_18px_rgba(0,0,0,0.26)] lg:px-8 lg:text-xl"
               >
                 {store.label}
               </button>
@@ -168,7 +203,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
                   src="/icons/Pin.png"
                   alt=""
                   aria-hidden="true"
-                  class="h-8 w-8 shrink-0 object-contain"
+                  class="h-8 w-8 shrink-0 object-contain md:h-9 md:w-9 md:drop-shadow-[0_4px_10px_rgba(0,0,0,0.28)] lg:h-10 lg:w-10"
                   loading="lazy"
                   decoding="async"
                 />
@@ -196,6 +231,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
   (() => {
     if (window.__somHeroBindingsInitialized) return;
     window.__somHeroBindingsInitialized = true;
+    const activeStoreKey = "som:active-store";
 
     let cleanup = () => {};
 
@@ -207,6 +243,8 @@ const defaultMapBackground = "/map/marikina_2k.png";
       const overlay = document.getElementById("menu-overlay");
       const sidebar = document.getElementById("mobile-sidebar");
       const heroStickyNav = document.querySelector(".hero-sticky-nav");
+      const heroStage = document.getElementById("hero-stage");
+      const desktopGuide = document.getElementById("desktop-guide");
       const mapImageLayer = document.getElementById("map-image-layer");
       const storeBackdrop = document.getElementById("store-backdrop");
       const storeTriggerLayer = document.getElementById("store-trigger-layer");
@@ -218,11 +256,20 @@ const defaultMapBackground = "/map/marikina_2k.png";
       const isOpen = () => openButton.getAttribute("aria-expanded") === "true";
       const getFocusable = () =>
         sidebar.querySelectorAll("a[href], button:not([disabled])");
-      const storeTriggers = Array.from(document.querySelectorAll("[data-store-trigger]"));
-      const storePanels = Array.from(document.querySelectorAll("[data-store-panel]"));
+      const storeTriggers = Array.from(
+        document.querySelectorAll("[data-store-trigger]"),
+      );
+      const storePanels = Array.from(
+        document.querySelectorAll("[data-store-panel]"),
+      );
 
-      const closeStorePanels = () => {
+      const closeStorePanels = (clearPersisted = true) => {
         activeStoreId = null;
+        if (clearPersisted) {
+          try {
+            sessionStorage.removeItem(activeStoreKey);
+          } catch {}
+        }
         storeTriggers.forEach((trigger) => {
           trigger.setAttribute("aria-expanded", "false");
           trigger.setAttribute("aria-pressed", "false");
@@ -235,13 +282,13 @@ const defaultMapBackground = "/map/marikina_2k.png";
             "opacity-100",
             "translate-y-0",
             "scale-100",
-            "pointer-events-auto"
+            "pointer-events-auto",
           );
           panel.classList.add(
             "opacity-0",
             "translate-y-8",
             "scale-95",
-            "pointer-events-none"
+            "pointer-events-none",
           );
         });
 
@@ -253,7 +300,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
           storeTriggerLayer.classList.remove(
             "opacity-0",
             "pointer-events-none",
-            "translate-y-1"
+            "translate-y-1",
           );
           storeTriggerLayer.classList.add("opacity-100");
         }
@@ -261,6 +308,13 @@ const defaultMapBackground = "/map/marikina_2k.png";
         if (mapImageLayer instanceof HTMLElement) {
           mapImageLayer.style.transformOrigin = "50% 50%";
           mapImageLayer.style.transform = "scale(1)";
+        }
+        if (heroStage instanceof HTMLElement) {
+          heroStage.classList.remove("md:saturate-110");
+        }
+        if (desktopGuide instanceof HTMLElement) {
+          desktopGuide.classList.remove("opacity-0");
+          desktopGuide.classList.add("opacity-100");
         }
       };
 
@@ -292,13 +346,17 @@ const defaultMapBackground = "/map/marikina_2k.png";
 
       const openStorePanel = (storeId, triggerEl) => {
         const targetPanel = storePanels.find(
-          (panel) => panel.getAttribute("data-store-panel") === storeId
+          (panel) => panel.getAttribute("data-store-panel") === storeId,
         );
         if (!targetPanel) return;
 
         activeStoreId = storeId;
+        try {
+          sessionStorage.setItem(activeStoreKey, storeId);
+        } catch {}
         storeTriggers.forEach((trigger) => {
-          const isTarget = trigger.getAttribute("data-store-trigger") === storeId;
+          const isTarget =
+            trigger.getAttribute("data-store-trigger") === storeId;
           trigger.setAttribute("aria-expanded", isTarget ? "true" : "false");
           trigger.setAttribute("aria-pressed", isTarget ? "true" : "false");
           trigger.classList.toggle("scale-105", isTarget);
@@ -328,7 +386,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
           storeTriggerLayer.classList.add(
             "opacity-0",
             "pointer-events-none",
-            "translate-y-1"
+            "translate-y-1",
           );
         }
 
@@ -338,6 +396,13 @@ const defaultMapBackground = "/map/marikina_2k.png";
           const focusLeft = parent?.style.left || "50%";
           mapImageLayer.style.transformOrigin = `${focusLeft} ${focusTop}`;
           mapImageLayer.style.transform = "scale(1.6)";
+        }
+        if (heroStage instanceof HTMLElement) {
+          heroStage.classList.add("md:saturate-110");
+        }
+        if (desktopGuide instanceof HTMLElement) {
+          desktopGuide.classList.remove("opacity-100");
+          desktopGuide.classList.add("opacity-0");
         }
 
         const panelRect = targetPanel.getBoundingClientRect();
@@ -363,23 +428,25 @@ const defaultMapBackground = "/map/marikina_2k.png";
           {
             duration: 460,
             easing: "cubic-bezier(0.2, 0.75, 0.2, 1)",
-          }
+          },
         );
 
-        targetPanel.querySelectorAll("[data-store-card]").forEach((card, index) => {
-          card.animate(
-            [
-              { opacity: 0, transform: "translateY(30px) scale(0.95)" },
-              { opacity: 1, transform: "translateY(0) scale(1)" },
-            ],
-            {
-              duration: 420,
-              delay: 90 + index * 70,
-              easing: "cubic-bezier(0.2, 0.75, 0.2, 1)",
-              fill: "both",
-            }
-          );
-        });
+        targetPanel
+          .querySelectorAll("[data-store-card]")
+          .forEach((card, index) => {
+            card.animate(
+              [
+                { opacity: 0, transform: "translateY(30px) scale(0.95)" },
+                { opacity: 1, transform: "translateY(0) scale(1)" },
+              ],
+              {
+                duration: 420,
+                delay: 90 + index * 70,
+                easing: "cubic-bezier(0.2, 0.75, 0.2, 1)",
+                fill: "both",
+              },
+            );
+          });
       };
 
       const onDocumentKeydown = (event) => {
@@ -398,7 +465,8 @@ const defaultMapBackground = "/map/marikina_2k.png";
 
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
-        if (!(first instanceof HTMLElement) || !(last instanceof HTMLElement)) return;
+        if (!(first instanceof HTMLElement) || !(last instanceof HTMLElement))
+          return;
 
         if (event.shiftKey && document.activeElement === first) {
           event.preventDefault();
@@ -432,13 +500,27 @@ const defaultMapBackground = "/map/marikina_2k.png";
         trigger.addEventListener("click", onTriggerClick);
         return { trigger, onTriggerClick };
       });
+      const panelBackgroundHandlers = storePanels.map((panel) => {
+        const onPanelClick = (event) => {
+          if (event.target === panel) {
+            closeStorePanels();
+          }
+        };
+        panel.addEventListener("click", onPanelClick);
+        return { panel, onPanelClick };
+      });
 
       const sidebarLinks = Array.from(sidebar.querySelectorAll("a[href]"));
       sidebarLinks.forEach((link) => link.addEventListener("click", closeMenu));
 
+      const onOverlayClick = () => {
+        closeMenu();
+        closeStorePanels();
+      };
+
       openButton.addEventListener("click", openMenu);
       closeButton.addEventListener("click", closeMenu);
-      overlay.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", onOverlayClick);
       document.addEventListener("keydown", onDocumentKeydown);
       sidebar.addEventListener("keydown", onSidebarKeydown);
       window.addEventListener("scroll", onWindowScroll, { passive: true });
@@ -447,23 +529,40 @@ const defaultMapBackground = "/map/marikina_2k.png";
       }
 
       closeMenu();
-      closeStorePanels();
+      closeStorePanels(false);
       onWindowScroll();
+      try {
+        const persistedStoreId = sessionStorage.getItem(activeStoreKey);
+        if (persistedStoreId) {
+          const persistedTrigger = storeTriggers.find(
+            (trigger) =>
+              trigger.getAttribute("data-store-trigger") === persistedStoreId,
+          );
+          if (persistedTrigger) {
+            openStorePanel(persistedStoreId, persistedTrigger);
+          }
+        }
+      } catch {}
 
       cleanup = () => {
         document.body.classList.remove("overflow-hidden");
         openButton.removeEventListener("click", openMenu);
         closeButton.removeEventListener("click", closeMenu);
-        overlay.removeEventListener("click", closeMenu);
+        overlay.removeEventListener("click", onOverlayClick);
         document.removeEventListener("keydown", onDocumentKeydown);
         sidebar.removeEventListener("keydown", onSidebarKeydown);
         window.removeEventListener("scroll", onWindowScroll);
-        sidebarLinks.forEach((link) => link.removeEventListener("click", closeMenu));
+        sidebarLinks.forEach((link) =>
+          link.removeEventListener("click", closeMenu),
+        );
         if (storeBackdrop) {
           storeBackdrop.removeEventListener("click", closeStorePanels);
         }
         triggerHandlers.forEach(({ trigger, onTriggerClick }) => {
           trigger.removeEventListener("click", onTriggerClick);
+        });
+        panelBackgroundHandlers.forEach(({ panel, onPanelClick }) => {
+          panel.removeEventListener("click", onPanelClick);
         });
       };
     };
