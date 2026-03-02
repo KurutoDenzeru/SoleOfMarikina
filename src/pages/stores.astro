@@ -1,35 +1,182 @@
 ---
 import Footer from "@/components/Footer.astro";
-import { stores } from "@/lib/store-pages";
+import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { storeOrder, storeProducts, stores } from "@/lib/store-pages";
+
+const slugOrder = new Map(storeOrder.map((slug, index) => [slug, index]));
+
+const toToken = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const storesWithProducts = [...stores]
+  .sort((a, b) => (slugOrder.get(a.slug) ?? 99) - (slugOrder.get(b.slug) ?? 99))
+  .map((store) => ({
+    ...store,
+    products: storeProducts[store.slug].map((product) => ({
+      ...product,
+      id: `${store.slug}-${toToken(product.name)}`,
+      searchText: `${store.name} ${product.name} ${product.price}`.toLowerCase(),
+    })),
+  }));
 ---
 
-<BaseLayout title="Stores | Sole of Marikina">
-  <div class="flex min-h-screen flex-col bg-[#f4f4f4] text-black">
-    <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-16 sm:px-8">
-      <nav aria-label="Breadcrumb">
-        <a href="/" class="text-base font-medium underline underline-offset-4">Home</a>
-      </nav>
-      <h1 class="mt-6 text-4xl font-bold tracking-tight">Stores</h1>
-      <p class="mt-4 max-w-prose text-lg text-black/75">
-        Explore each maker page and jump into Walk With Them, Souls Behind the Soles, and Their Products.
-      </p>
+<BaseLayout title="Stores | Their Products">
+  <div class="min-h-screen bg-[#f6f2ec] text-[#17120d]">
+    <section class="relative">
+      <div
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_44%_at_50%_0%,rgba(212,150,75,0.16)_0%,rgba(212,150,75,0)_100%),linear-gradient(180deg,rgba(255,255,255,0.54)_0%,rgba(246,242,236,1)_52%)]"
+        aria-hidden="true"
+      ></div>
+      <MobileTopNavbar
+        leftAction={{
+          type: "link",
+          icon: "move-left",
+          ariaLabel: "Back to homepage",
+          href: "/",
+          dynamicBack: true,
+          className: "rounded-md",
+        }}
+        rightAction={{
+          type: "button",
+          icon: "search",
+          ariaLabel: "Search store products",
+          className: "rounded-md",
+        }}
+        centerImageSrc="/Logo/brand.webp"
+        centerImageAlt="Sole of Marikina"
+        centerImageClass="h-14 w-auto max-w-[220px] object-contain sm:h-18 sm:max-w-[260px]"
+        containerClass="sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center border-b border-black/5 bg-[#f6f2ec]/92 px-6 pt-5 pb-3 text-black backdrop-blur-md sm:px-8 sm:pt-6 sm:pb-3"
+      />
 
-      <ul class="mt-8 space-y-4">
-        {
-          stores.map((store) => (
-            <li>
-              <a
-                href={`/stores/${store.slug}/wtw`}
-                class="block rounded-xl border border-black/10 bg-white px-5 py-4 text-xl font-semibold transition hover:border-black/30"
+      <main class="relative z-10 mx-auto w-full max-w-[430px] px-6 pb-16 sm:px-8 md:max-w-3xl lg:max-w-5xl lg:px-10">
+        <header class="pt-6 sm:pt-8 md:pt-10">
+          <p class="text-xs font-semibold tracking-[0.24em] uppercase text-[#6d4b2b] sm:text-sm">
+            Stores Landing
+          </p>
+          <h1 class="mt-3 max-w-[12ch] text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-[#1f150e] sm:text-5xl md:text-6xl">
+            Their Products
+          </h1>
+          <p class="mt-5 max-w-3xl text-sm leading-relaxed font-medium text-black/70 sm:text-base md:text-lg">
+            Explore product lines from Brad&apos;s Trendies, Nico Angelo, and Seacrest in one place.
+            Use the search button in the navbar to instantly filter by store name or product.
+          </p>
+        </header>
+
+        <section class="mt-10 space-y-10 sm:mt-12 md:space-y-12">
+          {
+            storesWithProducts.map((store) => (
+              <article
+                data-store-section
+                data-store-name={store.name.toLowerCase()}
+                class="overflow-hidden rounded-3xl border border-black/10 bg-white/88 shadow-[0_14px_38px_rgba(23,18,13,0.08)] backdrop-blur-sm"
               >
-                {store.name}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </main>
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-black/8 px-5 py-4 sm:px-7 sm:py-5">
+                  <div>
+                    <p class="text-xs font-semibold tracking-[0.2em] uppercase text-[#8d6540] sm:text-sm">
+                      {store.name}
+                    </p>
+                    <p class="mt-1 text-sm font-medium text-black/65 sm:text-base">
+                      {store.products.length} products curated
+                    </p>
+                  </div>
+                  <a
+                    href={`/stores/${store.slug}/their-products`}
+                    class="inline-flex items-center justify-center rounded-full border border-black/20 px-5 py-2 text-sm font-semibold text-black transition hover:border-black/40 hover:bg-black hover:text-white sm:text-base"
+                  >
+                    View Store
+                  </a>
+                </div>
+
+                <div class="grid gap-4 p-4 sm:grid-cols-2 sm:gap-5 sm:p-6 lg:grid-cols-3">
+                  {
+                    store.products.map((product) => (
+                      <a
+                        id={product.id}
+                        href={`/stores/${store.slug}/their-products`}
+                        data-product-card
+                        data-search-text={product.searchText}
+                        data-product-name={product.name}
+                        data-store-name={store.name}
+                        data-product-price={product.price}
+                        class="group relative block h-64 overflow-hidden rounded-2xl border border-black/5 bg-black shadow-[0_10px_28px_rgba(0,0,0,0.24)] sm:h-72"
+                      >
+                        <img
+                          src={product.image}
+                          alt={`${store.name} - ${product.name}`}
+                          class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <div
+                          class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.56)_0%,rgba(0,0,0,0.12)_44%,rgba(0,0,0,0.9)_100%)]"
+                          aria-hidden="true"
+                        ></div>
+                        <div class="absolute inset-x-4 bottom-4 text-white sm:inset-x-5 sm:bottom-5">
+                          <p class="text-2xl leading-none font-extrabold tracking-tight sm:text-3xl">
+                            {product.name}
+                          </p>
+                          <p class="mt-1 text-base font-semibold text-white/95 sm:text-lg">{product.price}</p>
+                        </div>
+                      </a>
+                    ))
+                  }
+                </div>
+              </article>
+            ))
+          }
+
+          <div
+            id="stores-empty-state"
+            class="hidden rounded-3xl border border-dashed border-black/20 bg-white/70 px-6 py-12 text-center"
+          >
+            <p class="text-2xl font-bold text-[#1f150e] sm:text-3xl">No products found</p>
+            <p class="mt-3 text-sm font-medium text-black/70 sm:text-base">
+              Try another search term like <span class="font-semibold">Seacrest</span> or
+              <span class="font-semibold"> Topsider</span>.
+            </p>
+          </div>
+        </section>
+      </main>
+    </section>
+
     <Footer />
   </div>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    if (window.__somStoresPageQueryFilterInitialized) return;
+    window.__somStoresPageQueryFilterInitialized = true;
+
+    const init = () => {
+      const params = new URLSearchParams(window.location.search);
+      const query = (params.get("q") || "").toLowerCase().trim();
+      const cards = Array.from(document.querySelectorAll("[data-product-card]"));
+      const sections = Array.from(document.querySelectorAll("[data-store-section]"));
+      const emptyState = document.getElementById("stores-empty-state");
+      if (!cards.length || !sections.length || !emptyState) return;
+
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const searchable = card.getAttribute("data-search-text") || "";
+        const isMatch = !query || searchable.includes(query);
+        card.classList.toggle("hidden", !isMatch);
+        if (isMatch) visibleCount += 1;
+      });
+
+      sections.forEach((section) => {
+        const hasVisibleCards = section.querySelector("[data-product-card]:not(.hidden)");
+        section.classList.toggle("hidden", !hasVisibleCards);
+      });
+
+      emptyState.classList.toggle("hidden", visibleCount > 0);
+    };
+
+    init();
+    document.addEventListener("astro:page-load", init);
+  })();
+</script>
