@@ -70,11 +70,13 @@ const {
         {/* Email Input Form */}
         <form
           onsubmit={onSubscribe}
+          data-footer-email-form
           class="flex h-12 w-full items-center rounded-full border-2 border-white/80 bg-transparent px-5 md:h-14 md:px-6"
         >
           <label for="footer-email" class="sr-only">Email</label>
           <input
             id="footer-email"
+            data-footer-email-input
             type="email"
             placeholder="Email"
             class="min-w-0 flex-1 bg-transparent text-sm text-white placeholder:text-white/70 focus:outline-none md:text-base"
@@ -100,3 +102,53 @@ const {
     </div>
   </div>
 </footer>
+
+<script is:inline>
+  (() => {
+    if (window.__somFooterEmailInitialized) return;
+    window.__somFooterEmailInitialized = true;
+
+    const init = () => {
+      const forms = Array.from(document.querySelectorAll("[data-footer-email-form]"));
+      const handlers = forms.map((form) => {
+        const input = form.querySelector("[data-footer-email-input]");
+        if (!(input instanceof HTMLInputElement)) return null;
+
+        const onSubmit = (event) => {
+          event.preventDefault();
+          const senderEmail = input.value.trim();
+          const to = "yapakkolektib@gmail.com";
+          const subjectRaw = "Step with us";
+          const subject = encodeURIComponent(subjectRaw);
+          const bodyRaw =
+            `Hello Yapak Kolektib,\n\nI would like to connect.\n\nMy email: ${senderEmail || "-"}\n`,
+          const body = encodeURIComponent(bodyRaw);
+          const gmailComposeUrl =
+            `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${subject}&body=${body}`;
+          const mailtoUrl = `mailto:${to}?subject=${subject}&body=${body}`;
+          const opened = window.open(gmailComposeUrl, "_blank", "noopener,noreferrer");
+          if (!opened) {
+            window.location.assign(mailtoUrl);
+          }
+        };
+
+        form.addEventListener("submit", onSubmit);
+        return { form, onSubmit };
+      });
+
+      document.addEventListener(
+        "astro:before-swap",
+        () => {
+          handlers.forEach((entry) => {
+            if (!entry) return;
+            entry.form.removeEventListener("submit", entry.onSubmit);
+          });
+        },
+        { once: true },
+      );
+    };
+
+    init();
+    document.addEventListener("astro:page-load", init);
+  })();
+</script>
