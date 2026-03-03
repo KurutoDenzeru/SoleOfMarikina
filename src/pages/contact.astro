@@ -2,6 +2,10 @@
 import Footer from "@/components/Footer.astro";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const contactEmail = "yapakkolektib@gmail.com";
+const contactLocation = "05 Samson Road, Caloocan City, Metro Manila, Philippines";
+const contactLocationQuery = encodeURIComponent(contactLocation);
 ---
 
 <BaseLayout title="Contact | Sole of Marikina">
@@ -36,14 +40,13 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <main class="relative z-10 mx-auto w-full max-w-[430px] px-6 pb-16 sm:px-8 md:max-w-3xl lg:max-w-5xl lg:px-10">
         <header class="pt-6 sm:pt-8 md:pt-10">
           <p class="text-xs font-semibold tracking-[0.24em] uppercase text-[#7a5436] sm:text-sm">
-            Contact Template
+            Contact
           </p>
           <h1 class="mt-3 max-w-[10ch] text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-[#2a1a11] sm:text-4xl md:text-5xl lg:text-6xl">
             Let&apos;s Connect
           </h1>
           <p class="mt-5 max-w-3xl text-sm leading-relaxed font-medium text-black/70 sm:text-base md:text-lg">
-            This is a boilerplate Contact page. Replace the fields and destination details once your actual
-            contact flow and messaging are finalized.
+            Reach out to Yapak Kolektib for collaborations, features, and inquiries related to Sole of Marikina.
           </p>
         </header>
 
@@ -56,15 +59,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
             <div class="mt-4 space-y-4 text-sm sm:text-base">
               <div class="rounded-xl border border-white/15 bg-white/5 px-4 py-3">
                 <p class="font-semibold text-white">Email</p>
-                <p class="mt-1 font-medium text-white/80">hello@placeholder.com</p>
-              </div>
-              <div class="rounded-xl border border-white/15 bg-white/5 px-4 py-3">
-                <p class="font-semibold text-white">Phone</p>
-                <p class="mt-1 font-medium text-white/80">+63 000 000 0000</p>
+                <p class="mt-1 font-medium text-white/80">{contactEmail}</p>
               </div>
               <div class="rounded-xl border border-white/15 bg-white/5 px-4 py-3">
                 <p class="font-semibold text-white">Address</p>
-                <p class="mt-1 font-medium text-white/80">Marikina City, Philippines</p>
+                <p class="mt-1 font-medium text-white/80">{contactLocation}</p>
               </div>
             </div>
           </aside>
@@ -73,18 +72,20 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
             <p class="text-xs font-semibold tracking-[0.18em] uppercase text-[#8e6340] sm:text-sm">
               Send a Message
             </p>
-            <form class="mt-4 grid gap-4">
+            <form id="contact-email-form" class="mt-4 grid gap-4">
               <label class="grid gap-2">
-                <span class="text-sm font-semibold text-black/70">Full Name</span>
+                <span class="text-sm font-semibold text-black/70">Subject</span>
                 <input
+                  id="contact-subject"
                   type="text"
-                  placeholder="Your name"
+                  placeholder="Your subject"
                   class="h-11 rounded-lg border border-black/15 bg-transparent px-3 text-sm font-medium outline-none transition focus-visible:border-black/35 focus-visible:ring-2 focus-visible:ring-black/15 sm:text-base"
                 />
               </label>
               <label class="grid gap-2">
                 <span class="text-sm font-semibold text-black/70">Email Address</span>
                 <input
+                  id="contact-email"
                   type="email"
                   placeholder="you@email.com"
                   class="h-11 rounded-lg border border-black/15 bg-transparent px-3 text-sm font-medium outline-none transition focus-visible:border-black/35 focus-visible:ring-2 focus-visible:ring-black/15 sm:text-base"
@@ -93,18 +94,34 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
               <label class="grid gap-2">
                 <span class="text-sm font-semibold text-black/70">Message</span>
                 <textarea
+                  id="contact-message"
                   rows={5}
                   placeholder="Tell us about your inquiry..."
                   class="rounded-lg border border-black/15 bg-transparent px-3 py-2 text-sm font-medium outline-none transition focus-visible:border-black/35 focus-visible:ring-2 focus-visible:ring-black/15 sm:text-base"
                 ></textarea>
               </label>
               <button
-                type="button"
-                class="mt-1 inline-flex items-center justify-center rounded-full bg-black px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85 sm:py-3 sm:text-base"
+                type="submit"
+                class="mt-1 inline-flex items-center justify-center rounded-full bg-black px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-black/85 active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#efe8df] touch-manipulation sm:py-3 sm:text-base"
               >
                 Send Inquiry
               </button>
             </form>
+          </article>
+        </section>
+
+        <section class="mt-8 sm:mt-10">
+          <article class="overflow-hidden rounded-3xl border border-black/10 bg-white/86 p-3 shadow-sm sm:p-4">
+            <p class="px-2 pb-3 text-sm font-semibold uppercase tracking-[0.12em] text-[#8e6340] sm:text-base">
+              Visit Us
+            </p>
+            <iframe
+              title="Sole of Marikina location map"
+              src={`https://maps.google.com/maps?q=${contactLocationQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              class="h-72 w-full rounded-2xl border-0 sm:h-80 md:h-[22rem]"
+            ></iframe>
           </article>
         </section>
       </main>
@@ -113,3 +130,49 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     <Footer />
   </div>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    if (window.__somContactEmailFormInitialized) return;
+    window.__somContactEmailFormInitialized = true;
+
+    const init = () => {
+      const form = document.getElementById("contact-email-form");
+      const subjectInput = document.getElementById("contact-subject");
+      const emailInput = document.getElementById("contact-email");
+      const messageInput = document.getElementById("contact-message");
+      if (!form || !subjectInput || !emailInput || !messageInput) return;
+
+      const onSubmit = (event) => {
+        event.preventDefault();
+        const subjectValue = subjectInput.value.trim();
+        const message = messageInput.value.trim();
+
+        const to = "yapakkolektib@gmail.com";
+        const subjectRaw = subjectValue || "Sole of Marikina Inquiry";
+        const subject = encodeURIComponent(subjectRaw);
+        const encodedBody = encodeURIComponent(message);
+        const gmailComposeUrl =
+          `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${subject}&body=${encodedBody}`;
+        const mailtoUrl = `mailto:${to}?subject=${subject}&body=${encodedBody}`;
+        const opened = window.open(gmailComposeUrl, "_blank", "noopener,noreferrer");
+        if (!opened) {
+          window.location.assign(mailtoUrl);
+        }
+      };
+
+      form.addEventListener("submit", onSubmit);
+
+      document.addEventListener(
+        "astro:before-swap",
+        () => {
+          form.removeEventListener("submit", onSubmit);
+        },
+        { once: true },
+      );
+    };
+
+    init();
+    document.addEventListener("astro:page-load", init);
+  })();
+</script>
