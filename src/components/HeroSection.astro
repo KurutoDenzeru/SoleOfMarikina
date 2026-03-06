@@ -56,7 +56,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
     aria-modal="true"
     aria-hidden="true"
     aria-labelledby="mobile-sidebar-title"
-    class="fixed left-0 top-0 z-[60] flex h-full w-[71%] max-w-85 -translate-x-full flex-col bg-black/90 px-6 py-6 text-white transition-transform duration-300 ease-out"
+    class="fixed left-0 top-0 z-[60] flex h-full w-[71%] max-w-85 -translate-x-full flex-col overflow-y-auto bg-black/90 px-6 py-6 text-white transition-transform duration-300 ease-out"
   >
     <h2 id="mobile-sidebar-title" class="sr-only">Main navigation</h2>
     <div class="mb-16 flex items-center justify-start">
@@ -70,7 +70,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
       </button>
     </div>
 
-    <nav aria-label="Main navigation" class="mt-1">
+    <nav aria-label="Main navigation" class="mt-1 flex-1">
       <ul class="space-y-7">
         {
           navLinks.map((link) => {
