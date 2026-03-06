@@ -73,7 +73,7 @@ const schemaGraph = {
       url: siteRootUrl,
       logo: toAbsoluteUrl("/Logo/brand.webp"),
       image: ogImageUrl,
-      email: "mailto:yapakkolektib@gmail.com",
+      email: "mailto:kolektibyapak@gmail.com",
       address: {
         "@type": "PostalAddress",
         streetAddress: "05 Samson Road",
@@ -104,7 +104,9 @@ const schemaGraph = {
   ],
 };
 
-const searchStoreOrder = new Map(storeOrder.map((slug, index) => [slug, index]));
+const searchStoreOrder = new Map(
+  storeOrder.map((slug, index) => [slug, index]),
+);
 const globalSearchItems = [...stores]
   .sort(
     (a, b) =>
@@ -118,7 +120,8 @@ const globalSearchItems = [...stores]
       productName: product.name,
       price: product.price,
       href: `/stores/${store.slug}/their-products`,
-      searchText: `${store.name} ${product.name} ${product.price}`.toLowerCase(),
+      searchText:
+        `${store.name} ${product.name} ${product.price}`.toLowerCase(),
     })),
   );
 ---
@@ -136,12 +139,7 @@ const globalSearchItems = [...stores]
     }
 
     <link rel="icon" type="image/webp" href="/logo-favicon.webp" />
-    <link
-      rel="icon"
-      type="image/ico"
-      sizes="48x48"
-      href="/favicon.ico"
-    />
+    <link rel="icon" type="image/ico" sizes="48x48" href="/favicon.ico" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/Logo/brand.webp" />
@@ -188,8 +186,7 @@ const globalSearchItems = [...stores]
         id="global-search-backdrop"
         type="button"
         aria-label="Close search"
-        class="absolute inset-0 h-full w-full cursor-default"
-      ></button>
+        class="absolute inset-0 h-full w-full cursor-default"></button>
 
       <div
         id="global-search-panel"
@@ -199,7 +196,10 @@ const globalSearchItems = [...stores]
         class="relative mx-auto mt-20 w-[calc(100%-2rem)] max-w-xl rounded-2xl border border-black/10 bg-card text-card-foreground p-4 shadow-2xl sm:mt-24 sm:p-5"
       >
         <div class="flex items-center justify-between gap-4">
-          <p id="global-search-title" class="text-lg font-bold text-[#1f150e] sm:text-xl">
+          <p
+            id="global-search-title"
+            class="text-lg font-bold text-[#1f150e] sm:text-xl"
+          >
             Search Their Products
           </p>
           <button
@@ -219,13 +219,20 @@ const globalSearchItems = [...stores]
             placeholder="Search Seacrest, Nico Angelo, Brad's Trendies, Topsider..."
             class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground border-input h-10 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
           />
-          <p id="global-search-count" class="mt-3 text-sm font-medium text-black/65">
+          <p
+            id="global-search-count"
+            class="mt-3 text-sm font-medium text-black/65"
+          >
             {globalSearchItems.length} products indexed
           </p>
         </div>
 
         <div class="mt-4 rounded-xl border border-black/10 bg-[#f8f5f0] p-3">
-          <p class="text-xs font-semibold tracking-[0.14em] uppercase text-[#7f5a36]">Quick results</p>
+          <p
+            class="text-xs font-semibold tracking-[0.14em] uppercase text-[#7f5a36]"
+          >
+            Quick results
+          </p>
           <ul id="global-search-results" class="mt-2 space-y-1.5"></ul>
         </div>
       </div>
@@ -267,10 +274,7 @@ const globalSearchItems = [...stores]
   }
 </style>
 
-<script
-  is:inline
-  data-search-items={JSON.stringify(globalSearchItems)}
->
+<script is:inline data-search-items={JSON.stringify(globalSearchItems)}>
   (() => {
     if (window.__somGlobalSearchInitialized) return;
     window.__somGlobalSearchInitialized = true;
@@ -300,10 +304,20 @@ const globalSearchItems = [...stores]
       const results = document.getElementById("global-search-results");
       const count = document.getElementById("global-search-count");
       const triggers = Array.from(
-        document.querySelectorAll('button[aria-label*="Search"],button[aria-label*="search"]'),
+        document.querySelectorAll(
+          'button[aria-label*="Search"],button[aria-label*="search"]',
+        ),
       ).filter((button) => button.id !== "global-search-close");
 
-      if (!overlay || !closeBackdrop || !closeButton || !input || !results || !count || !triggers.length) {
+      if (
+        !overlay ||
+        !closeBackdrop ||
+        !closeButton ||
+        !input ||
+        !results ||
+        !count ||
+        !triggers.length
+      ) {
         return;
       }
 
@@ -325,7 +339,9 @@ const globalSearchItems = [...stores]
       };
 
       const renderResults = (query) => {
-        const matches = searchItems.filter((item) => !query || item.searchText.includes(query));
+        const matches = searchItems.filter(
+          (item) => !query || item.searchText.includes(query),
+        );
         count.textContent = `${matches.length} product${matches.length === 1 ? "" : "s"} found`;
         results.innerHTML = "";
 
@@ -363,10 +379,16 @@ const globalSearchItems = [...stores]
         if (event.target === closeBackdrop) closeSearch();
       };
       const onDocumentKeydown = (event) => {
-        if (event.key === "Escape" && overlay.getAttribute("aria-hidden") === "false") {
+        if (
+          event.key === "Escape" &&
+          overlay.getAttribute("aria-hidden") === "false"
+        ) {
           closeSearch();
         }
-        if (event.key === "Enter" && overlay.getAttribute("aria-hidden") === "false") {
+        if (
+          event.key === "Enter" &&
+          overlay.getAttribute("aria-hidden") === "false"
+        ) {
           const query = normalize(input.value);
           if (query) {
             window.location.href = `/stores?q=${encodeURIComponent(query)}`;
@@ -375,14 +397,18 @@ const globalSearchItems = [...stores]
       };
 
       renderResults("");
-      triggers.forEach((trigger) => trigger.addEventListener("click", onTriggerClick));
+      triggers.forEach((trigger) =>
+        trigger.addEventListener("click", onTriggerClick),
+      );
       closeButton.addEventListener("click", onClose);
       closeBackdrop.addEventListener("click", onOverlayClick);
       input.addEventListener("input", onInput);
       document.addEventListener("keydown", onDocumentKeydown);
 
       cleanup = () => {
-        triggers.forEach((trigger) => trigger.removeEventListener("click", onTriggerClick));
+        triggers.forEach((trigger) =>
+          trigger.removeEventListener("click", onTriggerClick),
+        );
         closeButton.removeEventListener("click", onClose);
         closeBackdrop.removeEventListener("click", onOverlayClick);
         input.removeEventListener("input", onInput);

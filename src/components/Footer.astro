@@ -15,7 +15,7 @@ type Props = {
 const {
   brandName = "Sole of Marikina",
   brandImage = "/Logo/footer.webp",
-  contactEmail = "yapakkolektib@gmail.com",
+  contactEmail = "kolektibyapak@gmail.com",
   location = "05 Samson Road, Caloocan City, Metro Manila, Philippines",
   newsletterTitle = "Step with us",
   newsletterDescription = "Share your store details, promotions, or brand content with your customers.",
@@ -117,11 +117,11 @@ const {
         const onSubmit = (event) => {
           event.preventDefault();
           const senderEmail = input.value.trim();
-          const to = "yapakkolektib@gmail.com";
+          const to = "kolektibyapak@gmail.com";
           const subjectRaw = "Step with us";
           const subject = encodeURIComponent(subjectRaw);
           const bodyRaw =
-            `Hello Yapak Kolektib,\n\nI would like to connect.\n\nMy email: ${senderEmail || "-"}\n`,
+            `Hello Yapak Kolektib,\n\nI would like to connect.\n\nMy email: ${senderEmail || "-"}\n`;
           const body = encodeURIComponent(bodyRaw);
           const gmailComposeUrl =
             `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${subject}&body=${body}`;
