@@ -67,7 +67,7 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
           data-fallback-href={leftAction.href ?? "/"}
           aria-label={leftAction.ariaLabel}
           class:list={[
-            "inline-flex w-fit rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
+            "inline-flex w-fit cursor-pointer rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
             leftAction.className,
           ]}
         >
@@ -81,7 +81,7 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
           aria-controls={leftAction.controls}
           aria-expanded={leftAction.expanded}
           class:list={[
-            "inline-flex w-fit rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
+            "inline-flex w-fit cursor-pointer rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
             leftAction.className,
           ]}
         >
@@ -132,7 +132,7 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
           type="button"
           aria-label={rightAction.ariaLabel}
           class:list={[
-            "ml-auto inline-flex rounded-md p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
+            "ml-auto inline-flex cursor-pointer rounded-md p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
             rightAction.className,
           ]}
         >
