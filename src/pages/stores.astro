@@ -13,10 +13,17 @@ const toToken = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
+const storeLinks: Record<string, string> = {
+  "brads-trendies": "https://shopee.ph/bnkclogs?entryPoint=ShopBySearch&searchKeyword=bnk+clogs",
+  "nico-angelo": "https://www.facebook.com/profile.php?id=61580780770102",
+  "seacrest": "https://ph.shp.ee/TiwGdqQ",
+};
+
 const storesWithProducts = [...stores]
   .sort((a, b) => (slugOrder.get(a.slug) ?? 99) - (slugOrder.get(b.slug) ?? 99))
   .map((store) => ({
     ...store,
+    link: storeLinks[store.slug] || `/stores/${store.slug}/their-products`,
     products: storeProducts[store.slug].map((product) => ({
       ...product,
       id: `${store.slug}-${toToken(product.name)}`,
@@ -85,7 +92,9 @@ const storesWithProducts = [...stores]
                     </p>
                   </div>
                   <a
-                    href={`/stores/${store.slug}/their-products`}
+                    href={store.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     class="inline-flex items-center justify-center rounded-full border border-black/20 px-5 py-2 text-sm font-semibold text-black transition hover:border-black/40 hover:bg-black hover:text-white sm:text-base"
                   >
                     View Store
@@ -97,7 +106,9 @@ const storesWithProducts = [...stores]
                     store.products.map((product) => (
                       <a
                         id={product.id}
-                        href={`/stores/${store.slug}/their-products`}
+                        href={store.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         data-product-card
                         data-search-text={product.searchText}
                         data-product-name={product.name}
