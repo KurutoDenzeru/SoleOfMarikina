@@ -33,33 +33,26 @@ const seacrestMapBackground = "/map/seacrest.png";
       }}
       centerImageSrc="/Logo/Seacrest.webp"
       centerImageAlt="Seacrest"
-      centerImageClass="h-16 w-auto max-w-xs object-contain invert sm:h-16"
+      centerImageClass="h-16 w-auto max-w-xs object-contain brightness-0 invert sm:h-16"
       containerClass="sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white sm:px-8 sm:pt-6 sm:pb-3"
     />
 
-    <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10 md:max-w-3xl lg:max-w-5xl">
-      <section class="relative mx-auto w-full max-w-[360px] aspect-video overflow-hidden rounded-[1.25rem] sm:max-w-[420px] md:max-w-[720px]" aria-label="Hide to Heels video placeholder">
-        <img
-          src="/map/seacrest.png"
-          alt="Hide to Heels video placeholder"
-          loading="lazy"
-          decoding="async"
-          class="h-full w-full object-cover object-center"
-        />
-        <button
-          type="button"
-          aria-label="Play Hide to Heels video (placeholder)"
-          class="absolute inset-0 m-auto inline-flex size-18 items-center justify-center rounded-full bg-[#2b0e04]/96 text-white"
-        >
-          <Play className="ml-1 size-8 fill-current" />
-        </button>
+    <main class="relative z-20 mx-auto flex min-h-[calc(100svh-6.75rem)] w-full max-w-[430px] flex-col items-center justify-center px-6 pb-12 sm:px-8 sm:pb-10 md:max-w-3xl lg:max-w-5xl">
+      <section class="relative w-full max-w-[360px] aspect-video overflow-hidden rounded-[1.25rem] sm:max-w-[420px] md:max-w-[720px]" aria-label="Hide to Heels video">
+        <iframe
+          class="h-full w-full"
+          src="https://www.youtube.com/embed/QephvpiXl5o?rel=0"
+          title="Seacrest Hide to Heels"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+        ></iframe>
       </section>
 
-      <h1 class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-4xl md:text-5xl">
+      <h1 class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-10 sm:max-w-md sm:text-4xl md:text-5xl">
         HIDE TO HEELS
       </h1>
 
-      <p class="mx-auto mt-6 text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg">
+      <p class="mx-auto mt-6 max-w-[34ch] text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg">
         The Seacrest team meticulously crafts each pair by hand, beginning with the selection of premium hides that are shaped using their signature "one-piece leather technology" before being expertly lasted and stitched for a seamless, durable finish.
       </p>
     </main>

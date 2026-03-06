@@ -68,21 +68,13 @@ const staff = [
           aria-label="Story video placeholder"
         >
           <div id="seacrest-video-shell" class="sticky top-0 h-full w-full origin-center transition-[opacity,transform] duration-150 will-change-transform">
-            <img
-              src="/map/seacrest.png"
-              alt="Video placeholder background"
-              loading="lazy"
-              decoding="async"
-              class="h-full w-full object-cover object-center"
-            />
-            <button
-              id="seacrest-video-play"
-              type="button"
-              aria-label="Play story video (placeholder)"
-              class="absolute inset-0 m-auto inline-flex size-18 items-center justify-center rounded-full bg-[#2b0e04]/92 text-white transition-opacity duration-150"
-            >
-              <Play className="ml-1 size-8 fill-current" />
-            </button>
+            <iframe
+              class="h-full w-full"
+              src="https://www.youtube.com/embed/jIKoOPAzWLw?rel=0"
+              title="Seacrest Souls Behind the Soles"
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowfullscreen
+            ></iframe>
           </div>
         </section>
 

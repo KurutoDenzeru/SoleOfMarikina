@@ -344,6 +344,16 @@ const defaultMapBackground = "/map/marikina_2k.png";
         if (lastFocused instanceof HTMLElement) lastFocused.focus();
       };
 
+      const handleLogoClick = (e) => {
+        if (isOpen()) closeMenu();
+        closeStorePanels();
+      };
+
+      const logoLink = document.querySelector('a[aria-label="Go to homepage"]');
+      if (logoLink) {
+        logoLink.addEventListener('click', handleLogoClick);
+      }
+
       const openStorePanel = (storeId, triggerEl) => {
         const targetPanel = storePanels.find(
           (panel) => panel.getAttribute("data-store-panel") === storeId,
