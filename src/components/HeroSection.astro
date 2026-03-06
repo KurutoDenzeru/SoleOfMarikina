@@ -345,13 +345,33 @@ const defaultMapBackground = "/map/marikina_2k.png";
       };
 
       const handleLogoClick = (e) => {
-        if (isOpen()) closeMenu();
-        closeStorePanels();
+        if (window.location.pathname === "/") {
+          e.preventDefault();
+          if (isOpen()) closeMenu();
+          closeStorePanels();
+          window.history.pushState({}, "", "/");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       };
 
       const logoLink = document.querySelector('a[aria-label="Go to homepage"]');
       if (logoLink) {
         logoLink.addEventListener('click', handleLogoClick);
+      }
+
+      const handleHomeLinkClick = (e) => {
+        if (window.location.pathname === "/") {
+          e.preventDefault();
+          if (isOpen()) closeMenu();
+          closeStorePanels();
+          window.history.pushState({}, "", "/");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+
+      const homeLink = document.querySelector('a[href="/"]');
+      if (homeLink) {
+        homeLink.addEventListener('click', handleHomeLinkClick);
       }
 
       const openStorePanel = (storeId, triggerEl) => {
@@ -521,7 +541,21 @@ const defaultMapBackground = "/map/marikina_2k.png";
       });
 
       const sidebarLinks = Array.from(sidebar.querySelectorAll("a[href]"));
-      sidebarLinks.forEach((link) => link.addEventListener("click", closeMenu));
+      sidebarLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          if (link.getAttribute("href") === "/") {
+            if (window.location.pathname === "/") {
+              e.preventDefault();
+              closeMenu();
+              closeStorePanels();
+              window.history.pushState({}, "", "/");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          } else {
+            closeMenu();
+          }
+        });
+      });
 
       const onOverlayClick = () => {
         closeMenu();
@@ -562,9 +596,10 @@ const defaultMapBackground = "/map/marikina_2k.png";
         document.removeEventListener("keydown", onDocumentKeydown);
         sidebar.removeEventListener("keydown", onSidebarKeydown);
         window.removeEventListener("scroll", onWindowScroll);
-        sidebarLinks.forEach((link) =>
-          link.removeEventListener("click", closeMenu),
-        );
+        sidebarLinks.forEach((link) => {
+          const newLink = link.cloneNode(true);
+          link.parentNode.replaceChild(newLink, link);
+        });
         if (storeBackdrop) {
           storeBackdrop.removeEventListener("click", closeStorePanels);
         }
