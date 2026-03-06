@@ -1,6 +1,6 @@
 ![SoleOfMarikina](public/OpenGraph.webp)
 
-🌐 Dynamic portfolio showcasing projects, skills and expertise, powered by Astro, Tailwind, shadcn/ui, TypeScript, MDX, RSS, and React for seamless content management.
+👞 Interactive showcase of shoe heritage and craft, powered by historical docs, process videos, and a digital gallery to highlight premium artisan quality.
 
 ## ☁️ Deploy your own
 
@@ -8,11 +8,9 @@
 
 ## ✨ Features
 
-- **Interactive Portfolio** — Showcase your work, projects, and professional accomplishments in an engaging way.
 - **Responsive Design** — Optimized for all devices, from mobile to desktop.
-- **Dark/Light Mode** — Seamless theme switching with user preference persistence.
-- **Search Functionality** — Quickly find projects and work experiences with a built-in search bar.
-- **Content Collections** — Easily manage and update projects and work experiences using Markdown files.
+- **Interactive Map** — Explore Marikina's shoe stores with an integrated map.
+- **Dynamic Routing** — Seamless navigation through individual store pages and sections.
 - **Fast Performance** — Built with Astro for lightning-fast static site generation.
 - **Accessible UI** — Components from Shadcn UI ensure a11y compliance and great UX.
 - **Open Source** — MIT licensed; customize and deploy your own version freely.
@@ -20,7 +18,7 @@
 ## 🧱 Tech Stack
 
 - [Astro](https://astro.build/): Modern static site generator for building fast, content-focused websites.
-- [Tailwind CSS](https://tailwindcss.com/): Utility-first CSS framework for rapid UI development.
+- [Tailwind](https://tailwindcss.com/): Utility-first CSS framework for rapid UI development.
 - [Shadcn UI](https://ui.shadcn.com/): Re-usable components built using Radix UI and Tailwind CSS.
 - [TypeScript](https://www.typescriptlang.org/): Strongly typed programming language that builds on JavaScript.
 
@@ -50,21 +48,23 @@ The editor is componentized under `src/components`. Key areas to customize are:
 
 ```text
 src/                        # Source directory for the Astro project
+  components/               # Reusable UI components (including Shadcn UI)
   layouts/                  # Astro layout components for structuring pages
+  lib/                      # Utility functions and shared logic
   pages/                    # Page routes and endpoints
-    index.astro             # Homepage
-    projects/               # Projects listing and individual project pages
-    work/                   # Work experiences listing
-  content/                  # Content collections for dynamic content
-    config.ts               # Content collection configuration
-    projects/               # Markdown files for projects
-    work/                   # Markdown files for work experiences
+    stores/                 # Individual store pages and sections
+      [store]/              # Dynamic routes for stores
+        [section].astro     # Dynamic section route
+        index.astro         # Dynamic store index
+      brads-trendies/       # Brad's Trendies
+      nico-angelo/          # Nico Angelo
+      seacrest/             # Seacrest
 public/                     # Static assets served directly
+  fonts/                    # Custom fonts used in the project
   icons/                    # Favicon and app icons
-  js/                       # Client-side JavaScript files
-    theme.js                # Theme switching logic
-    drawer.js               # Mobile drawer functionality
-    animate.js              # Animation scripts
+  Logo/                     # Brand logos
+  map/                      # Map assets
+  pictures/                 # Images and gallery pictures
 ```
 
 ## 🤝🏻 Contributing
