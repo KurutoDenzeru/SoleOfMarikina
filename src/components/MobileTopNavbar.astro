@@ -70,6 +70,7 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
             "inline-flex w-fit cursor-pointer rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70",
             leftAction.className,
           ]}
+          onclick={leftAction.href === "/" ? "sessionStorage.removeItem('som:active-store');" : undefined}
         >
           {LeftIcon && <LeftIcon className="size-8" />}
         </a>
@@ -98,6 +99,7 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
           href={centerImageHref}
           aria-label="Go to homepage"
           class="justify-self-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70"
+          onclick={centerImageHref === "/" ? "sessionStorage.removeItem('som:active-store');" : undefined}
         >
           <img
             src={centerImageSrc}
@@ -157,6 +159,10 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
         el.addEventListener("click", (event) => {
           const fallback = el.dataset.fallbackHref || "/";
           const hasHistory = window.history.length > 1 && document.referrer !== "";
+
+          if (fallback === "/") {
+            sessionStorage.removeItem("som:active-store");
+          }
 
           event.preventDefault();
           if (hasHistory) {

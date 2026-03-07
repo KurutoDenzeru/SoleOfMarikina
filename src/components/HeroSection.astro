@@ -351,6 +351,8 @@ const defaultMapBackground = "/map/marikina_2k.png";
           closeStorePanels();
           window.history.pushState({}, "", "/");
           window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          sessionStorage.removeItem(activeStoreKey);
         }
       };
 
@@ -366,6 +368,8 @@ const defaultMapBackground = "/map/marikina_2k.png";
           closeStorePanels();
           window.history.pushState({}, "", "/");
           window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          sessionStorage.removeItem(activeStoreKey);
         }
       };
 
@@ -550,6 +554,8 @@ const defaultMapBackground = "/map/marikina_2k.png";
               closeStorePanels();
               window.history.pushState({}, "", "/");
               window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+              sessionStorage.removeItem(activeStoreKey);
             }
           } else {
             closeMenu();
@@ -575,17 +581,9 @@ const defaultMapBackground = "/map/marikina_2k.png";
       closeMenu();
       closeStorePanels(false);
       onWindowScroll();
+      // Clear persisted store state on page load to prevent stale panel state
       try {
-        const persistedStoreId = sessionStorage.getItem(activeStoreKey);
-        if (persistedStoreId) {
-          const persistedTrigger = storeTriggers.find(
-            (trigger) =>
-              trigger.getAttribute("data-store-trigger") === persistedStoreId,
-          );
-          if (persistedTrigger) {
-            openStorePanel(persistedStoreId, persistedTrigger);
-          }
-        }
+        sessionStorage.removeItem(activeStoreKey);
       } catch {}
 
       cleanup = () => {
@@ -597,6 +595,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
         sidebar.removeEventListener("keydown", onSidebarKeydown);
         window.removeEventListener("scroll", onWindowScroll);
         sidebarLinks.forEach((link) => {
+          if (!link.parentNode) return;
           const newLink = link.cloneNode(true);
           link.parentNode.replaceChild(newLink, link);
         });
