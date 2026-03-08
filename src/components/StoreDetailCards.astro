@@ -34,8 +34,8 @@ const {
         className,
       ]}
     >
-      <div class="mx-auto w-full max-w-[430px] px-5 sm:px-6 md:max-w-4xl lg:max-w-6xl pb-10">
-        <div class="mb-3 flex items-center justify-center gap-2">
+      <div class="mx-auto w-full max-w-[430px] px-4 sm:px-6 md:max-w-4xl lg:max-w-6xl pb-10">
+        <div class="mb-4 flex items-center justify-center gap-2">
           <img
             src="/icons/Pin.png"
             alt=""
@@ -44,27 +44,27 @@ const {
             loading="lazy"
             decoding="async"
           />
-          <div class="w-full max-w-[340px] rounded-full bg-black px-6 py-2 text-white md:max-w-[640px] md:bg-black/88 md:px-8 md:py-3 md:shadow-[0_6px_18px_rgba(0,0,0,0.26)]">
-            <p class="text-lg leading-[0.9] font-semibold tracking-tight">
+          <div class="w-full max-w-[340px] rounded-full bg-black px-5 py-2 text-white md:max-w-[640px] md:bg-black/88 md:px-8 md:py-3 md:shadow-[0_6px_18px_rgba(0,0,0,0.26)]">
+            <p class="text-[17px] leading-[0.9] font-semibold tracking-tight">
               {storeName}
             </p>
-            <p class="mt-1 text-sm leading-none font-medium text-white/90">
+            <p class="mt-1 text-[11px] leading-none font-medium text-white/90">
               {address}
             </p>
           </div>
         </div>
 
-        <div class="mx-auto w-full space-y-5 md:grid md:grid-cols-2 md:gap-5 md:space-y-0 lg:grid-cols-3">
+        <div class="mx-auto w-full space-y-4 md:grid md:grid-cols-2 md:gap-5 md:space-y-0 lg:grid-cols-3">
           {cards.map((card) => {
             const lines = card.title.split("\n");
             return (
               <a
                 href={card.href ?? "#"}
                 data-store-card
-                class="group relative block w-full min-h-40 cursor-pointer overflow-hidden rounded-3xl bg-black px-6 py-7 transition-all duration-300 ease-out hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:min-h-40 md:min-h-52 md:bg-black/88 md:shadow-[0_6px_18px_rgba(0,0,0,0.26)]"
+                class="group relative flex w-full min-h-[170px] cursor-pointer items-center justify-center overflow-hidden rounded-3xl bg-black px-6 py-7 transition-all duration-300 ease-out hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:min-h-[170px] md:min-h-52 md:bg-black/88 md:shadow-[0_6px_18px_rgba(0,0,0,0.26)]"
               >
-                <span class="relative flex min-h-24 items-center justify-center sm:min-h-24">
-                  <span class="text-center text-xl leading-[0.84] font-black uppercase tracking-tight text-white sm:text-3xl md:text-3xl lg:text-4xl">
+                <span class="relative flex items-center justify-center">
+                  <span class="text-center text-[32px] leading-[0.9] font-black uppercase tracking-tight text-white sm:text-4xl md:text-3xl lg:text-4xl">
                     {lines.map((line) => (
                       <span class="block">{line}</span>
                     ))}
