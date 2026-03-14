@@ -14,9 +14,10 @@ const toToken = (value: string) =>
     .replace(/^-+|-+$/g, "");
 
 const storeLinks: Record<string, string> = {
-  "brads-trendies": "https://shopee.ph/bnkclogs?entryPoint=ShopBySearch&searchKeyword=bnk+clogs",
+  "brads-trendies":
+    "https://shopee.ph/bnkclogs?entryPoint=ShopBySearch&searchKeyword=bnk+clogs",
   "nico-angelo": "https://www.facebook.com/profile.php?id=61580780770102",
-  "seacrest": "https://ph.shp.ee/TiwGdqQ",
+  seacrest: "https://ph.shp.ee/TiwGdqQ",
 };
 
 const storesWithProducts = [...stores]
@@ -27,7 +28,8 @@ const storesWithProducts = [...stores]
     products: storeProducts[store.slug].map((product) => ({
       ...product,
       id: `${store.slug}-${toToken(product.name)}`,
-      searchText: `${store.name} ${product.name} ${product.price}`.toLowerCase(),
+      searchText:
+        `${store.name} ${product.name} ${product.price}`.toLowerCase(),
     })),
   }));
 ---
@@ -38,7 +40,8 @@ const storesWithProducts = [...stores]
       <div
         class="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_44%_at_50%_0%,rgba(212,150,75,0.16)_0%,rgba(212,150,75,0)_100%),linear-gradient(180deg,rgba(255,255,255,0.54)_0%,rgba(246,242,236,1)_52%)]"
         aria-hidden="true"
-      ></div>
+      >
+      </div>
       <MobileTopNavbar
         leftAction={{
           type: "link",
@@ -60,17 +63,26 @@ const storesWithProducts = [...stores]
         containerClass="grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8"
       />
 
-      <main class="relative z-10 mx-auto w-full max-w-[430px] px-6 pb-16 sm:px-8 md:max-w-3xl lg:max-w-5xl lg:px-10">
+      <main
+        class="relative z-10 mx-auto w-full max-w-[430px] px-6 pb-16 sm:px-8 md:max-w-3xl lg:max-w-5xl lg:px-10"
+      >
         <header class="pt-6 sm:pt-8 md:pt-10">
-          <p class="text-xs font-semibold tracking-[0.24em] uppercase text-[#6d4b2b] sm:text-sm">
+          <p
+            class="text-xs font-semibold tracking-[0.24em] uppercase text-[#6d4b2b] sm:text-sm"
+          >
             Stores Landing
           </p>
-          <h1 class="mt-3 max-w-[12ch] text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-[#1f150e] sm:text-4xl md:text-5xl lg:text-6xl">
+          <h1
+            class="mt-3 max-w-[12ch] text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-[#1f150e] sm:text-4xl md:text-5xl lg:text-6xl"
+          >
             Their Products
           </h1>
-          <p class="mt-5 max-w-3xl text-sm leading-relaxed font-medium text-black/70 sm:text-base md:text-lg">
-            Explore product lines from Brad&apos;s Trendies, Nico Angelo, and Seacrest in one place.
-            Use the search button in the navbar to instantly filter by store name or product.
+          <p
+            class="mt-5 max-w-3xl text-sm leading-relaxed font-medium text-black/70 sm:text-base md:text-lg"
+          >
+            Explore product lines from Brad&apos;s Trendies, Nico Angelo, and
+            Seacrest in one place. Use the search button in the navbar to
+            instantly filter by store name or product.
           </p>
         </header>
 
@@ -102,42 +114,42 @@ const storesWithProducts = [...stores]
                 </div>
 
                 <div class="grid gap-4 p-4 sm:grid-cols-2 sm:gap-5 sm:p-6 lg:grid-cols-3">
-                  {
-                    store.products.map((product) => (
-                      <a
-                        id={product.id}
-                        href={store.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-product-card
-                        data-search-text={product.searchText}
-                        data-product-name={product.name}
-                        data-store-name={store.name}
-                        data-product-price={product.price}
-                        class="group relative block h-64 overflow-hidden rounded-2xl border border-black/5 bg-black shadow-[0_10px_28px_rgba(0,0,0,0.24)] sm:h-72"
-                      >
-                        <Skeleton className="absolute inset-0 h-full w-full rounded-2xl" />
-                        <img
-                          src={product.image}
-                          alt={`${store.name} - ${product.name}`}
-                          class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                          loading="lazy"
-                          decoding="async"
-                          onload="this.previousElementSibling.style.display='none'"
-                        />
-                        <div
-                          class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.56)_0%,rgba(0,0,0,0.12)_44%,rgba(0,0,0,0.9)_100%)]"
-                          aria-hidden="true"
-                        ></div>
-                        <div class="absolute inset-x-4 bottom-4 text-white sm:inset-x-5 sm:bottom-5">
-                          <p class="text-2xl leading-none font-extrabold tracking-tight sm:text-3xl">
-                            {product.name}
-                          </p>
-                          <p class="mt-1 text-base font-semibold text-white/95 sm:text-lg">{product.price}</p>
-                        </div>
-                      </a>
-                    ))
-                  }
+                  {store.products.map((product) => (
+                    <a
+                      id={product.id}
+                      href={store.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-product-card
+                      data-search-text={product.searchText}
+                      data-product-name={product.name}
+                      data-store-name={store.name}
+                      data-product-price={product.price}
+                      class="group relative block h-64 overflow-hidden rounded-2xl border border-black/5 bg-black shadow-[0_10px_28px_rgba(0,0,0,0.24)] sm:h-72"
+                    >
+                      <Skeleton className="absolute inset-0 h-full w-full rounded-2xl" />
+                      <img
+                        src={product.image}
+                        alt={`${store.name} - ${product.name}`}
+                        class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-110"
+                        loading="lazy"
+                        decoding="async"
+                        onload="this.previousElementSibling.style.display='none'"
+                      />
+                      <div
+                        class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.56)_0%,rgba(0,0,0,0.12)_44%,rgba(0,0,0,0.9)_100%)]"
+                        aria-hidden="true"
+                      />
+                      <div class="absolute inset-x-4 bottom-4 text-white sm:inset-x-5 sm:bottom-5">
+                        <p class="text-2xl leading-none font-extrabold tracking-tight sm:text-3xl">
+                          {product.name}
+                        </p>
+                        <p class="mt-1 text-base font-semibold text-white/95 sm:text-lg">
+                          {product.price}
+                        </p>
+                      </div>
+                    </a>
+                  ))}
                 </div>
               </article>
             ))
@@ -147,9 +159,13 @@ const storesWithProducts = [...stores]
             id="stores-empty-state"
             class="hidden rounded-3xl border border-dashed border-black/20 bg-white/70 px-6 py-12 text-center"
           >
-            <p class="text-2xl font-bold text-[#1f150e] sm:text-3xl">No products found</p>
+            <p class="text-2xl font-bold text-[#1f150e] sm:text-3xl">
+              No products found
+            </p>
             <p class="mt-3 text-sm font-medium text-black/70 sm:text-base">
-              Try another search term like <span class="font-semibold">Seacrest</span> or
+              Try another search term like <span class="font-semibold"
+                >Seacrest</span
+              > or
               <span class="font-semibold"> Topsider</span>.
             </p>
           </div>
@@ -169,8 +185,12 @@ const storesWithProducts = [...stores]
     const init = () => {
       const params = new URLSearchParams(window.location.search);
       const query = (params.get("q") || "").toLowerCase().trim();
-      const cards = Array.from(document.querySelectorAll("[data-product-card]"));
-      const sections = Array.from(document.querySelectorAll("[data-store-section]"));
+      const cards = Array.from(
+        document.querySelectorAll("[data-product-card]"),
+      );
+      const sections = Array.from(
+        document.querySelectorAll("[data-store-section]"),
+      );
       const emptyState = document.getElementById("stores-empty-state");
       if (!cards.length || !sections.length || !emptyState) return;
 
@@ -183,7 +203,9 @@ const storesWithProducts = [...stores]
       });
 
       sections.forEach((section) => {
-        const hasVisibleCards = section.querySelector("[data-product-card]:not(.hidden)");
+        const hasVisibleCards = section.querySelector(
+          "[data-product-card]:not(.hidden)",
+        );
         section.classList.toggle("hidden", !hasVisibleCards);
       });
 
