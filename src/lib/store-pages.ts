@@ -1,8 +1,5 @@
 export type StoreSlug = "nico-angelo" | "brads-trendies" | "seacrest";
-export type StoreSectionSlug =
-  | "wtw"
-  | "sts"
-  | "their-products";
+export type StoreSectionSlug = "wtw" | "sts" | "their-products";
 
 export type StoreData = {
   slug: StoreSlug;
@@ -103,9 +100,9 @@ export const stores: StoreData[] = [
     address: "10 Helena St. Sta Teresita Malanday",
     heroTitle: "Seacrest",
     intro:
-      "Established in 1997, Seacrest is a Marikina-based shoe brand owned by Larry Evaristo that is best known for its durable, high-quality footwear crafted using specialized \"one-piece leather technology.\" The business operates as a family-run factory, blending traditional handmade techniques with a resilient spirit that has helped it remain a staple in the Philippine shoe industry for over two decades.",
+      'Established in 1997, Seacrest is a Marikina-based shoe brand owned by Larry Evaristo that is best known for its durable, high-quality footwear crafted using specialized "one-piece leather technology." The business operates as a family-run factory, blending traditional handmade techniques with a resilient spirit that has helped it remain a staple in the Philippine shoe industry for over two decades.',
     storyIntro:
-      "Redefine your stride with Seacrest, a Marikina staple established in 1997 by Larry Evaristo that defines the gold standard of Filipino shoemaking. Every pair is crafted with tireless dedication and our signature \"one-piece leather technology,\" ensuring a perfect blend of modern luxury and unrivaled durability.",
+      'Redefine your stride with Seacrest, a Marikina staple established in 1997 by Larry Evaristo that defines the gold standard of Filipino shoemaking. Every pair is crafted with tireless dedication and our signature "one-piece leather technology," ensuring a perfect blend of modern luxury and unrivaled durability.',
     contactName: "Larry Evaristo",
     city: "Marikina",
     phone: "0993 728 4969",
@@ -128,27 +125,28 @@ export const storeProducts: Record<StoreSlug, StoreProduct[]> = {
     {
       name: "GG Leather",
       price: "₱ 600",
-      image: "/pictures/Brad%20Trendies/GG%20Leather.jpg",
+      image: "/pictures/Brad%20Trendies/products/brads%20gg%20leather.png",
     },
     {
       name: "Slip On",
       price: "₱ 800",
-      image: "/pictures/Brad%20Trendies/Slip%20On.jpg",
+      image: "/pictures/Brad%20Trendies/products/brads%20slip%20on.png",
     },
     {
       name: "AA Clogs Leather",
       price: "₱ 1,500",
-      image: "/pictures/Brad%20Trendies/AA%20Clogs%20Leather.jpg",
+      image:
+        "/pictures/Brad%20Trendies/products/brads%20aa%20clogs%20leathers.png",
     },
     {
       name: "A4 Clogs",
       price: "₱ 1,500",
-      image: "/pictures/Brad%20Trendies/A4%20Clogs.jpg",
+      image: "/pictures/Brad%20Trendies/products/brads%20clogs.png",
     },
     {
       name: "S1",
       price: "₱ 2,000",
-      image: "/pictures/Brad%20Trendies/S1.jpg",
+      image: "/pictures/Brad%20Trendies/products/brads1.png",
     },
   ],
   "nico-angelo": [
@@ -207,11 +205,7 @@ export const storeProducts: Record<StoreSlug, StoreProduct[]> = {
   ],
 };
 
-export const sections: StoreSectionSlug[] = [
-  "wtw",
-  "sts",
-  "their-products",
-];
+export const sections: StoreSectionSlug[] = ["wtw", "sts", "their-products"];
 
 export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
   if (
@@ -300,10 +294,10 @@ export function getStoreProducts(slug: StoreSlug): StoreProduct[] {
 
 export function getStoreSection(
   storeSlug: string,
-  sectionSlug: string
+  sectionSlug: string,
 ): StoreSectionData | undefined {
   return storeSections.find(
     (section) =>
-      section.storeSlug === storeSlug && section.sectionSlug === sectionSlug
+      section.storeSlug === storeSlug && section.sectionSlug === sectionSlug,
   );
 }
