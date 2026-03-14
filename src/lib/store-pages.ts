@@ -153,27 +153,27 @@ export const storeProducts: Record<StoreSlug, StoreProduct[]> = {
     {
       name: "Slippers",
       price: "₱ 900",
-      image: "/pictures/Nico%20Angelo/Slippers.jpg",
+      image: "/pictures/Nico%20Angelo/products/nico%20angelo%20slippers.png",
     },
     {
       name: "Elevated",
       price: "₱ 1,000",
-      image: "/pictures/Nico%20Angelo/Elevated.jpg",
+      image: "/pictures/Nico%20Angelo/products/nico%20angelo%20elevated.png",
     },
     {
       name: "Topsider",
       price: "₱ 1,000",
-      image: "/pictures/Nico%20Angelo/Topsider.jpg",
+      image: "/pictures/Nico%20Angelo/products/nico%20angelo%20topsider.png",
     },
     {
       name: "BGH",
       price: "₱ 1,700",
-      image: "/pictures/Nico%20Angelo/BGH.jpg",
+      image: "/pictures/Nico%20Angelo/products/nico%20angelo%20bgh%2068.png",
     },
     {
       name: "Wingtip",
       price: "₱ 2,500",
-      image: "/pictures/Nico%20Angelo/Wingtip.jpg",
+      image: "/pictures/Nico%20Angelo/products/nico%20angelo%20wingtip.png",
     },
   ],
   seacrest: [
