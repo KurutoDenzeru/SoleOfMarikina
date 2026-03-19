@@ -100,7 +100,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
 
   <article
     id="hero-stage"
-    class="relative min-h-screen w-full overflow-hidden bg-[#d8ae73]"
+    class="relative min-h-screen w-full overflow-x-clip bg-[#d8ae73]"
   >
     <div
       id="map-image-layer"
@@ -358,7 +358,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
 
       const logoLink = document.querySelector('a[aria-label="Go to homepage"]');
       if (logoLink) {
-        logoLink.addEventListener('click', handleLogoClick);
+        logoLink.addEventListener("click", handleLogoClick);
       }
 
       const handleHomeLinkClick = (e) => {
@@ -375,7 +375,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
 
       const homeLink = document.querySelector('a[href="/"]');
       if (homeLink) {
-        homeLink.addEventListener('click', handleHomeLinkClick);
+        homeLink.addEventListener("click", handleHomeLinkClick);
       }
 
       const openStorePanel = (storeId, triggerEl) => {

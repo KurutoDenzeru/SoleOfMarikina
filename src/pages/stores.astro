@@ -60,7 +60,7 @@ const storesWithProducts = [...stores]
         centerImageSrc="/Logo/brand.webp"
         centerImageAlt="Sole of Marikina"
         centerImageClass="h-14 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]"
-        containerClass="grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8"
+        containerClass="stores-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-black transition-[background-color,backdrop-filter] duration-200 sm:px-8 sm:pt-6 sm:pb-3"
       />
 
       <main
@@ -212,7 +212,27 @@ const storesWithProducts = [...stores]
       emptyState.classList.toggle("hidden", visibleCount > 0);
     };
 
+    const handleScroll = () => {
+      const nav = document.querySelector(".stores-sticky-nav");
+      if (nav instanceof HTMLElement) {
+        const hasScrolled = window.scrollY > 10;
+        nav.style.backgroundColor = hasScrolled
+          ? "rgba(246, 242, 236, 0.72)"
+          : "transparent";
+        nav.style.backdropFilter = hasScrolled ? "blur(10px)" : "none";
+        nav.style.borderBottom = hasScrolled
+          ? "1px solid rgba(0,0,0,0.05)"
+          : "none";
+      }
+    };
+
     init();
-    document.addEventListener("astro:page-load", init);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    document.addEventListener("astro:page-load", () => {
+      init();
+      handleScroll();
+    });
   })();
 </script>

@@ -10,7 +10,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <div
         class="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_46%_at_50%_0%,rgba(156,98,53,0.16)_0%,rgba(156,98,53,0)_100%),linear-gradient(180deg,rgba(255,255,255,0.38)_0%,rgba(243,238,231,1)_62%)]"
         aria-hidden="true"
-      ></div>
+      >
+      </div>
 
       <MobileTopNavbar
         leftAction={{
@@ -30,35 +31,57 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         centerImageSrc="/Logo/brand.webp"
         centerImageAlt="Sole of Marikina"
         centerImageClass="h-14 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]"
-        containerClass="grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8"
+        containerClass="about-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-black transition-[background-color,backdrop-filter] duration-200 sm:px-8 sm:pt-6 sm:pb-3"
       />
 
-      <main class="relative z-10 mx-auto w-full max-w-[430px] px-6 pb-16 sm:px-8 md:max-w-3xl lg:max-w-5xl lg:px-10">
+      <main
+        class="relative z-10 mx-auto w-full max-w-[430px] px-6 pb-16 sm:px-8 md:max-w-3xl lg:max-w-5xl lg:px-10"
+      >
         <header class="pt-6 sm:pt-8 md:pt-10">
-          <p class="text-xs font-semibold tracking-[0.24em] uppercase text-[#775030] sm:text-sm">
+          <p
+            class="text-xs font-semibold tracking-[0.24em] uppercase text-[#775030] sm:text-sm"
+          >
             About
           </p>
-          <h1 class="mt-3 max-w-[10ch] text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-[#2a1a11] sm:text-4xl md:text-5xl lg:text-6xl">
+          <h1
+            class="mt-3 max-w-[10ch] text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-[#2a1a11] sm:text-4xl md:text-5xl lg:text-6xl"
+          >
             Built From Craft
           </h1>
-          <p class="mt-5 max-w-3xl text-sm leading-relaxed font-medium text-black/70 sm:text-base md:text-lg">
-            Learn about the team behind Sole of Marikina and the purpose that drives the platform.
+          <p
+            class="mt-5 max-w-3xl text-sm leading-relaxed font-medium text-black/70 sm:text-base md:text-lg"
+          >
+            Learn about the team behind Sole of Marikina and the purpose that
+            drives the platform.
           </p>
         </header>
 
         <section class="mt-10 sm:mt-12">
-          <article class="rounded-3xl border border-black/10 bg-white/85 p-6 shadow-sm sm:p-8">
-            <p class="text-xs font-semibold tracking-[0.18em] uppercase text-[#8e6340] sm:text-sm">
+          <article
+            class="rounded-3xl border border-black/10 bg-white/85 p-6 shadow-sm sm:p-8"
+          >
+            <p
+              class="text-xs font-semibold tracking-[0.18em] uppercase text-[#8e6340] sm:text-sm"
+            >
               Brand Narrative
             </p>
-            <h2 class="mt-3 text-2xl leading-tight font-bold sm:text-3xl md:text-4xl">The Story Section</h2>
-            <p class="mt-4 text-sm leading-relaxed font-medium text-black/70 sm:text-base md:text-lg">
-              <span class="block font-semibold text-[#2a1a11]">Yapak Kolektib</span>
-              Developed by Yapak Kolektib, a group of 4th Year Bachelor of Multimedia Arts students from the
-              University of the East, "Sole of Marikina" is a digital initiative dedicated to honoring the
-              city&apos;s shoemaking legacy. Our mission is to leverage innovative multimedia storytelling to
-              preserve local heritage and empower homegrown artisans by providing them with a modern platform to
-              showcase their craft.
+            <h2
+              class="mt-3 text-2xl leading-tight font-bold sm:text-3xl md:text-4xl"
+            >
+              The Story Section
+            </h2>
+            <p
+              class="mt-4 text-sm leading-relaxed font-medium text-black/70 sm:text-base md:text-lg"
+            >
+              <span class="block font-semibold text-[#2a1a11]"
+                >Yapak Kolektib</span
+              >
+              Developed by Yapak Kolektib, a group of 4th Year Bachelor of Multimedia
+              Arts students from the University of the East, "Sole of Marikina" is
+              a digital initiative dedicated to honoring the city&apos;s shoemaking
+              legacy. Our mission is to leverage innovative multimedia storytelling
+              to preserve local heritage and empower homegrown artisans by providing
+              them with a modern platform to showcase their craft.
             </p>
           </article>
         </section>
@@ -68,3 +91,31 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     <Footer />
   </div>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    if (window.__somAboutPageNavInitialized) return;
+    window.__somAboutPageNavInitialized = true;
+
+    const handleScroll = () => {
+      const nav = document.querySelector(".about-sticky-nav");
+      if (nav instanceof HTMLElement) {
+        const hasScrolled = window.scrollY > 10;
+        nav.style.backgroundColor = hasScrolled
+          ? "rgba(243, 238, 231, 0.72)"
+          : "transparent";
+        nav.style.backdropFilter = hasScrolled ? "blur(10px)" : "none";
+        nav.style.borderBottom = hasScrolled
+          ? "1px solid rgba(0,0,0,0.05)"
+          : "none";
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    document.addEventListener("astro:page-load", () => {
+      handleScroll();
+    });
+  })();
+</script>
