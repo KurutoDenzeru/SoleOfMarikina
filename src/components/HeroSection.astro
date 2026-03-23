@@ -581,9 +581,18 @@ const defaultMapBackground = "/map/marikina_2k.png";
       closeMenu();
       closeStorePanels(false);
       onWindowScroll();
-      // Clear persisted store state on page load to prevent stale panel state
+
+      // Restore active store from session storage if it exists
       try {
-        sessionStorage.removeItem(activeStoreKey);
+        const persistedStoreId = sessionStorage.getItem(activeStoreKey);
+        if (persistedStoreId) {
+          const trigger = storeTriggers.find(
+            (t) => t.getAttribute("data-store-trigger") === persistedStoreId,
+          );
+          if (trigger instanceof HTMLElement) {
+            openStorePanel(persistedStoreId, trigger);
+          }
+        }
       } catch {}
 
       cleanup = () => {

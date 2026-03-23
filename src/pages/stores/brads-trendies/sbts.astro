@@ -94,8 +94,8 @@ const staff = [
       leftAction={{
         type: "link",
         icon: "move-left",
-        ariaLabel: "Back to see our story",
-        href: "/stores/brads-trendies/sts",
+        ariaLabel: "Back to homepage",
+        href: "/",
         dynamicBack: true,
         className: "rounded-md text-white",
       }}
@@ -114,7 +114,9 @@ const staff = [
     <main
       class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10 md:max-w-3xl lg:max-w-7xl"
     >
-      <div class="lg:grid lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-start lg:gap-10">
+      <div
+        class="lg:grid lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-start lg:gap-10"
+      >
         <section
           class="relative mt-3 w-full aspect-video overflow-hidden rounded-[1.25rem] sm:mt-4 md:mx-auto md:max-w-[900px] lg:mt-10 lg:mx-0 lg:max-w-none lg:sticky lg:top-1/2 lg:-translate-y-1/2"
           aria-label="Story video"
@@ -128,8 +130,7 @@ const staff = [
               src="https://www.youtube.com/embed/R0bvkJ9NRtQ?rel=0"
               title="Brad's Trendies Souls Behind the Soles"
               allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-              allowfullscreen
-            ></iframe>
+              allowfullscreen></iframe>
           </div>
         </section>
 
@@ -151,7 +152,9 @@ const staff = [
 
           <section class="mt-8">
             <div class="mt-6 space-y-8">
-              <article class="mx-auto w-[72%] max-w-[320px] text-center text-white lg:mx-0 lg:w-full lg:max-w-[280px]">
+              <article
+                class="mx-auto w-[72%] max-w-[320px] text-center text-white lg:mx-0 lg:w-full lg:max-w-[280px]"
+              >
                 <img
                   src={owner.image}
                   alt={`${owner.name} - ${owner.role}`}
@@ -159,7 +162,9 @@ const staff = [
                   decoding="async"
                   class="aspect-[3/4] w-full rounded-[1.2rem] object-cover object-center"
                 />
-                <p class="mt-4 text-xl leading-none font-extrabold">{owner.name}</p>
+                <p class="mt-4 text-xl leading-none font-extrabold">
+                  {owner.name}
+                </p>
                 <p class="text-md leading-none font-medium text-white/90">
                   {owner.role}
                 </p>
@@ -213,7 +218,8 @@ const staff = [
         const videoProgress = Math.min(window.scrollY / 240, 1);
         const gradientProgress = Math.min(window.scrollY / 430, 1);
 
-        const isTabletOrDesktop = window.matchMedia("(min-width: 768px)").matches;
+        const isTabletOrDesktop =
+          window.matchMedia("(min-width: 768px)").matches;
         if (isTabletOrDesktop) {
           videoShell.style.opacity = "1";
           videoShell.style.transform = "none";

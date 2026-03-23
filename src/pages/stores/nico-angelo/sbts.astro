@@ -44,155 +44,165 @@ const staff = [
     class="relative min-h-screen w-full overflow-x-clip bg-[#160500] bg-cover bg-top bg-no-repeat sm:bg-center"
     style={`background-image:url('${nicoMapBackground}');`}
   >
+    <div
+      id="nico-page-gradient"
+      class="fixed inset-0 z-0 pointer-events-none bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(84,26,4,0.14)_34%,rgba(22,6,1,0.62)_62%,rgba(0,0,0,0.96)_100%)] opacity-45 transition-opacity duration-150"
+      aria-hidden="true"
+    >
+    </div>
+
+    <MobileTopNavbar
+      leftAction={{
+        type: "link",
+        icon: "move-left",
+        ariaLabel: "Back to homepage",
+        href: "/",
+        dynamicBack: true,
+        className: "rounded-md text-white",
+      }}
+      rightAction={{
+        type: "button",
+        icon: "search",
+        ariaLabel: "Search store content",
+        className: "rounded-md text-white",
+      }}
+      centerImageSrc="/Logo/Nico Angelo Logo.webp"
+      centerImageAlt="Nico Angelo"
+      centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-16"
+      containerClass="nico-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white transition-[background-color,backdrop-filter] duration-150 sm:px-8 sm:pt-6 sm:pb-3"
+    />
+
+    <main
+      class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10 md:max-w-3xl lg:max-w-7xl"
+    >
       <div
-        id="nico-page-gradient"
-        class="fixed inset-0 z-0 pointer-events-none bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(84,26,4,0.14)_34%,rgba(22,6,1,0.62)_62%,rgba(0,0,0,0.96)_100%)] opacity-45 transition-opacity duration-150"
-        aria-hidden="true"
-      ></div>
-
-      <MobileTopNavbar
-        leftAction={{
-          type: "link",
-          icon: "move-left",
-          ariaLabel: "Back to see our story",
-          href: "/stores/nico-angelo/sts",
-          dynamicBack: true,
-          className: "rounded-md text-white",
-        }}
-        rightAction={{
-          type: "button",
-          icon: "search",
-          ariaLabel: "Search store content",
-          className: "rounded-md text-white",
-        }}
-        centerImageSrc="/Logo/Nico Angelo Logo.webp"
-        centerImageAlt="Nico Angelo"
-        centerImageClass="h-16 w-auto max-w-xs object-contain sm:h-16"
-        containerClass="nico-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-5 pb-3 text-white transition-[background-color,backdrop-filter] duration-150 sm:px-8 sm:pt-6 sm:pb-3"
-      />
-
-      <main class="relative z-20 mx-auto w-full max-w-[430px] px-6 pb-12 sm:px-8 sm:pb-10 md:max-w-3xl lg:max-w-7xl">
-        <div class="lg:grid lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-start lg:gap-10">
-          <section
-            class="relative mt-3 w-full aspect-video overflow-hidden rounded-[1.25rem] sm:mt-4 md:mx-auto md:max-w-[900px] lg:mt-10 lg:mx-0 lg:max-w-none lg:sticky lg:top-1/2 lg:-translate-y-1/2"
-            aria-label="Story video"
+        class="lg:grid lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-start lg:gap-10"
+      >
+        <section
+          class="relative mt-3 w-full aspect-video overflow-hidden rounded-[1.25rem] sm:mt-4 md:mx-auto md:max-w-[900px] lg:mt-10 lg:mx-0 lg:max-w-none lg:sticky lg:top-1/2 lg:-translate-y-1/2"
+          aria-label="Story video"
+        >
+          <div
+            id="nico-video-shell"
+            class="sticky top-0 h-full w-full origin-center transition-[opacity,transform] duration-150 will-change-transform"
           >
-            <div
-              id="nico-video-shell"
-              class="sticky top-0 h-full w-full origin-center transition-[opacity,transform] duration-150 will-change-transform"
-            >
-              <iframe
-                class="h-full w-full"
-                src="https://www.youtube.com/embed/uC5eg-osTbg?rel=0"
-                title="Nico Angelo Souls Behind the Soles"
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </section>
+            <iframe
+              class="h-full w-full"
+              src="https://www.youtube.com/embed/uC5eg-osTbg?rel=0"
+              title="Nico Angelo Souls Behind the Soles"
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowfullscreen></iframe>
+          </div>
+        </section>
 
-          <div class="lg:pt-10">
-            <h1
-              class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-4xl md:text-5xl lg:mt-0 lg:text-left"
-            >
-              {store.heroTitle}
-            </h1>
+        <div class="lg:pt-10">
+          <h1
+            class="mx-auto mt-8 max-w-[14ch] text-center text-4xl leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:mt-8 sm:max-w-md sm:text-4xl md:text-5xl lg:mt-0 lg:text-left"
+          >
+            {store.heroTitle}
+          </h1>
 
-            <p
-              class="mx-auto mt-6 text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg lg:mx-0 lg:max-w-none lg:text-left"
-            >
-              {store.storyIntro}
-            </p>
+          <p
+            class="mx-auto mt-6 text-center text-sm leading-[1.3] font-semibold text-white/95 sm:max-w-3xl sm:text-base sm:leading-relaxed sm:font-medium md:text-lg lg:mx-0 lg:max-w-none lg:text-left"
+          >
+            {store.storyIntro}
+          </p>
 
-            <section class="mt-8">
+          <section class="mt-8">
+            <div class="mt-6 space-y-8">
+              {
+                staff
+                  .filter((member) => member.owner)
+                  .map((member) => (
+                    <article class="mx-auto w-[72%] max-w-[320px] text-center text-white lg:mx-0 lg:w-full lg:max-w-[280px]">
+                      <img
+                        src={member.image}
+                        alt={`${member.name} - ${member.role}`}
+                        loading="lazy"
+                        decoding="async"
+                        class="aspect-[3/4] w-full rounded-[1.2rem] object-cover object-center"
+                      />
+                      <p class="mt-4 text-xl leading-none font-extrabold">
+                        {member.name}
+                      </p>
+                      <p class="text-md leading-none font-medium text-white/90">
+                        {member.role}
+                      </p>
+                    </article>
+                  ))
+              }
 
-              <div class="mt-6 space-y-8">
+              <div class="grid grid-cols-2 gap-4 sm:gap-5">
                 {
                   staff
-                    .filter((member) => member.owner)
+                    .filter((member) => !member.owner)
                     .map((member) => (
-                      <article class="mx-auto w-[72%] max-w-[320px] text-center text-white lg:mx-0 lg:w-full lg:max-w-[280px]">
+                      <article class="text-center text-white">
                         <img
                           src={member.image}
                           alt={`${member.name} - ${member.role}`}
                           loading="lazy"
                           decoding="async"
-                          class="aspect-[3/4] w-full rounded-[1.2rem] object-cover object-center"
+                          class="aspect-[3/4] w-full rounded-[1.8rem] object-cover object-center"
                         />
-                        <p class="mt-4 text-xl leading-none font-extrabold">{member.name}</p>
-                        <p class="text-md leading-none font-medium text-white/90">{member.role}</p>
+                        <p class="mt-2 text-lg leading-none font-extrabold sm:text-2xl">
+                          {member.name}
+                        </p>
+                        <p class="text-base leading-none font-medium text-white/90 sm:text-xl">
+                          {member.role}
+                        </p>
                       </article>
                     ))
                 }
-
-                <div class="grid grid-cols-2 gap-4 sm:gap-5">
-                  {
-                    staff
-                      .filter((member) => !member.owner)
-                      .map((member) => (
-                        <article class="text-center text-white">
-                          <img
-                            src={member.image}
-                            alt={`${member.name} - ${member.role}`}
-                            loading="lazy"
-                            decoding="async"
-                            class="aspect-[3/4] w-full rounded-[1.8rem] object-cover object-center"
-                          />
-                          <p class="mt-2 text-lg leading-none font-extrabold sm:text-2xl">{member.name}</p>
-                          <p class="text-base leading-none font-medium text-white/90 sm:text-xl">
-                            {member.role}
-                          </p>
-                        </article>
-                      ))
-                  }
-                </div>
               </div>
-            </section>
-
-            <div class="text-center lg:text-left">
-              <a
-                href="/stores/nico-angelo/hth"
-                class="mx-auto mt-11 inline-flex min-w-[17.5rem] items-center justify-center rounded-full bg-black/[0.38] px-8 py-3 text-base font-medium whitespace-nowrap text-white transition-all duration-250 ease-out hover:-translate-y-0.5 hover:bg-black/[0.52] hover:shadow-[0_8px_20px_rgba(0,0,0,0.35)] active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:mt-10 sm:py-3 sm:text-xl sm:font-semibold md:py-4 md:text-2xl lg:mx-0"
-              >
-                See Step by Step Process
-              </a>
             </div>
+          </section>
+
+          <div class="text-center lg:text-left">
+            <a
+              href="/stores/nico-angelo/hth"
+              class="mx-auto mt-11 inline-flex min-w-[17.5rem] items-center justify-center rounded-full bg-black/[0.38] px-8 py-3 text-base font-medium whitespace-nowrap text-white transition-all duration-250 ease-out hover:-translate-y-0.5 hover:bg-black/[0.52] hover:shadow-[0_8px_20px_rgba(0,0,0,0.35)] active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:mt-10 sm:py-3 sm:text-xl sm:font-semibold md:py-4 md:text-2xl lg:mx-0"
+            >
+              See Step by Step Process
+            </a>
           </div>
         </div>
-      </main>
-    </section>
-    <script is:inline>
-      (() => {
-        const videoShell = document.getElementById("nico-video-shell");
-        const pageGradient = document.getElementById("nico-page-gradient");
-        const stickyNav = document.querySelector(".nico-sticky-nav");
-        if (!videoShell || !pageGradient) return;
-
-        const handleScroll = () => {
-          const videoProgress = Math.min(window.scrollY / 240, 1);
-          const gradientProgress = Math.min(window.scrollY / 430, 1);
-
-          const isTabletOrDesktop = window.matchMedia("(min-width: 768px)").matches;
-          if (isTabletOrDesktop) {
-            videoShell.style.opacity = "1";
-            videoShell.style.transform = "none";
-          } else {
-            videoShell.style.opacity = String(1 - videoProgress * 0.95);
-            videoShell.style.transform = `scale(${1 - videoProgress * 0.06})`;
-          }
-
-          pageGradient.style.opacity = String(0.4 + gradientProgress * 0.6);
-
-          if (stickyNav instanceof HTMLElement) {
-            const navDarkness = gradientProgress * 0.55;
-            stickyNav.style.background = `linear-gradient(180deg, rgba(0,0,0,${navDarkness}) 0%, rgba(0,0,0,0) 100%)`;
-            stickyNav.style.backdropFilter = gradientProgress > 0.2 ? "blur(2px)" : "none";
-          }
-        };
-
-        handleScroll();
-        window.addEventListener("scroll", handleScroll, { passive: true });
-      })();
-    </script>
+      </div>
+    </main>
   </section>
+  <script is:inline>
+    (() => {
+      const videoShell = document.getElementById("nico-video-shell");
+      const pageGradient = document.getElementById("nico-page-gradient");
+      const stickyNav = document.querySelector(".nico-sticky-nav");
+      if (!videoShell || !pageGradient) return;
+
+      const handleScroll = () => {
+        const videoProgress = Math.min(window.scrollY / 240, 1);
+        const gradientProgress = Math.min(window.scrollY / 430, 1);
+
+        const isTabletOrDesktop =
+          window.matchMedia("(min-width: 768px)").matches;
+        if (isTabletOrDesktop) {
+          videoShell.style.opacity = "1";
+          videoShell.style.transform = "none";
+        } else {
+          videoShell.style.opacity = String(1 - videoProgress * 0.95);
+          videoShell.style.transform = `scale(${1 - videoProgress * 0.06})`;
+        }
+
+        pageGradient.style.opacity = String(0.4 + gradientProgress * 0.6);
+
+        if (stickyNav instanceof HTMLElement) {
+          const navDarkness = gradientProgress * 0.55;
+          stickyNav.style.background = `linear-gradient(180deg, rgba(0,0,0,${navDarkness}) 0%, rgba(0,0,0,0) 100%)`;
+          stickyNav.style.backdropFilter =
+            gradientProgress > 0.2 ? "blur(2px)" : "none";
+        }
+      };
+
+      handleScroll();
+      window.addEventListener("scroll", handleScroll, { passive: true });
+    })();
+  </script>
 </BaseLayout>
