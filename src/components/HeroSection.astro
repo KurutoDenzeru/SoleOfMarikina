@@ -162,13 +162,13 @@ const isJourneyPage = currentPath === "/journey";
     <div class="relative z-20 min-h-[calc(100svh-7rem)]">
       <div
         id="desktop-guide"
-        class="pointer-events-none absolute inset-x-0 top-6 z-30 hidden justify-center transition-opacity duration-200 md:flex"
+        class="pointer-events-none absolute inset-x-0 top-6 z-30 hidden justify-center px-6 transition-opacity duration-200 xl:flex"
       >
         <div
-          class="rounded-xl border border-white/25 bg-black/16 px-5 py-2.5 text-center text-white backdrop-blur-md lg:px-6 lg:py-3"
+          class="max-w-[60rem] rounded-2xl border border-white/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0.12)_100%)] px-6 py-3 text-center text-white backdrop-blur-md shadow-sm lg:px-8 lg:py-4"
         >
           <p
-            class="text-[11px] font-semibold tracking-[0.22em] uppercase text-white/75 lg:text-xs"
+            class="text-[11px] font-semibold tracking-[0.24em] uppercase text-white/80 lg:text-xs"
           >
             Discover Marikina Shoemakers
           </p>
@@ -241,12 +241,12 @@ const isJourneyPage = currentPath === "/journey";
         ))
       }
 
-      <div class="absolute inset-x-0 bottom-10 z-20 flex justify-center px-6 md:hidden">
-        <div class="w-full max-w-xs rounded-2xl bg-white/25 px-4 py-3 text-center text-white backdrop-blur-sm">
-          <p class="text-[11px] font-semibold tracking-[0.2em] uppercase">
+      <div class="absolute inset-x-0 bottom-10 z-20 flex justify-center px-4 md:hidden">
+        <div class="w-full max-w-[20rem] rounded-2xl border border-white/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.12)_100%)] px-4 py-3 text-center text-white backdrop-blur-md shadow-sm">
+          <p class="text-[10px] font-semibold tracking-[0.22em] uppercase text-white/80">
             Meet the Makers of Marikina
           </p>
-          <p class="mt-1 text-xs font-medium text-white/90">
+          <p class="mt-1 text-xs font-medium text-white/92">
             Learn their journey, and their creations.
           </p>
         </div>
@@ -259,6 +259,8 @@ const isJourneyPage = currentPath === "/journey";
   (() => {
     if (window.__somHeroBindingsInitialized) return;
     window.__somHeroBindingsInitialized = true;
+
+    const journeyStoreStateKey = "som:journey:active-store";
 
     let cleanup = () => {};
 
@@ -282,8 +284,22 @@ const isJourneyPage = currentPath === "/journey";
       const storeBackdrop = document.getElementById("store-backdrop");
       const storeTriggerLayer = document.getElementById("store-trigger-layer");
 
+      if (!(heroStage instanceof HTMLElement)) {
+        return;
+      }
+
+      const persistedStoreId = window.sessionStorage.getItem(journeyStoreStateKey);
+
       let lastFocused = null;
       let activeStoreId = null;
+
+      const persistActiveStoreId = (storeId) => {
+        if (storeId) {
+          window.sessionStorage.setItem(journeyStoreStateKey, storeId);
+          return;
+        }
+        window.sessionStorage.removeItem(journeyStoreStateKey);
+      };
 
       const isOpen = () =>
         hasMenuControls && openButton.getAttribute("aria-expanded") === "true";
@@ -298,8 +314,11 @@ const isJourneyPage = currentPath === "/journey";
         document.querySelectorAll("[data-store-panel]"),
       );
 
-      const closeStorePanels = () => {
+      const closeStorePanels = (shouldPersist = true) => {
         activeStoreId = null;
+        if (shouldPersist) {
+          persistActiveStoreId(null);
+        }
         storeTriggers.forEach((trigger) => {
           trigger.setAttribute("aria-expanded", "false");
           trigger.setAttribute("aria-pressed", "false");
@@ -413,6 +432,7 @@ const isJourneyPage = currentPath === "/journey";
         if (!targetPanel) return;
 
         activeStoreId = storeId;
+        persistActiveStoreId(storeId);
         storeTriggers.forEach((trigger) => {
           const isTarget =
             trigger.getAttribute("data-store-trigger") === storeId;
@@ -611,7 +631,19 @@ const isJourneyPage = currentPath === "/journey";
       }
 
       closeMenu();
-      closeStorePanels();
+      closeStorePanels(false);
+
+      if (persistedStoreId) {
+        const persistedTrigger = storeTriggers.find(
+          (trigger) => trigger.getAttribute("data-store-trigger") === persistedStoreId,
+        );
+        if (persistedTrigger instanceof HTMLElement) {
+          openStorePanel(persistedStoreId, persistedTrigger);
+        } else if (storeTriggers.length > 0) {
+          persistActiveStoreId(null);
+        }
+      }
+
       onWindowScroll();
 
       cleanup = () => {
