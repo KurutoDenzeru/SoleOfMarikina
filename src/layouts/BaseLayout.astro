@@ -1,7 +1,8 @@
 ---
 import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
-import { storeOrder, storeProducts, stores } from "@/lib/store-pages";
+import { storeOrder, stores } from "@/lib/store-pages";
+import { productCatalogByStore } from "@/lib/products-catalog";
 
 type Props = {
   title?: string;
@@ -107,23 +108,20 @@ const schemaGraph = {
 const searchStoreOrder = new Map(
   storeOrder.map((slug, index) => [slug, index]),
 );
-const globalSearchItems = [...stores]
-  .sort(
-    (a, b) =>
-      (searchStoreOrder.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
-      (searchStoreOrder.get(b.slug) ?? Number.MAX_SAFE_INTEGER),
-  )
-  .flatMap((store) =>
-    storeProducts[store.slug].map((product) => ({
-      storeName: store.name,
-      storeSlug: store.slug,
-      productName: product.name,
-      price: product.price,
-      href: `/stores/${store.slug}/their-products`,
-      searchText:
-        `${store.name} ${product.name} ${product.price}`.toLowerCase(),
-    })),
-  );
+const storeNameBySlug = new Map(stores.map((store) => [store.slug, store.name]));
+const globalSearchItems = storeOrder.flatMap((slug) => {
+  const catalog = productCatalogByStore[slug];
+  if (!catalog) return [];
+  const storeName = storeNameBySlug.get(slug) ?? slug;
+  return catalog.products.map((product) => ({
+    storeName,
+    storeSlug: slug,
+    productName: product.name,
+    price: product.price,
+    href: `/stores/${slug}/products/${product.slug}`,
+    searchText: `${storeName} ${product.name} ${product.price}`.toLowerCase(),
+  }));
+});
 ---
 
 <html lang="en">

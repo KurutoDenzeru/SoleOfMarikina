@@ -2,6 +2,7 @@
 import type { StoreSlug } from "@/lib/store-pages";
 import Footer from "@/components/Footer.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import { getProductCatalogByStore } from "@/lib/products-catalog";
 
 export async function getStaticPaths() {
@@ -39,28 +40,26 @@ const isNico = store === "nico-angelo";
 
 <BaseLayout title={`${catalog.logoAlt} | ${productEntry.name}`}>
   <div class="flex min-h-screen flex-col bg-[#F0F0F0] text-[#181818]">
-    <header class="mx-auto w-full max-w-[1200px] px-6 pt-6 sm:px-8">
-      <div class="flex items-center justify-between">
-        <a
-          href={backHref}
-          aria-label="Back to products listing"
-          class="inline-flex rounded-md p-1 text-black"
-        >
-          <span class="text-3xl leading-none">←</span>
-        </a>
-        <div class="flex flex-1 justify-center">
-          <img
-            src={catalog.logo}
-            alt={catalog.logoAlt}
-            class:list={[
-              "h-10 w-auto object-contain",
-              isNico ? "sm:h-12" : "sm:h-10",
-            ]}
-          />
-        </div>
-        <span class="w-10"></span>
-      </div>
-    </header>
+    <MobileTopNavbar
+      leftAction={{
+        type: "link",
+        icon: "move-left",
+        ariaLabel: "Back to products listing",
+        href: backHref,
+        dynamicBack: true,
+        className: "rounded-md text-black",
+      }}
+      rightAction={{
+        type: "button",
+        icon: "search",
+        ariaLabel: "Placeholder",
+        className: "invisible pointer-events-none rounded-md",
+      }}
+      centerImageSrc={catalog.logo}
+      centerImageAlt={catalog.logoAlt}
+      centerImageClass={`h-14 w-auto max-w-[200px] object-contain ${isNico ? "invert" : "invert"}`}
+      containerClass="sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center bg-[#F0F0F0] px-6 pt-5 pb-3 text-black transition-[background-color,backdrop-filter] duration-150 sm:px-8 sm:pt-6 sm:pb-3"
+    />
 
     <main class="mx-auto flex w-full max-w-[1200px] flex-1 flex-col px-6 pb-16 pt-8 sm:px-8">
       <div class="mx-auto w-full max-w-[520px]">
@@ -69,15 +68,15 @@ const isNico = store === "nico-angelo";
           alt={productEntry.name}
           loading="lazy"
           decoding="async"
-          class="mx-auto h-56 w-full object-contain object-center"
+          class="mx-auto h-72 w-full object-contain object-center sm:h-80 md:h-96"
         />
 
-        <article class="mt-6 rounded-[2rem] bg-[#d7cfc6] p-7 text-[#1b140e]">
+        <article class="mt-6 rounded-[2rem] bg-[#d7cfc6] p-7 text-[#1b140e] shadow-md">
           <div class="flex items-start justify-between gap-4">
-            <h1 class="max-w-[7ch] text-5xl leading-[0.86] font-extrabold tracking-tight">
+            <h1 class="max-w-[13ch] text-3xl leading-[0.86] font-extrabold tracking-tight">
               {productEntry.name}
             </h1>
-            <span class="pt-2 text-4xl leading-none font-extrabold">
+            <span class="pt-2 text-2xl leading-none font-extrabold">
               {productEntry.price}
             </span>
           </div>
@@ -86,7 +85,7 @@ const isNico = store === "nico-angelo";
             {productEntry.description}
           </p>
 
-          <ul class="mt-4 space-y-2 text-base leading-snug font-semibold text-black/75">
+          <ul class="mt-4 space-y-2 text-base leading-snug font-bold text-black/75">
             {
               productEntry.bulletPoints.map((point) => (
                 <li>• {point}</li>
@@ -95,13 +94,13 @@ const isNico = store === "nico-angelo";
           </ul>
 
           {
-            catalog.checkUrl && (
+            productEntry.checkUrl && (
               <div class="mt-6 flex justify-center">
                 <a
-                  href={catalog.checkUrl}
+                  href={productEntry.checkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="rounded-full bg-[#C86300] px-6 py-2 text-sm font-bold text-white"
+                  class="rounded-full bg-[#C86300] px-6 py-2 text-sm font-bold text-white transition-transform duration-150 hover:scale-[1.02] active:scale-95"
                 >
                   Check Product
                 </a>

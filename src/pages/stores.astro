@@ -3,7 +3,8 @@ import Footer from "@/components/Footer.astro";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Skeleton } from "@/components/ui/skeleton";
-import { storeOrder, storeProducts, stores } from "@/lib/store-pages";
+import { storeOrder, stores } from "@/lib/store-pages";
+import { getProductCatalogByStore } from "@/lib/products-catalog";
 
 const slugOrder = new Map(storeOrder.map((slug, index) => [slug, index]));
 
@@ -13,24 +14,20 @@ const toToken = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-const storeLinks: Record<string, string> = {
-  "brads-trendies":
-    "https://shopee.ph/bnkclogs?entryPoint=ShopBySearch&searchKeyword=bnk+clogs",
-  "nico-angelo": "https://www.facebook.com/profile.php?id=61580780770102",
-  seacrest: "https://ph.shp.ee/TiwGdqQ",
-};
-
 const storesWithProducts = [...stores]
   .sort((a, b) => (slugOrder.get(a.slug) ?? 99) - (slugOrder.get(b.slug) ?? 99))
   .map((store) => ({
     ...store,
-    link: storeLinks[store.slug] || `/stores/${store.slug}/their-products`,
-    products: storeProducts[store.slug].map((product) => ({
-      ...product,
+    link: `/stores/${store.slug}/their-products`,
+    products: (getProductCatalogByStore(store.slug)?.products ?? []).map(
+      (product) => ({
+        ...product,
       id: `${store.slug}-${toToken(product.name)}`,
       searchText:
-        `${store.name} ${product.name} ${product.price}`.toLowerCase(),
-    })),
+          `${store.name} ${product.name} ${product.price}`.toLowerCase(),
+        href: `/stores/${store.slug}/products/${product.slug}`,
+      }),
+    ),
   }));
 ---
 
@@ -105,8 +102,6 @@ const storesWithProducts = [...stores]
                   </div>
                   <a
                     href={store.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     class="inline-flex items-center justify-center rounded-full border border-black/20 px-5 py-2 text-sm font-semibold text-black transition hover:border-black/40 hover:bg-black hover:text-white sm:text-base"
                   >
                     View Store
@@ -117,9 +112,7 @@ const storesWithProducts = [...stores]
                   {store.products.map((product) => (
                     <a
                       id={product.id}
-                      href={store.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={product.href}
                       data-product-card
                       data-search-text={product.searchText}
                       data-product-name={product.name}
@@ -137,7 +130,7 @@ const storesWithProducts = [...stores]
                         onload="this.previousElementSibling.style.display='none'"
                       />
                       <div
-                        class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.56)_0%,rgba(0,0,0,0.12)_44%,rgba(0,0,0,0.9)_100%)]"
+                        class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.46)_0%,rgba(0,0,0,0.1)_44%,rgba(0,0,0,0.85)_100%)]"
                         aria-hidden="true"
                       />
                       <div class="absolute inset-x-4 bottom-4 text-white sm:inset-x-5 sm:bottom-5">

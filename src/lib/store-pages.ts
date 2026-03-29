@@ -65,7 +65,7 @@ export const stores: StoreData[] = [
     city: "Marikina",
     phone: "0969 619 8222",
     email: "bradstrendies@gmail.com",
-    location: "5 Marcelo St. Nangka",
+    location: "5c Mirasol St. Nangka, Marikina City",
     facebook: "https://www.facebook.com/bradstrendies",
     instagram: "#",
     ctaLabel: "See our story",

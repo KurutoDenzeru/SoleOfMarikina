@@ -66,12 +66,11 @@ if (!catalog) {
                   class="relative h-56 overflow-hidden rounded-[2rem] border border-black/10 bg-[#F0F0F0] transition duration-200 group-hover:-translate-y-0.5 sm:h-60"
                   style={`background-image:url('${product.image}'); background-size: cover; background-position: center;`}
                 >
-                  <div class="absolute inset-0 bg-white/80"></div>
                   <div class="relative z-10 p-5">
-                    <p class="max-w-[10ch] text-[2.8rem] leading-[0.86] font-black tracking-tight text-black sm:text-[3rem]">
+                    <p class="max-w-sm text-3xl leading-[0.86] font-black tracking-tight text-black sm:text-3xl">
                       {product.name}
                     </p>
-                    <p class="mt-1 text-3xl leading-none font-extrabold text-black sm:text-4xl">
+                    <p class="mt-1 text-md leading-none font-extrabold text-black sm:text-xl">
                       {product.price}
                     </p>
                   </div>
