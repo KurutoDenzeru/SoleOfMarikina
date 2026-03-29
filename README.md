@@ -16,7 +16,7 @@
 - **Accessible UI** — Components from Shadcn UI ensure a11y compliance and great UX.
 - **Open Source** — MIT licensed; customize and deploy your own version freely.
 
-## 🧱 Tech Stack
+## 🛠️ Tech Stack
 
 - [Astro](https://astro.build/): Modern static site generator for building fast, content-focused websites.
 - [Tailwind](https://tailwindcss.com/): Utility-first CSS framework for rapid UI development.
