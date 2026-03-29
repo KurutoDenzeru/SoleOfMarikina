@@ -14,6 +14,7 @@ export type StoreProductCatalog = {
   slug: StoreSlug;
   logo: string;
   logoAlt: string;
+  contactUrl?: string;
   products: ProductCatalogItem[];
 };
 
@@ -22,6 +23,8 @@ export const productCatalogByStore: Record<StoreSlug, StoreProductCatalog> = {
     slug: "nico-angelo",
     logo: "/Logo/Nico Angelo Logo.webp",
     logoAlt: "Nico Angelo",
+    contactUrl:
+      "https://www.facebook.com/p/Nico-Angelo-Leather-Classics-61576069474480/",
     products: [
       {
         slug: "elevated",

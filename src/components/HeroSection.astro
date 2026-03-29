@@ -40,68 +40,73 @@ const navLinks = [
 
 const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const defaultMapBackground = "/map/marikina_2k.png";
+const isJourneyPage = currentPath === "/journey";
 ---
 
 <section class="relative w-full">
-  <button
-    id="menu-overlay"
-    type="button"
-    aria-label="Close menu"
-    aria-hidden="true"
-    class="pointer-events-none fixed inset-0 z-[55] bg-transparent backdrop-blur-sm opacity-0 transition-opacity duration-300 ease-out"
-  ></button>
-
-  <aside
-    id="mobile-sidebar"
-    role="dialog"
-    aria-modal="true"
-    aria-hidden="true"
-    aria-labelledby="mobile-sidebar-title"
-    class="fixed left-0 top-0 z-[60] flex h-full w-[71%] max-w-85 -translate-x-full flex-col overflow-y-auto bg-black/90 px-6 py-6 text-white transition-transform duration-300 ease-out"
-  >
-    <h2 id="mobile-sidebar-title" class="sr-only">Main navigation</h2>
-    <div class="mb-16 flex items-center justify-start">
+  {!isJourneyPage && (
+    <>
       <button
-        id="menu-close"
+        id="menu-overlay"
         type="button"
-        aria-label="Close navigation menu"
-        class="inline-flex rounded-md p-1 text-white/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-      >
-        <MoveLeft className="size-8" />
-      </button>
-    </div>
+        aria-label="Close menu"
+        aria-hidden="true"
+        class="pointer-events-none fixed inset-0 z-[55] bg-transparent backdrop-blur-sm opacity-0 transition-opacity duration-300 ease-out"
+      ></button>
 
-    <nav aria-label="Main navigation" class="mt-1 flex-1">
-      <ul class="space-y-7">
-        {
-          navLinks.map((link) => {
-            const linkPath = link.href.replace(/\/+$/, "") || "/";
-            const isActive = currentPath === linkPath;
-            return (
-              <li>
-                <a
-                  href={link.href}
-                  aria-current={isActive ? "page" : undefined}
-                  class:list={[
-                    "block px-2 py-0 text-[3rem] leading-none tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
-                    isActive
-                      ? "font-bold text-white"
-                      : "font-extralight text-stone-200",
-                  ]}
-                >
-                  {link.label}
-                </a>
-              </li>
-            );
-          })
-        }
-      </ul>
-    </nav>
-  </aside>
+      <aside
+        id="mobile-sidebar"
+        role="dialog"
+        aria-modal="true"
+        aria-hidden="true"
+        aria-labelledby="mobile-sidebar-title"
+        class="fixed left-0 top-0 z-[60] flex h-full w-[71%] max-w-85 -translate-x-full flex-col overflow-y-auto bg-black/90 px-6 py-6 text-white transition-transform duration-300 ease-out"
+      >
+        <h2 id="mobile-sidebar-title" class="sr-only">Main navigation</h2>
+        <div class="mb-16 flex items-center justify-start">
+          <button
+            id="menu-close"
+            type="button"
+            aria-label="Close navigation menu"
+            class="inline-flex rounded-md p-1 text-white/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            <MoveLeft className="size-8" />
+          </button>
+        </div>
+
+        <nav aria-label="Main navigation" class="mt-1 flex-1">
+          <ul class="space-y-7">
+            {
+              navLinks.map((link) => {
+                const linkPath = link.href.replace(/\/+$/, "") || "/";
+                const isActive = currentPath === linkPath;
+                return (
+                  <li>
+                    <a
+                      href={link.href}
+                      aria-current={isActive ? "page" : undefined}
+                      class:list={[
+                        "block px-2 py-0 text-[3rem] leading-none tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                        isActive
+                          ? "font-bold text-white"
+                          : "font-extralight text-stone-200",
+                      ]}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </nav>
+      </aside>
+    </>
+  )}
 
   <article
     id="hero-stage"
-    class="relative min-h-screen w-full overflow-x-clip bg-[#d8ae73]"
+    class="relative min-h-screen w-full overflow-hidden bg-[#d8ae73]"
   >
     <div
       id="map-image-layer"
@@ -122,15 +127,26 @@ const defaultMapBackground = "/map/marikina_2k.png";
     </div>
 
     <MobileTopNavbar
-      leftAction={{
-        type: "button",
-        icon: "menu",
-        ariaLabel: "Open navigation menu",
-        id: "menu-toggle",
-        controls: "mobile-sidebar",
-        expanded: "false",
-        className: "rounded-md cursor-pointer",
-      }}
+      leftAction={
+        isJourneyPage
+          ? {
+              type: "link",
+              icon: "move-left",
+              ariaLabel: "Back to homepage",
+              href: "/",
+              dynamicBack: true,
+              className: "rounded-md cursor-pointer",
+            }
+          : {
+              type: "button",
+              icon: "menu",
+              ariaLabel: "Open navigation menu",
+              id: "menu-toggle",
+              controls: "mobile-sidebar",
+              expanded: "false",
+              className: "rounded-md cursor-pointer",
+            }
+      }
       rightAction={{
         type: "button",
         icon: "search",
@@ -253,20 +269,28 @@ const defaultMapBackground = "/map/marikina_2k.png";
       const closeButton = document.getElementById("menu-close");
       const overlay = document.getElementById("menu-overlay");
       const sidebar = document.getElementById("mobile-sidebar");
+      const hasMenuControls =
+        openButton instanceof HTMLButtonElement &&
+        closeButton instanceof HTMLButtonElement &&
+        overlay instanceof HTMLElement &&
+        sidebar instanceof HTMLElement;
+
       const heroStickyNav = document.querySelector(".hero-sticky-nav");
       const heroStage = document.getElementById("hero-stage");
       const desktopGuide = document.getElementById("desktop-guide");
       const mapImageLayer = document.getElementById("map-image-layer");
       const storeBackdrop = document.getElementById("store-backdrop");
       const storeTriggerLayer = document.getElementById("store-trigger-layer");
-      if (!openButton || !closeButton || !overlay || !sidebar) return;
 
       let lastFocused = null;
       let activeStoreId = null;
 
-      const isOpen = () => openButton.getAttribute("aria-expanded") === "true";
+      const isOpen = () =>
+        hasMenuControls && openButton.getAttribute("aria-expanded") === "true";
       const getFocusable = () =>
-        sidebar.querySelectorAll("a[href], button:not([disabled])");
+        hasMenuControls
+          ? sidebar.querySelectorAll("a[href], button:not([disabled])")
+          : [];
       const storeTriggers = Array.from(
         document.querySelectorAll("[data-store-trigger]"),
       );
@@ -325,6 +349,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
       };
 
       const openMenu = () => {
+        if (!hasMenuControls) return;
         lastFocused = document.activeElement;
         openButton.setAttribute("aria-expanded", "true");
         sidebar.classList.remove("-translate-x-full");
@@ -339,6 +364,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
       };
 
       const closeMenu = () => {
+        if (!hasMenuControls) return;
         openButton.setAttribute("aria-expanded", "false");
         sidebar.classList.remove("translate-x-0");
         sidebar.classList.add("-translate-x-full");
@@ -492,6 +518,7 @@ const defaultMapBackground = "/map/marikina_2k.png";
       };
 
       const onSidebarKeydown = (event) => {
+        if (!hasMenuControls) return;
         if (!isOpen() || event.key !== "Tab") return;
         const focusable = Array.from(getFocusable());
         if (!focusable.length) return;
@@ -543,33 +570,41 @@ const defaultMapBackground = "/map/marikina_2k.png";
         return { panel, onPanelClick };
       });
 
-      const sidebarLinks = Array.from(sidebar.querySelectorAll("a[href]"));
-      sidebarLinks.forEach((link) => {
-        link.addEventListener("click", (e) => {
-          if (link.getAttribute("href") === "/") {
-            if (window.location.pathname === "/") {
-              e.preventDefault();
+      const sidebarLinks = hasMenuControls
+        ? Array.from(sidebar.querySelectorAll("a[href]"))
+        : [];
+      if (hasMenuControls) {
+        sidebarLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            if (link.getAttribute("href") === "/") {
+              if (window.location.pathname === "/") {
+                e.preventDefault();
+                closeMenu();
+                closeStorePanels();
+                window.history.pushState({}, "", "/");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            } else {
               closeMenu();
-              closeStorePanels();
-              window.history.pushState({}, "", "/");
-              window.scrollTo({ top: 0, behavior: "smooth" });
             }
-          } else {
-            closeMenu();
-          }
+          });
         });
-      });
+      }
 
       const onOverlayClick = () => {
         closeMenu();
         closeStorePanels();
       };
 
-      openButton.addEventListener("click", openMenu);
-      closeButton.addEventListener("click", closeMenu);
-      overlay.addEventListener("click", onOverlayClick);
+      if (hasMenuControls) {
+        openButton.addEventListener("click", openMenu);
+        closeButton.addEventListener("click", closeMenu);
+        overlay.addEventListener("click", onOverlayClick);
+      }
       document.addEventListener("keydown", onDocumentKeydown);
-      sidebar.addEventListener("keydown", onSidebarKeydown);
+      if (hasMenuControls) {
+        sidebar.addEventListener("keydown", onSidebarKeydown);
+      }
       window.addEventListener("scroll", onWindowScroll, { passive: true });
       if (storeBackdrop) {
         storeBackdrop.addEventListener("click", closeStorePanels);
@@ -581,17 +616,23 @@ const defaultMapBackground = "/map/marikina_2k.png";
 
       cleanup = () => {
         document.body.classList.remove("overflow-hidden");
-        openButton.removeEventListener("click", openMenu);
-        closeButton.removeEventListener("click", closeMenu);
-        overlay.removeEventListener("click", onOverlayClick);
+        if (hasMenuControls) {
+          openButton.removeEventListener("click", openMenu);
+          closeButton.removeEventListener("click", closeMenu);
+          overlay.removeEventListener("click", onOverlayClick);
+        }
         document.removeEventListener("keydown", onDocumentKeydown);
-        sidebar.removeEventListener("keydown", onSidebarKeydown);
+        if (hasMenuControls) {
+          sidebar.removeEventListener("keydown", onSidebarKeydown);
+        }
         window.removeEventListener("scroll", onWindowScroll);
-        sidebarLinks.forEach((link) => {
-          if (!link.parentNode) return;
-          const newLink = link.cloneNode(true);
-          link.parentNode.replaceChild(newLink, link);
-        });
+        if (hasMenuControls) {
+          sidebarLinks.forEach((link) => {
+            if (!link.parentNode) return;
+            const newLink = link.cloneNode(true);
+            link.parentNode.replaceChild(newLink, link);
+          });
+        }
         if (storeBackdrop) {
           storeBackdrop.removeEventListener("click", closeStorePanels);
         }

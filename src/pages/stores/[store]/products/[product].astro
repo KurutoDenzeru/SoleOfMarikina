@@ -36,6 +36,8 @@ if (!productEntry) {
 
 const backHref = `/stores/${store}/their-products`;
 const isNico = store === "nico-angelo";
+const contactHref = catalog.contactUrl ?? productEntry.checkUrl;
+const contactLabel = catalog.contactUrl ? "Contact Page" : "Check Product";
 ---
 
 <BaseLayout title={`${catalog.logoAlt} | ${productEntry.name}`}>
@@ -94,15 +96,15 @@ const isNico = store === "nico-angelo";
           </ul>
 
           {
-            productEntry.checkUrl && (
+            contactHref && (
               <div class="mt-6 flex justify-center">
                 <a
-                  href={productEntry.checkUrl}
+                  href={contactHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="rounded-full bg-[#C86300] px-6 py-2 text-sm font-bold text-white transition-transform duration-150 hover:scale-[1.02] active:scale-95"
                 >
-                  Check Product
+                  {contactLabel}
                 </a>
               </div>
             )
