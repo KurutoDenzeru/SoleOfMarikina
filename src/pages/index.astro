@@ -1,14 +1,219 @@
 ---
-import Footer from "@/components/Footer.astro";
-import HeroSection from "@/components/HeroSection.astro";
+import { MoveLeft } from "lucide-react";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Footer from "@/components/Footer.astro";
+import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
+
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "Stores", href: "/stores" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 ---
 
-<BaseLayout title="Sole of Marikina">
-  <div class="flex min-h-screen flex-col">
-    <main class="flex-1">
-      <HeroSection />
-    </main>
+<BaseLayout
+  title="Step Into Marikina's Shoe Legacy | Sole of Marikina"
+  description="Step into the story of Marikina shoemaking and begin the Sole of Marikina journey."
+>
+  <div class="flex min-h-screen flex-col bg-[#050505] text-white">
+    <section class="relative min-h-screen w-full overflow-x-clip bg-[#d8ae73]">
+      <button
+        id="landing-menu-overlay"
+        type="button"
+        aria-label="Close menu"
+        aria-hidden="true"
+        class="pointer-events-none fixed inset-0 z-[55] bg-black/40 opacity-0 transition-opacity duration-300 ease-out"
+      ></button>
+
+      <aside
+        id="landing-mobile-sidebar"
+        role="dialog"
+        aria-modal="true"
+        aria-hidden="true"
+        aria-labelledby="landing-mobile-sidebar-title"
+        class="fixed left-0 top-0 z-[60] flex h-full w-[71%] max-w-[22rem] -translate-x-full flex-col overflow-y-auto bg-black/90 px-6 py-6 text-white transition-transform duration-300 ease-out"
+      >
+        <h2 id="landing-mobile-sidebar-title" class="sr-only">Main navigation</h2>
+        <div class="mb-16 flex items-center justify-start">
+          <button
+            id="landing-menu-close"
+            type="button"
+            aria-label="Close navigation menu"
+            class="inline-flex rounded-md p-1 text-white/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            <MoveLeft className="size-8" />
+          </button>
+        </div>
+
+        <nav aria-label="Main navigation" class="mt-1 flex-1">
+          <ul class="space-y-7">
+            {
+              navLinks.map((link) => {
+                const linkPath = link.href.replace(/\/+$/, "") || "/";
+                const isActive = currentPath === linkPath;
+                return (
+                  <li>
+                    <a
+                      href={link.href}
+                      aria-current={isActive ? "page" : undefined}
+                      class:list={[
+                        "block px-2 py-0 text-[3rem] leading-none tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                        isActive
+                          ? "font-bold text-white"
+                          : "font-extralight text-stone-200",
+                      ]}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </nav>
+      </aside>
+
+      <div
+        id="landing-map-image-layer"
+        class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style="background-image:url('/map/marikina_2k.png');"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div
+        class="pointer-events-none absolute inset-0 z-[5] bg-[linear-gradient(180deg,rgba(183,82,24,0.34)_0%,rgba(128,37,12,0.46)_44%,rgba(18,5,2,0.88)_74%,rgba(0,0,0,0.99)_100%)]"
+        aria-hidden="true"
+      >
+      </div>
+
+      <MobileTopNavbar
+        leftAction={{
+          type: "button",
+          icon: "menu",
+          ariaLabel: "Open navigation menu",
+          id: "landing-menu-toggle",
+          controls: "landing-mobile-sidebar",
+          expanded: "false",
+          className: "rounded-md cursor-pointer text-black",
+        }}
+        rightAction={{
+          type: "button",
+          icon: "search",
+          ariaLabel: "Search store products",
+          className: "rounded-md text-black",
+        }}
+        centerImageSrc="/Logo/brand.webp"
+        centerImageAlt="Sole of Marikina"
+        centerImageClass="h-14 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]"
+        containerClass="landing-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center bg-transparent px-6 pt-5 pb-3 text-black sm:px-8 sm:pt-6 sm:pb-3"
+      />
+
+      <main
+        class="relative z-20 mx-auto flex min-h-[calc(100svh-7rem)] w-full max-w-[430px] flex-col items-center justify-center px-6 py-16 text-center sm:px-8 sm:py-20 md:max-w-3xl lg:max-w-5xl lg:px-10"
+      >
+        <h1
+          class="max-w-[10.5ch] text-[4.15rem] leading-[0.9] font-extrabold tracking-[-0.02em] text-white sm:text-7xl md:text-8xl"
+        >
+          Step Into Marikina&apos;s Shoe Legacy
+        </h1>
+        <p
+          class="mt-4 max-w-[26ch] text-xl leading-tight font-semibold text-white/94 sm:text-2xl"
+        >
+          Explore the heritage, passion, and artistry of Marikina&apos;s finest
+          shoemakers.
+        </p>
+
+        <a
+          href="/legacy"
+          class="mt-7 inline-flex min-w-[11.5rem] items-center justify-center rounded-full border border-white/75 bg-white px-10 py-2.5 text-2xl font-semibold text-[#191511] transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          Explore
+        </a>
+      </main>
+    </section>
+
     <Footer />
   </div>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    if (window.__somLandingMenuInitialized) return;
+    window.__somLandingMenuInitialized = true;
+
+    let cleanup = () => {};
+
+    const init = () => {
+      cleanup();
+
+      const openButton = document.getElementById("landing-menu-toggle");
+      const closeButton = document.getElementById("landing-menu-close");
+      const overlay = document.getElementById("landing-menu-overlay");
+      const sidebar = document.getElementById("landing-mobile-sidebar");
+      if (!openButton || !closeButton || !overlay || !sidebar) return;
+
+      const getFocusable = () =>
+        sidebar.querySelectorAll("a[href], button:not([disabled])");
+
+      const openMenu = () => {
+        openButton.setAttribute("aria-expanded", "true");
+        sidebar.classList.remove("-translate-x-full");
+        sidebar.classList.add("translate-x-0");
+        sidebar.setAttribute("aria-hidden", "false");
+        overlay.classList.remove("opacity-0", "pointer-events-none");
+        overlay.classList.add("opacity-100");
+        document.body.classList.add("overflow-hidden");
+
+        const firstFocusable = getFocusable()[0];
+        if (firstFocusable instanceof HTMLElement) firstFocusable.focus();
+      };
+
+      const closeMenu = () => {
+        openButton.setAttribute("aria-expanded", "false");
+        sidebar.classList.remove("translate-x-0");
+        sidebar.classList.add("-translate-x-full");
+        sidebar.setAttribute("aria-hidden", "true");
+        overlay.classList.remove("opacity-100");
+        overlay.classList.add("opacity-0", "pointer-events-none");
+        document.body.classList.remove("overflow-hidden");
+      };
+
+      const onOverlayClick = () => closeMenu();
+      const onDocumentKeydown = (event) => {
+        if (event.key === "Escape") closeMenu();
+      };
+
+      const sidebarLinks = Array.from(sidebar.querySelectorAll("a[href]"));
+      const sidebarLinkHandlers = sidebarLinks.map((link) => {
+        const onClick = () => closeMenu();
+        link.addEventListener("click", onClick);
+        return { link, onClick };
+      });
+
+      openButton.addEventListener("click", openMenu);
+      closeButton.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", onOverlayClick);
+      document.addEventListener("keydown", onDocumentKeydown);
+
+      closeMenu();
+
+      cleanup = () => {
+        document.body.classList.remove("overflow-hidden");
+        openButton.removeEventListener("click", openMenu);
+        closeButton.removeEventListener("click", closeMenu);
+        overlay.removeEventListener("click", onOverlayClick);
+        document.removeEventListener("keydown", onDocumentKeydown);
+        sidebarLinkHandlers.forEach(({ link, onClick }) => {
+          link.removeEventListener("click", onClick);
+        });
+      };
+    };
+
+    init();
+    document.addEventListener("astro:page-load", init);
+  })();
+</script>

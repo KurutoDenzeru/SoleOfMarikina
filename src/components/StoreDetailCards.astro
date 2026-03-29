@@ -1,8 +1,5 @@
 ---
-type StoreCard = {
-  title: string;
-  href?: string;
-};
+import type { StoreCard } from "@/lib/store-pages";
 
 type Props = {
   mode?: "overlay" | "list";
@@ -30,22 +27,22 @@ const {
       data-store-panel={storeId}
       aria-hidden="true"
       class:list={[
-        "pointer-events-none absolute inset-0 z-30 flex items-start justify-center pt-16 md:items-center md:pt-0 translate-y-8 scale-95 opacity-0 transition-all duration-500 ease-[cubic-bezier(0.2,0.75,0.2,1)] overflow-y-auto",
+        "pointer-events-none absolute inset-0 z-30 flex items-start justify-center overflow-y-auto pt-16 opacity-0 translate-y-8 scale-95 transition-all duration-500 ease-[cubic-bezier(0.2,0.75,0.2,1)] md:items-center md:pt-0",
         className,
       ]}
     >
-      <div class="mx-auto w-full max-w-sm px-4 sm:px-6 md:max-w-4xl lg:max-w-6xl pb-10">
+      <div class="mx-auto w-full max-w-sm pb-10 px-4 sm:px-6 md:max-w-4xl lg:max-w-6xl">
         <div class="mb-4 flex items-center justify-center gap-2">
           <img
             src="/icons/Pin.png"
             alt=""
             aria-hidden="true"
-            class="h-9 w-9 shrink-0 object-contain md:drop-shadow-[0_4px_10px_rgba(0,0,0,0.28)]"
+            class="h-9 w-9 shrink-0 object-contain md:drop-shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
             loading="lazy"
             decoding="async"
           />
-          <div class="w-full max-w-[340px] rounded-full bg-black px-5 py-2 text-white md:max-w-[640px] md:bg-black/88 md:px-8 md:py-3 md:shadow-[0_6px_18px_rgba(0,0,0,0.26)]">
-            <p class="text-[17px] leading-[0.9] font-semibold tracking-tight">
+          <div class="w-full max-w-[340px] rounded-full bg-black px-5 py-2 text-white md:max-w-[640px] md:bg-black/88 md:px-8 md:py-3 md:shadow-md">
+            <p class="text-[17px] leading-[0.9] font-semibold tracking-tight text-white">
               {storeName}
             </p>
             <p class="mt-1 text-[11px] leading-none font-medium text-white/90">
@@ -61,14 +58,21 @@ const {
               <a
                 href={card.href ?? "#"}
                 data-store-card
-                class="group relative flex w-full min-h-[170px] cursor-pointer items-center justify-center overflow-hidden rounded-3xl bg-black px-6 py-7 transition-all duration-300 ease-out hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:min-h-[170px] md:min-h-52 md:bg-black/88 md:shadow-[0_6px_18px_rgba(0,0,0,0.26)]"
+                class="group relative flex w-full cursor-pointer flex-col justify-between overflow-hidden rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,#2d170d_0%,#140b07_100%)] px-5 py-6 text-white shadow-md transition-all duration-300 ease-out hover:-translate-y-1 active:translate-y-0 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:px-6 sm:py-7 md:min-h-[17rem] md:px-8 md:py-8"
               >
-                <span class="relative flex items-center justify-center">
-                  <span class="text-center text-[32px] leading-[0.9] font-black uppercase tracking-tight text-white sm:text-4xl md:text-3xl lg:text-4xl">
+                <div class="flex flex-1 flex-col items-center justify-center text-center">
+                  <h3 class="text-center text-[2.1rem] leading-[0.92] font-normal uppercase tracking-[-0.02em] text-white sm:text-[2.35rem] md:text-[2.25rem] lg:text-[2.5rem]">
                     {lines.map((line) => (
                       <span class="block">{line}</span>
                     ))}
-                  </span>
+                  </h3>
+                  <p class="mx-auto mt-4 w-full text-sm leading-relaxed font-medium text-white/88 sm:text-base md:text-[1.05rem]">
+                    {card.body}
+                  </p>
+                </div>
+
+                <span class="mt-5 inline-flex items-center justify-center self-center rounded-full border-2 border-white px-6 py-2.5 text-sm font-medium leading-none text-white transition group-hover:bg-white/5 sm:px-7 sm:py-3 sm:text-base md:px-8 md:py-3.5 md:text-[1.05rem]">
+                  {card.ctaLabel}
                 </span>
               </a>
             );
@@ -78,20 +82,27 @@ const {
     </section>
   ) : (
     <section class:list={["w-full px-0 pb-8", className]}>
-      <div class="mx-auto w-full max-w-sm space-y-4 md:max-w-3xl md:grid md:grid-cols-2 md:gap-5 md:space-y-0 lg:max-w-5xl">
+      <div class="mx-auto w-full max-w-sm space-y-4 md:grid md:max-w-3xl md:grid-cols-2 md:gap-5 md:space-y-0 lg:max-w-5xl">
         {cards.map((card) => {
           const lines = card.title.split("\n");
           return (
             <a
               href={card.href ?? "#"}
-              class="group relative flex w-full min-h-[170px] cursor-pointer items-center justify-center overflow-hidden rounded-3xl bg-black px-6 py-7 transition-all duration-300 ease-out hover:-translate-y-1 active:translate-y-0 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:min-h-[170px] md:min-h-52 md:bg-black/88 md:shadow-[0_6px_18px_rgba(0,0,0,0.26)]"
+              class="group relative flex w-full cursor-pointer flex-col justify-between overflow-hidden rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,#2d170d_0%,#140b07_100%)] px-5 py-6 text-white shadow-md transition-all duration-300 ease-out hover:-translate-y-1 active:translate-y-0 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation sm:px-6 sm:py-7 md:min-h-[17rem] md:px-8 md:py-8"
             >
-              <span class="relative flex items-center justify-center">
-                <span class="text-center text-[32px] leading-[0.9] font-black uppercase tracking-tight text-white sm:text-4xl md:text-3xl lg:text-4xl">
+              <div class="flex flex-1 flex-col items-center justify-center text-center">
+                <h3 class="text-center text-[2.1rem] leading-[0.92] font-normal uppercase tracking-[-0.02em] text-white sm:text-[2.35rem] md:text-[2.25rem] lg:text-[2.5rem]">
                   {lines.map((line) => (
                     <span class="block">{line}</span>
                   ))}
-                </span>
+                </h3>
+                <p class="mx-auto mt-4 w-full text-sm leading-relaxed font-medium text-white/88 sm:text-base md:text-[1.05rem]">
+                  {card.body}
+                </p>
+              </div>
+
+              <span class="mt-5 inline-flex items-center justify-center self-center rounded-full border-2 border-white px-6 py-2.5 text-sm font-medium leading-none text-white transition group-hover:bg-white/5 sm:px-7 sm:py-3 sm:text-base md:px-8 md:py-3.5 md:text-[1.05rem]">
+                {card.ctaLabel}
               </span>
             </a>
           );

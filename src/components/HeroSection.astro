@@ -2,6 +2,7 @@
 import { MoveLeft } from "lucide-react";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import StoreDetailCards from "@/components/StoreDetailCards.astro";
+import type { StoreCard } from "@/lib/store-pages";
 import {
   landingCards,
   storeOrder,
@@ -15,7 +16,7 @@ type StoreMapItem = {
   top: string;
   left: string;
   pinSide: "left" | "right";
-  cards: { title: string; href?: string }[];
+  cards: StoreCard[];
 };
 
 const stores: StoreMapItem[] = storeData
@@ -231,7 +232,6 @@ const defaultMapBackground = "/map/marikina_2k.png";
   (() => {
     if (window.__somHeroBindingsInitialized) return;
     window.__somHeroBindingsInitialized = true;
-    const activeStoreKey = "som:active-store";
 
     let cleanup = () => {};
 
@@ -263,13 +263,8 @@ const defaultMapBackground = "/map/marikina_2k.png";
         document.querySelectorAll("[data-store-panel]"),
       );
 
-      const closeStorePanels = (clearPersisted = true) => {
+      const closeStorePanels = () => {
         activeStoreId = null;
-        if (clearPersisted) {
-          try {
-            sessionStorage.removeItem(activeStoreKey);
-          } catch {}
-        }
         storeTriggers.forEach((trigger) => {
           trigger.setAttribute("aria-expanded", "false");
           trigger.setAttribute("aria-pressed", "false");
@@ -351,8 +346,6 @@ const defaultMapBackground = "/map/marikina_2k.png";
           closeStorePanels();
           window.history.pushState({}, "", "/");
           window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-          sessionStorage.removeItem(activeStoreKey);
         }
       };
 
@@ -368,8 +361,6 @@ const defaultMapBackground = "/map/marikina_2k.png";
           closeStorePanels();
           window.history.pushState({}, "", "/");
           window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-          sessionStorage.removeItem(activeStoreKey);
         }
       };
 
@@ -385,9 +376,6 @@ const defaultMapBackground = "/map/marikina_2k.png";
         if (!targetPanel) return;
 
         activeStoreId = storeId;
-        try {
-          sessionStorage.setItem(activeStoreKey, storeId);
-        } catch {}
         storeTriggers.forEach((trigger) => {
           const isTarget =
             trigger.getAttribute("data-store-trigger") === storeId;
@@ -554,8 +542,6 @@ const defaultMapBackground = "/map/marikina_2k.png";
               closeStorePanels();
               window.history.pushState({}, "", "/");
               window.scrollTo({ top: 0, behavior: "smooth" });
-            } else {
-              sessionStorage.removeItem(activeStoreKey);
             }
           } else {
             closeMenu();
@@ -579,21 +565,8 @@ const defaultMapBackground = "/map/marikina_2k.png";
       }
 
       closeMenu();
-      closeStorePanels(false);
+      closeStorePanels();
       onWindowScroll();
-
-      // Restore active store from session storage if it exists
-      try {
-        const persistedStoreId = sessionStorage.getItem(activeStoreKey);
-        if (persistedStoreId) {
-          const trigger = storeTriggers.find(
-            (t) => t.getAttribute("data-store-trigger") === persistedStoreId,
-          );
-          if (trigger instanceof HTMLElement) {
-            openStorePanel(persistedStoreId, trigger);
-          }
-        }
-      } catch {}
 
       cleanup = () => {
         document.body.classList.remove("overflow-hidden");

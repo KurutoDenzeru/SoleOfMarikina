@@ -1,0 +1,35 @@
+---
+import type { StoreSlug } from "@/lib/store-pages";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getProductCatalogByStore } from "@/lib/products-catalog";
+
+export async function getStaticPaths() {
+  return ["brads-trendies", "nico-angelo", "seacrest"].map((store) => ({
+    params: { store },
+  }));
+}
+
+const { store } = Astro.params as { store: StoreSlug };
+const catalog = getProductCatalogByStore(store);
+
+if (!catalog) {
+  throw new Error(`Product catalog is missing for store: ${store}`);
+}
+
+const firstProductSlug = catalog.products[0]?.slug ?? "";
+const redirectHref = `/stores/${store}/products/${firstProductSlug}`;
+---
+
+<BaseLayout title={`${catalog.logoAlt} | Products`}>
+  <Fragment slot="head">
+    <meta http-equiv="refresh" content={`0; url=${redirectHref}`} />
+  </Fragment>
+  <main class="flex min-h-screen items-center justify-center bg-[#F0F0F0] p-6 text-center">
+    <p class="text-lg text-black/70">
+      Redirecting to
+      <a href={redirectHref} class="ml-1 underline underline-offset-4">
+        product details
+      </a>.
+    </p>
+  </main>
+</BaseLayout>

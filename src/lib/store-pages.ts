@@ -6,6 +6,7 @@ export type StoreData = {
   name: string;
   logo: string;
   logoInvert: boolean;
+  mapUrl: string;
   mapTop: string;
   mapLeft: string;
   mapPinSide: "left" | "right";
@@ -26,6 +27,8 @@ export type StoreData = {
 export type StoreCard = {
   title: string;
   href: string;
+  body: string;
+  ctaLabel: string;
 };
 
 export type StoreProduct = {
@@ -48,6 +51,7 @@ export const stores: StoreData[] = [
     name: "Brad's Trendies",
     logo: "/Logo/Brads Trendies.webp",
     logoInvert: false,
+    mapUrl: "https://maps.app.goo.gl/3HiepruaFfE7TG4W6",
     mapTop: "17%",
     mapLeft: "54%",
     mapPinSide: "right",
@@ -71,6 +75,7 @@ export const stores: StoreData[] = [
     name: "Nico Angelo",
     logo: "/Logo/Nico Angelo Logo.webp",
     logoInvert: true,
+    mapUrl: "https://maps.app.goo.gl/pRu6gKwEp2mRpAaV8",
     mapTop: "46%",
     mapLeft: "49%",
     mapPinSide: "left",
@@ -94,6 +99,7 @@ export const stores: StoreData[] = [
     name: "Seacrest",
     logo: "/Logo/Seacrest.webp",
     logoInvert: false,
+    mapUrl: "https://maps.app.goo.gl/MruDj1vVQSdBj1Sd9",
     mapTop: "60%",
     mapLeft: "25%",
     mapPinSide: "right",
@@ -217,10 +223,14 @@ export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
       {
         title: "SOULS BEHIND\nTHE SOLES",
         href: `/stores/${storeSlug}/sbts`,
+        body: "Discover the stories of the shoemakers behind the craft",
+        ctaLabel: "Watch Now",
       },
       {
         title: "HIDE TO HEEL",
         href: `/stores/${storeSlug}/hth`,
+        body: "Follow the journey of a Marikina shoe, from raw material to finished craft",
+        ctaLabel: "See The Process",
       },
     ];
   }
@@ -229,10 +239,14 @@ export function sectionCards(storeSlug: StoreSlug): StoreCard[] {
     {
       title: "SOULS BEHIND\nTHE SOLES",
       href: `/stores/${storeSlug}/sbts`,
+      body: "Discover the stories of the shoemakers behind the craft",
+      ctaLabel: "Watch Now",
     },
     {
       title: "HIDE TO HEEL",
       href: `/stores/${storeSlug}/their-products`,
+      body: "Follow the journey of a Marikina shoe, from raw material to finished craft",
+      ctaLabel: "See The Process",
     },
   ];
 }
@@ -246,12 +260,24 @@ export function landingCards(storeSlug: StoreSlug): StoreCard[] {
       : `/stores/${storeSlug}/sbts`;
 
   return [
-    { title: "WALK WITH\nTHEM", href: `/stores/${storeSlug}/wtw` },
+    {
+      title: "WALK WITH\nTHEM",
+      href: `/stores/${storeSlug}/wtw`,
+      body: "Trace the history, find the socials, and connect directly with the creators behind the craft.",
+      ctaLabel: "Get to Know Them",
+    },
     {
       title: "SOULS BEHIND\nTHE SOLES",
       href: soulsHref,
+      body: "Discover the stories of the shoemakers behind the craft.",
+      ctaLabel: "Watch Now",
     },
-    { title: "THEIR\nPRODUCTS", href: `/stores/${storeSlug}/their-products` },
+    {
+      title: "THEIR\nPRODUCTS",
+      href: `/stores/${storeSlug}/their-products`,
+      body: "Support Marikina shoemakers by choosing locally crafted footwear.",
+      ctaLabel: "See Products",
+    },
   ];
 }
 

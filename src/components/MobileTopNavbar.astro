@@ -98,11 +98,6 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
           href={centerImageHref}
           aria-label="Go to homepage"
           class="justify-self-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70"
-          onclick={
-            centerImageHref === "/"
-              ? "sessionStorage.removeItem('som:active-store');"
-              : undefined
-          }
         >
           <img
             src={centerImageSrc}
