@@ -10,11 +10,12 @@
 ## ✨ Features
 
 - **Responsive Design** — Optimized for all devices, from mobile to desktop.
+- **Data-Driven Product Catalog** — Browse real store product lines and curated shoe details, including photos & features.
+- **Global Search** — Search across stores, sections, and products instantly by keyword.
 - **Interactive Map** — Explore Marikina's shoe stores with an integrated map.
 - **Dynamic Routing** — Seamless navigation through individual store pages and sections.
+- **Store Profiles** — Dedicated pages for each store and shoe brand offering timeline/history, best sellers, and highlights.
 - **Fast Performance** — Built with Astro for lightning-fast static site generation.
-- **Accessible UI** — Components from Shadcn UI ensure a11y compliance and great UX.
-- **Open Source** — MIT licensed; customize and deploy your own version freely.
 
 ## 🛠️ Tech Stack
 
