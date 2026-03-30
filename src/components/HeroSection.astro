@@ -241,7 +241,10 @@ const isJourneyPage = currentPath === "/journey";
         ))
       }
 
-      <div class="absolute inset-x-0 bottom-10 z-20 flex justify-center px-4 md:hidden">
+      <div
+        id="mobile-guide"
+        class="absolute inset-x-0 bottom-10 z-20 flex justify-center px-4 transition-opacity duration-300 md:hidden"
+      >
         <div class="w-full max-w-[20rem] rounded-2xl border border-white/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.12)_100%)] px-4 py-3 text-center text-white backdrop-blur-md shadow-sm">
           <p class="text-[10px] font-semibold tracking-[0.22em] uppercase text-white/80">
             Meet the Makers of Marikina
@@ -283,6 +286,7 @@ const isJourneyPage = currentPath === "/journey";
       const mapImageLayer = document.getElementById("map-image-layer");
       const storeBackdrop = document.getElementById("store-backdrop");
       const storeTriggerLayer = document.getElementById("store-trigger-layer");
+      const mobileGuide = document.getElementById("mobile-guide");
 
       if (!(heroStage instanceof HTMLElement)) {
         return;
@@ -365,6 +369,10 @@ const isJourneyPage = currentPath === "/journey";
           desktopGuide.classList.remove("opacity-0");
           desktopGuide.classList.add("opacity-100");
         }
+        if (mobileGuide instanceof HTMLElement) {
+          mobileGuide.classList.remove("opacity-0", "pointer-events-none");
+          mobileGuide.classList.add("opacity-100");
+        }
       };
 
       const openMenu = () => {
@@ -396,6 +404,7 @@ const isJourneyPage = currentPath === "/journey";
       };
 
       const handleLogoClick = (e) => {
+        persistActiveStoreId(null);
         if (window.location.pathname === "/") {
           e.preventDefault();
           if (isOpen()) closeMenu();
@@ -411,6 +420,7 @@ const isJourneyPage = currentPath === "/journey";
       }
 
       const handleHomeLinkClick = (e) => {
+        persistActiveStoreId(null);
         if (window.location.pathname === "/") {
           e.preventDefault();
           if (isOpen()) closeMenu();
@@ -482,6 +492,10 @@ const isJourneyPage = currentPath === "/journey";
         if (desktopGuide instanceof HTMLElement) {
           desktopGuide.classList.remove("opacity-100");
           desktopGuide.classList.add("opacity-0");
+        }
+        if (mobileGuide instanceof HTMLElement) {
+          mobileGuide.classList.remove("opacity-100");
+          mobileGuide.classList.add("opacity-0", "pointer-events-none");
         }
 
         const panelRect = targetPanel.getBoundingClientRect();
@@ -596,7 +610,13 @@ const isJourneyPage = currentPath === "/journey";
       if (hasMenuControls) {
         sidebarLinks.forEach((link) => {
           link.addEventListener("click", (e) => {
-            if (link.getAttribute("href") === "/") {
+            const href = link.getAttribute("href");
+            // Clear active store state when navigating away from journey context
+            if (href && !href.startsWith("/stores/")) {
+              persistActiveStoreId(null);
+            }
+
+            if (href === "/") {
               if (window.location.pathname === "/") {
                 e.preventDefault();
                 closeMenu();
@@ -608,6 +628,15 @@ const isJourneyPage = currentPath === "/journey";
               closeMenu();
             }
           });
+        });
+      }
+
+      const backHomeLink = document.querySelector(
+        'a[aria-label="Back to homepage"]',
+      );
+      if (backHomeLink) {
+        backHomeLink.addEventListener("click", () => {
+          persistActiveStoreId(null);
         });
       }
 

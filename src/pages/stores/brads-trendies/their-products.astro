@@ -67,14 +67,12 @@ if (!catalog) {
                 href={`/stores/${storeSlug}/products/${product.slug}`}
                 class="group block"
               >
-                <article class="relative overflow-hidden rounded-[2rem] border border-black/10 bg-transparent transition duration-200 group-hover:-translate-y-0.5">
-                  <div
-                    class="w-full aspect-square rounded-[1.5rem] bg-white m-3 overflow-hidden flex items-center justify-center sm:h-48 sm:aspect-auto"
-                    style={`background-image:url('${product.image}'); background-size: cover; background-position: center;`}
-                    role="img"
-                    aria-label={product.name}
-                  />
-                </article>
+                <article
+                  class="relative w-full aspect-square overflow-hidden rounded-[2rem] border border-black/10 bg-[#F0F0F0] transition duration-200 group-hover:-translate-y-0.5"
+                  style={`background-image:url('${product.image}'); background-size: cover; background-position: center;`}
+                  role="img"
+                  aria-label={product.name}
+                />
 
                 <div class="mt-3 px-1">
                   <p class="text-sm font-semibold text-white/90">
