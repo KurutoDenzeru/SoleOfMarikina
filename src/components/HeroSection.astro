@@ -271,6 +271,17 @@ const isJourneyPage = currentPath === "/journey";
       cleanup();
 
       const openButton = document.getElementById("menu-toggle");
+      const shouldReuseState = document.referrer
+        .startsWith(`${window.location.origin}/journey`);
+
+      if (!shouldReuseState) {
+        window.sessionStorage.removeItem(journeyStoreStateKey);
+      }
+
+      const persistedStoreId = shouldReuseState
+        ? window.sessionStorage.getItem(journeyStoreStateKey)
+        : null;
+
       const closeButton = document.getElementById("menu-close");
       const overlay = document.getElementById("menu-overlay");
       const sidebar = document.getElementById("mobile-sidebar");
@@ -291,8 +302,6 @@ const isJourneyPage = currentPath === "/journey";
       if (!(heroStage instanceof HTMLElement)) {
         return;
       }
-
-      const persistedStoreId = window.sessionStorage.getItem(journeyStoreStateKey);
 
       let lastFocused = null;
       let activeStoreId = null;
