@@ -39,8 +39,8 @@ export const productCatalogByStore: Record<StoreSlug, StoreProductCatalog> = {
         ],
       },
       {
-        slug: "sandals",
-        name: "Sandals",
+        slug: "slippers",
+        name: "Slippers",
         price: "₱ 900",
         image: "/products/Nico/nico%20angelo%20sandalas.jpg",
         description:
@@ -76,7 +76,7 @@ export const productCatalogByStore: Record<StoreSlug, StoreProductCatalog> = {
       },
       {
         slug: "bgh",
-        name: "BGH",
+        name: "BGH 68",
         price: "₱ 1,700",
         image: "/products/Nico/nico%20angelo%20bgh.jpg",
         description:
@@ -169,7 +169,8 @@ export const productCatalogByStore: Record<StoreSlug, StoreProductCatalog> = {
         slug: "cambridge-cardinal",
         name: "Cambridge Cardinal",
         price: "₱ 2,190",
-        image: "/products/Seacrest/Seacrest%20Brouge%20-%20Cambridge%20Cardinal.jpg",
+        image:
+          "/products/Seacrest/Seacrest%20Brouge%20-%20Cambridge%20Cardinal.jpg",
         checkUrl:
           "https://shopee.ph/Seacrest-Cambridge-Sepia-i.852845449.26050597032",
         description:
