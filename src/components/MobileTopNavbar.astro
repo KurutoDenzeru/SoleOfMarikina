@@ -44,6 +44,12 @@ const {
   containerClass = "grid grid-cols-[1fr_auto_1fr] items-center px-6 pt-6 text-black sm:px-8",
 } = Astro.props as Props;
 
+const rbandLogoRegex = /^\/Logo\/(?!brand\.webp$|footer\.webp$).+/i;
+const isRbandLogo = typeof centerImageSrc === "string" && rbandLogoRegex.test(centerImageSrc);
+const effectiveCenterImageClass = isRbandLogo
+  ? "h-20 w-auto max-w-[280px] object-contain sm:h-24 sm:max-w-[320px]"
+  : centerImageClass;
+
 const iconMap = {
   menu: Menu,
   search: Search,
@@ -102,7 +108,7 @@ const RightIcon = rightAction.icon ? iconMap[rightAction.icon] : null;
           <img
             src={centerImageSrc}
             alt={centerImageAlt}
-            class={centerImageClass}
+            class={effectiveCenterImageClass}
             loading="eager"
             decoding="async"
           />
