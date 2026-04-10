@@ -44,8 +44,6 @@ const isJourneyPage = currentPath === "/journey";
 ---
 
 <section class="relative w-full">
-  {!isJourneyPage && (
-    <>
       <button
         id="menu-overlay"
         type="button"
@@ -101,8 +99,6 @@ const isJourneyPage = currentPath === "/journey";
           </ul>
         </nav>
       </aside>
-    </>
-  )}
 
   <article
     id="hero-stage"
@@ -127,26 +123,15 @@ const isJourneyPage = currentPath === "/journey";
     </div>
 
     <MobileTopNavbar
-      leftAction={
-        isJourneyPage
-          ? {
-              type: "link",
-              icon: "move-left",
-              ariaLabel: "Back to homepage",
-              href: "/",
-              dynamicBack: true,
-              className: "rounded-md cursor-pointer",
-            }
-          : {
-              type: "button",
-              icon: "menu",
-              ariaLabel: "Open navigation menu",
-              id: "menu-toggle",
-              controls: "mobile-sidebar",
-              expanded: "false",
-              className: "rounded-md cursor-pointer",
-            }
-      }
+      leftAction={{
+        type: "button",
+        icon: "menu",
+        ariaLabel: "Open navigation menu",
+        id: "menu-toggle",
+        controls: "mobile-sidebar",
+        expanded: "false",
+        className: "rounded-md cursor-pointer",
+      }}
       rightAction={{
         type: "button",
         icon: "search",
