@@ -1,5 +1,5 @@
 ---
-import { MoveLeft } from "lucide-react";
+import { MoveLeft, Menu } from "lucide-react";
 import MobileTopNavbar from "@/components/MobileTopNavbar.astro";
 import StoreDetailCards from "@/components/StoreDetailCards.astro";
 import type { StoreCard } from "@/lib/store-pages";
@@ -123,15 +123,6 @@ const isJourneyPage = currentPath === "/journey";
     </div>
 
     <MobileTopNavbar
-      leftAction={{
-        type: "button",
-        icon: "menu",
-        ariaLabel: "Open navigation menu",
-        id: "menu-toggle",
-        controls: "mobile-sidebar",
-        expanded: "false",
-        className: "rounded-md cursor-pointer",
-      }}
       rightAction={{
         type: "button",
         icon: "search",
@@ -142,7 +133,29 @@ const isJourneyPage = currentPath === "/journey";
       centerImageAlt="Sole of Marikina"
       centerImageClass="h-16 w-auto max-w-[220px] object-contain sm:h-22 sm:max-w-[260px]"
       containerClass="hero-sticky-nav sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center bg-transparent px-6 pt-5 pb-3 text-black transition-[background-color,backdrop-filter] duration-200 sm:px-8 sm:pt-6 sm:pb-3"
-    />
+    >
+      <div slot="left" class="flex items-center gap-3">
+        <button
+          id="journey-menu-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-controls="mobile-sidebar"
+          aria-expanded="false"
+          class="inline-flex w-fit rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70"
+        >
+          <Menu className="size-8" />
+        </button>
+
+        <button
+          id="journey-panel-back"
+          type="button"
+          aria-label="Back to journey map"
+          class="hidden inline-flex w-fit rounded-full p-1.5 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/70"
+        >
+          <MoveLeft className="size-8" />
+        </button>
+      </div>
+    </MobileTopNavbar>
 
     <div class="relative z-20 min-h-[calc(100svh-7rem)]">
       <div
@@ -255,7 +268,8 @@ const isJourneyPage = currentPath === "/journey";
     const init = () => {
       cleanup();
 
-      const openButton = document.getElementById("menu-toggle");
+      const openButton = document.getElementById("journey-menu-toggle");
+      const backButton = document.getElementById("journey-panel-back");
       const shouldReuseState = document.referrer
         .startsWith(`${window.location.origin}/journey`);
 
@@ -272,9 +286,32 @@ const isJourneyPage = currentPath === "/journey";
       const sidebar = document.getElementById("mobile-sidebar");
       const hasMenuControls =
         openButton instanceof HTMLButtonElement &&
+        backButton instanceof HTMLButtonElement &&
         closeButton instanceof HTMLButtonElement &&
         overlay instanceof HTMLElement &&
         sidebar instanceof HTMLElement;
+
+      const showBackButton = () => {
+        if (backButton) {
+          backButton.classList.remove("hidden");
+          backButton.classList.add("inline-flex");
+        }
+        if (openButton) {
+          openButton.classList.add("hidden");
+          openButton.classList.remove("inline-flex");
+        }
+      };
+
+      const showMenuButton = () => {
+        if (backButton) {
+          backButton.classList.add("hidden");
+          backButton.classList.remove("inline-flex");
+        }
+        if (openButton) {
+          openButton.classList.remove("hidden");
+          openButton.classList.add("inline-flex");
+        }
+      };
 
       const heroStickyNav = document.querySelector(".hero-sticky-nav");
       const heroStage = document.getElementById("hero-stage");
@@ -367,6 +404,7 @@ const isJourneyPage = currentPath === "/journey";
           mobileGuide.classList.remove("opacity-0", "pointer-events-none");
           mobileGuide.classList.add("opacity-100");
         }
+        showMenuButton();
       };
 
       const openMenu = () => {
@@ -534,6 +572,7 @@ const isJourneyPage = currentPath === "/journey";
               },
             );
           });
+        showBackButton();
       };
 
       const onDocumentKeydown = (event) => {
@@ -625,6 +664,13 @@ const isJourneyPage = currentPath === "/journey";
         });
       }
 
+      const backButtonClickHandler = () => {
+        closeStorePanels();
+      };
+      if (backButton) {
+        backButton.addEventListener("click", backButtonClickHandler);
+      }
+
       const backHomeLink = document.querySelector(
         'a[aria-label="Back to homepage"]',
       );
@@ -687,6 +733,9 @@ const isJourneyPage = currentPath === "/journey";
             const newLink = link.cloneNode(true);
             link.parentNode.replaceChild(newLink, link);
           });
+          if (backButton) {
+            backButton.removeEventListener("click", backButtonClickHandler);
+          }
         }
         if (storeBackdrop) {
           storeBackdrop.removeEventListener("click", closeStorePanels);
